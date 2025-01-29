@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[819],{9630:(_,n,e)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/team",function(){return e(9583)}])},9583:(_,n,e)=>{"use strict";e.r(n),e.d(n,{default:()=>r});var u=e(5105);function r(){return(0,u.jsx)(u.Fragment,{})}e(5112)}},_=>{var n=n=>_(_.s=n);_.O(0,[112,636,593,792],()=>n(9630)),_N_E=_.O()}]);

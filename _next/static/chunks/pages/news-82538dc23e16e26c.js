@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[277],{1206:(n,_,e)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/news",function(){return e(5021)}])},5021:(n,_,e)=>{"use strict";e.r(_),e.d(_,{default:()=>r});var u=e(5105);function r(){return(0,u.jsx)(u.Fragment,{})}e(5112)}},n=>{var _=_=>n(n.s=_);n.O(0,[112,636,593,792],()=>_(1206)),_N_E=n.O()}]);
