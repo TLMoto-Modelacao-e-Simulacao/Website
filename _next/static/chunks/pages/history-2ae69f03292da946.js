@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[272],{6833:(_,n,r)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/history",function(){return r(6041)}])},6041:(_,n,r)=>{"use strict";r.r(n),r.d(n,{default:()=>e});var u=r(4848);function e(){return(0,u.jsx)(u.Fragment,{})}r(9965)}},_=>{var n=n=>_(_.s=n);_.O(0,[965,636,593,792],()=>n(6833)),_N_E=_.O()}]);

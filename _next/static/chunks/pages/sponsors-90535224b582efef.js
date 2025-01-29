@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[957],{6639:(n,_,s)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/sponsors",function(){return s(7028)}])},7028:(n,_,s)=>{"use strict";s.r(_),s.d(_,{default:()=>u});var r=s(4848);function u(){return(0,r.jsx)(r.Fragment,{})}s(9965)}},n=>{var _=_=>n(n.s=_);n.O(0,[965,636,593,792],()=>_(6639)),_N_E=n.O()}]);
