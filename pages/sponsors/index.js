@@ -7,7 +7,7 @@ export default function Sponsors() {
     <div className={defaultPage.container}>
       <div className={defaultPage.background}></div>
       <MyMajorSponsorSection />
-      {['gold', 'silver', 'bronze', 'copper', 'partners'].map(type => (
+      {['diamond', 'gold', 'silver', 'bronze', 'copper', 'partners'].map(type => (
         <MySponsorsBox key={type} type={type} />
       ))}
     </div>
