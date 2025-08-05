@@ -1,16 +1,21 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { ComponentProps, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-function sleep(ms) {
+function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export const TransitionLink = ({ children, href, ...props }) => {
+interface TransitionLinkProps extends ComponentProps<typeof Link> {
+  children: ReactNode;
+  href: string;
+}
+
+export const TransitionLink = ({ children, href, ...props }: TransitionLinkProps) => {
   const router = useRouter();
 
-  const handleTransition = async e => {
+  const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     const body = document.querySelector('body');
