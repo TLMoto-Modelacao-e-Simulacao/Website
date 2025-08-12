@@ -43,8 +43,8 @@ export const SponsorSection = () => {
 
       <Image
         src="/images/home/sponsors_background.webp"
-          alt="Sponsors"
-          className="
+        alt="Sponsors"
+        className="
             absolute top-1/2 left-1/2
             -translate-x-1/2 -translate-y-1/2
             w-[95vw] max-w-2xl 
@@ -56,24 +56,19 @@ export const SponsorSection = () => {
             h-auto
             pointer-events-none select-none z-20
           "
-          width={1920}
-          height={1080}
-          style={{
-            objectFit: "contain",
-            objectPosition: "center",
-          }}
-          draggable={false}
-        />
+        width={1920}
+        height={1080}
+        style={{
+          objectFit: "contain",
+          objectPosition: "center",
+        }}
+        draggable={false}
+      />
 
       <div
         className="absolute inset-x-0 bottom-0 h-24 z-30 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(" +
-            "to top, " +
-            "#000 0%, " +
-            "rgba(0,0,0,0) 80%" +
-            ")",
+          background: "linear-gradient(" + "to top, " + "#000 0%, " + "rgba(0,0,0,0) 80%" + ")",
         }}
       />
     </motion.section>
