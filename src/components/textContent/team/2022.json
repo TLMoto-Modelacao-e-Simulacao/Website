@@ -1,0 +1,290 @@
+{
+  "1 - BOARD": [
+    {
+      "name": "Goncalo Jacob",
+      "image": "1 - goncalo_jacob.webp",
+      "cardImage": "1 - goncalo_jacob_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Afonso Cruz",
+      "image": "2 - afonso_cruz.webp",
+      "cardImage": "2 - afonso_cruz_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Carolina Rodrigues",
+      "image": "3 - carolina_rodrigues.webp",
+      "cardImage": "3 - carolina_rodrigues_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "2 - AERODYNAMICS AND COOLING": [
+    {
+      "name": "Simao Goncalves",
+      "image": "1 - simao_goncalves.webp",
+      "cardImage": "1 - simao_goncalves_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Goncalo Martins",
+      "image": "goncalo_martins.webp",
+      "cardImage": "goncalo_martins_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Jose Luciano",
+      "image": "jose_luciano.webp",
+      "cardImage": "jose_luciano_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Mariana Mendonca",
+      "image": "mariana_mendonca.webp",
+      "cardImage": "mariana_mendonca_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Miguel Afonso",
+      "image": "miguel_afonso.webp",
+      "cardImage": "miguel_afonso_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Pedro Lopes",
+      "image": "pedro_lopes.webp",
+      "cardImage": "pedro_lopes_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "3 - DYNAMICS": [
+    {
+      "name": "Afonso Magalhaes",
+      "image": "1 - afonso_magalhaes.webp",
+      "cardImage": "1 - afonso_magalhaes_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Alexandre Lopes",
+      "image": "2 - alexandre_lopes.webp",
+      "cardImage": "2 - alexandre_lopes_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Joao Martins",
+      "image": "2 - joao_martins.webp",
+      "cardImage": "2 - joao_martins_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Guilherme Rodrigues",
+      "image": "guilherme_rodrigues.webp",
+      "cardImage": "guilherme_rodrigues_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Leonor Marques",
+      "image": "leonor_marques.webp",
+      "cardImage": "leonor_marques_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "4 - ELECTRONICS": [
+    {
+      "name": "Pedro Resende",
+      "image": "1 - pedro_resende.webp",
+      "cardImage": "1 - pedro_resende_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Alexandra Leitao",
+      "image": "alexandra_leitao.webp",
+      "cardImage": "alexandra_leitao_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Diogo Luis",
+      "image": "diogo_luis.webp",
+      "cardImage": "diogo_luis_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Diogo Mucharrinha",
+      "image": "diogo_mucharrinha.webp",
+      "cardImage": "diogo_mucharrinha_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Eduardo Montes",
+      "image": "eduardo_montes.webp",
+      "cardImage": "eduardo_montes_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Filipe Marcos",
+      "image": "filipe_marcos.webp",
+      "cardImage": "filipe_marcos_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Miguel Ramos",
+      "image": "miguel_ramos.webp",
+      "cardImage": "miguel_ramos_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "5 - POWERTRAIN": [
+    {
+      "name": "Hugo Ramos",
+      "image": "1 - hugo_ramos.webp",
+      "cardImage": "1 - hugo_ramos_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Francisco Reis",
+      "image": "francisco_reis.webp",
+      "cardImage": "francisco_reis_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "JoãO Reves",
+      "image": "joão_reves.webp",
+      "cardImage": "joão_reves_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Mike De Kanter",
+      "image": "mike_de_kanter.webp",
+      "cardImage": "mike_de_kanter_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "6 - STRUCTURES": [
+    {
+      "name": "Francisco Heitor",
+      "image": "1 - francisco_heitor.webp",
+      "cardImage": "1 - francisco_heitor_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Antonio Vacas",
+      "image": "2 - antonio_vacas.webp",
+      "cardImage": "2 - antonio_vacas_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Tomas Pohle",
+      "image": "2 - tomas_pohle.webp",
+      "cardImage": "2 - tomas_pohle_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Carlos Vasconcelos",
+      "image": "carlos_vasconcelos.webp",
+      "cardImage": "carlos_vasconcelos_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Diogo Lourenco",
+      "image": "diogo_lourenco.webp",
+      "cardImage": "diogo_lourenco_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Duarte Palancha",
+      "image": "duarte_palancha.webp",
+      "cardImage": "duarte_palancha_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Fernao Vieira",
+      "image": "fernao_vieira.webp",
+      "cardImage": "fernao_vieira_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Luis Aser Portela",
+      "image": "luis_aser_portela.webp",
+      "cardImage": "luis_aser_portela_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Nuno Rego",
+      "image": "nuno_rego.webp",
+      "cardImage": "nuno_rego_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Tiago Silva",
+      "image": "tiago_silva.webp",
+      "cardImage": "tiago_silva_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "7 - HUMAN RESOURCES": [
+    {
+      "name": "Carmen Sofia",
+      "image": "1 - carmen_sofia.webp",
+      "cardImage": "1 - carmen_sofia_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "8 - MARKETING AND DESIGN": [
+    {
+      "name": "Isabel Nogueira",
+      "image": "1 - isabel_nogueira.webp",
+      "cardImage": "1 - isabel_nogueira_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Bernardo Silva",
+      "image": "bernardo_silva.webp",
+      "cardImage": "bernardo_silva_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Julia Assuncao",
+      "image": "julia_assuncao.webp",
+      "cardImage": "julia_assuncao_carta.webp",
+      "linkedin": ""
+    }
+  ],
+  "9 - MANAGEMENT": [
+    {
+      "name": "Margarida Oliveira",
+      "image": "1 - margarida_oliveira.webp",
+      "cardImage": "1 - margarida_oliveira_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "David Azevedo",
+      "image": "david_azevedo.webp",
+      "cardImage": "david_azevedo_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Joao Romeiro",
+      "image": "joao_romeiro.webp",
+      "cardImage": "joao_romeiro_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Margarida GonçAlves",
+      "image": "margarida_gonçalves.webp",
+      "cardImage": "margarida_gonçalves_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Sofia Seabra",
+      "image": "sofia_seabra.webp",
+      "cardImage": "sofia_seabra_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Tereza Ribeiro",
+      "image": "tereza_ribeiro.webp",
+      "cardImage": "tereza_ribeiro_carta.webp",
+      "linkedin": ""
+    }
+  ]
+}
