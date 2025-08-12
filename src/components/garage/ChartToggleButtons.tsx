@@ -1,71 +1,55 @@
-//import styles from '@/styles/garage/ChartToggleButtons.module.scss';
-import { backgrounds } from '@/components/textContent/GarageSectionTexts';
+import React from 'react';
+import { themeColors } from 'src/components/textContent/GarageSectionTexts';
 
 export default function MyChartToggleButtons({
   showHistory,
   setShowHistory,
   motoId,
-  onThemeClick,
+  toggleBackground,
 }) {
-  const backgroundStyle = backgrounds[motoId] || backgrounds.m01;
+  const color = themeColors[motoId] || themeColors.m01;
+  const gradientBg = `linear-gradient(to right, rgba(${color},1), rgba(${color},0.5))`;
+  const borderColor = `rgba(${color},0.5)`;
 
-  const shadowColor = backgroundStyle.includes('rgba(0, 82, 212')
-    ? 'rgba(0, 82, 212, 0.5)'
-    : backgroundStyle.includes('rgba(255, 204, 0')
-      ? 'rgba(255, 204, 0, 0.5)'
-      : 'rgba(255, 0, 0, 0.5)';
-
-  const hoverShadowColor = shadowColor.replace('0.5', '0.8');
+  const baseButtonClasses = `
+    font-bold text-white
+    rounded-lg
+    px-4 py-2
+    transition transform duration-200 ease-in-out
+    shadow-lg
+    hover:scale-105 hover:shadow-xl
+    active:scale-95
+    flex-shrink-0  
+    min-w-[120px]  
+  `;
 
   return (
-    <>
-      <div className={styles.buttonContainer}>
+    <div className="w-full flex justify-center py-2 mt-4">
+      <div 
+        className="flex flex-wrap justify-center items-center gap-4 w-full max-w-4xl mx-auto"
+      >
         <button
-          className={styles.historyButton}
-          onClick={() => setShowHistory(true)}
-          style={{
-            backgroundImage: backgroundStyle,
-            borderColor: shadowColor,
-            boxShadow: `0px 4px 8px ${shadowColor}`,
-            opacity: showHistory ? 1 : 0.5,
-          }}
-          onMouseEnter={e => (e.target.style.boxShadow = `0px 6px 12px ${hoverShadowColor}`)}
-          onMouseLeave={e => (e.target.style.boxShadow = `0px 4px 8px ${shadowColor}`)}
-        >
-          History
-        </button>
-
-        <button
-          className={styles.statsButton}
           onClick={() => setShowHistory(false)}
-          style={{
-            backgroundImage: backgroundStyle,
-            borderColor: shadowColor,
-            boxShadow: `0px 4px 8px ${shadowColor}`,
-            opacity: !showHistory ? 1 : 0.5,
-          }}
-          onMouseEnter={e => (e.target.style.boxShadow = `0px 6px 12px ${hoverShadowColor}`)}
-          onMouseLeave={e => (e.target.style.boxShadow = `0px 4px 8px ${shadowColor}`)}
+          style={{ background: gradientBg, border: `2px solid ${borderColor}` }}
+          className={`${baseButtonClasses} ${!showHistory ? 'opacity-100' : 'opacity-50'}`}
         >
           Stats
         </button>
-      </div>
-
-      <div className={styles.themeButtonWrapper}>
         <button
-          className={styles.themeButton}
-          onClick={onThemeClick}
-          style={{
-            backgroundImage: backgroundStyle,
-            borderColor: shadowColor,
-            boxShadow: `0px 4px 8px ${shadowColor}`,
-          }}
-          onMouseEnter={e => (e.target.style.boxShadow = `0px 6px 12px ${hoverShadowColor}`)}
-          onMouseLeave={e => (e.target.style.boxShadow = `0px 4px 8px ${shadowColor}`)}
+          onClick={() => setShowHistory(true)}
+          style={{ background: gradientBg, border: `2px solid ${borderColor}` }}
+          className={`${baseButtonClasses} ${showHistory ? 'opacity-100' : 'opacity-50'}`}
+        >
+          History
+        </button>
+        <button
+          onClick={toggleBackground} 
+          style={{ background: gradientBg, border: `2px solid ${borderColor}` }}
+          className={baseButtonClasses}
         >
           Theme
         </button>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 export const cards = [
   {
     id: 'm01',
-    imageSrc: '/images/garage/01.jpg',
+    imageSrc: '/images/garage/01.webp',
     title: 'TLM01I',
     description: `Lorem ipsum odor amet, consectetuer adipiscing elit. 
                       Ac purus in massa egestas mollis varius; dignissim elementum.`,
@@ -21,7 +21,7 @@ export const cards = [
   },
   {
     id: 'm02',
-    imageSrc: '/images/garage/02.jpg',
+    imageSrc: '/images/garage/02.webp',
     title: 'TLM02E',
     description: `Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc.`,
     detailsLink: '/garage/m02',
@@ -41,7 +41,7 @@ export const cards = [
   },
   {
     id: 'm03',
-    imageSrc: '/images/garage/03.jpg',
+    imageSrc: '/images/garage/03.webp',
     title: 'TLM03E',
     description: `Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue.`,
     detailsLink: '/garage/m03',
@@ -58,10 +58,50 @@ export const cards = [
         Notably, it marked the team's debut at Imola, Italy, in 2022, hosted by Moto Engineering Italy. 
         This milestone underscores the global recognition of their innovation.`,
   },
+  {
+    id: 'm04',
+    imageSrc: '/images/garage/m04.webp',
+    title: 'TLM04E',
+    description: `Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue.`,
+    detailsLink: '/garage/m04',
+    video: '/videos/garage/details/desktop/marlboro/m04_marlboro.mp4',
+    stats: [
+      { name: 'Max Power', value: 57, max: 57, unit: 'kW' },
+      { name: 'Speed', value: 204, max: 204, unit: 'km/h' },
+      { name: 'Weight', value: 150, max: 250, unit: 'kg' },
+      { name: 'Acceleration', value: 3.6, max: 3.6, unit: 's' },
+      { name: 'Torque', value: 120, max: 120, unit: 'Nm' },
+    ],
+    historyText: `The TLM04e, conceived between 2019 and 2021, represents the team's evolution in electric motorcycle 
+        engineering. Competing in the 2021 MotoStudent edition, it showcased advancements in design and performance. 
+        Notably, it marked the team's debut at Imola, Italy, in 2022, hosted by Moto Engineering Italy. 
+        This milestone underscores the global recognition of their innovation.`,
+  }
 ];
 
 export const backgrounds = {
-  m01: 'linear-gradient(180deg, rgba(0, 82, 212, 0.5), rgba(67, 100, 247, 0.5), rgba(111, 177, 252, 0.5))',
-  m02: 'linear-gradient(180deg, rgba(255, 204, 0, 0.5), rgba(0, 0, 0, 0.7))',
-  m03: 'linear-gradient(180deg, rgba(255, 0, 0, 0.5), rgba(0, 0, 0, 0.7))',
+  m01: [
+    '/videos/garage/details/desktop/m01.mp4'
+  ],
+  m02: [
+    '/videos/garage/details/desktop/sun/m02_sun.mp4'
+  ],
+  m03: [
+    '/videos/garage/details/desktop/red/m03_red.mp4',
+    '/videos/garage/details/desktop/marlboro/m03_marlboro.mp4'
+  ],
+  m04: [
+    '/videos/garage/details/desktop/red/m04_red.mp4',
+    '/videos/garage/details/desktop/marlboro/m04_marlboro.mp4',
+    '/videos/garage/details/desktop/gulf/m04_gulf.mp4',
+    '/videos/garage/details/desktop/bordeaux/m04_bordeaux.mp4'
+  ]
+};
+
+
+export const themeColors = {
+  m01: '0,82,212',      // azul
+  m02: '255,204,0',     // amarelo 
+  m03: '255,0,0',       // vermelho
+  m04: '255,0,0'        // vermelho
 };
