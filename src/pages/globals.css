@@ -158,3 +158,47 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Newsletter Modal Animation */
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-appear {
+  animation: modalAppear 0.3s ease-out;
+}
+
+/* Newsletter Swiper Custom Styles */
+.newsletter-swiper .swiper-pagination {
+  --swiper-pagination-top: 60vh;
+}
+
+.newsletter-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.newsletter-swiper .swiper-pagination-bullet-active {
+  width: 16px;
+  background-color: rgba(48, 68, 253, 0.963);
+  border-radius: 14px;
+}
+
+.newsletter-swiper .swiper-button-prev {
+  margin-left: 30vh;
+}
+
+.newsletter-swiper .swiper-button-next {
+  margin-right: 30vh;
+}
