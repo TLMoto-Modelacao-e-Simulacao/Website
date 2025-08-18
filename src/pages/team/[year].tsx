@@ -7,6 +7,7 @@ import {
   getAvailableYears,
 } from "../../components/utils/FetchFolderImages";
 import MyDefaultPage from "../../components/DefaultPage";
+import { motion } from "framer-motion";
 
 export async function getStaticProps({ params }: { params: { year: string } }) {
   const { year } = params;
@@ -100,13 +101,13 @@ export default function Team({ teamData, year }: TeamProps) {
         </div>
 
         <div className="relative flex mt-8">
-          <div className="w-full lg:max-w-[57.5%] pl-8 sm:pl-12 md:pl-16">
+          <div className="w-full lg:max-w-[57.5%] px-4 sm:pl-8 md:pl-12 lg:pl-16">
             {teamData.data.length === 0 ? (
               <p className="text-white text-center">No data available for {year}</p>
             ) : (
               teamData.data.map(({ name, members }) => (
                 <div key={name} className="mb-20">
-                  <div className="flex items-center pl-6 rounded-xl transition-all duration-300 -mt-12">
+                  <div className="flex items-center pl-0 sm:pl-2 lg:pl-2 rounded-xl transition-all duration-300 -mt-12">
                     <Image
                       src="/images/team/raio.webp"
                       alt="Team Icon"
@@ -119,7 +120,7 @@ export default function Team({ teamData, year }: TeamProps) {
                     </h2>
                   </div>
 
-                  <div className="flex flex-wrap gap-1 sm:gap-2 md:gap-3 lg:gap-4 mt-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 md:gap-3 lg:gap-4 mt-1 justify-center sm:justify-start">
                     {members.map((member, index) => (
                       <div
                         key={`${member.image}-${index}`}
@@ -128,7 +129,7 @@ export default function Team({ teamData, year }: TeamProps) {
                           width: "clamp(80px, 12vw, 120px)",
                         }}
                       >
-                        <Image
+                        <motion.img
                           src={member.image}
                           alt={member.name}
                           width={125}
@@ -145,7 +146,7 @@ export default function Team({ teamData, year }: TeamProps) {
                           }}
                         />
                         <div className="mt-3 text-center">
-                          <p className="text-white text-xs sm:text-sm font-medium mb-1 truncate">
+                          <p className="text-white text-sm sm:text-base font-medium mb-1 tracking-wide break-words">
                             {member.name}
                           </p>
                         </div>
@@ -159,11 +160,10 @@ export default function Team({ teamData, year }: TeamProps) {
           {focusedCardImage && (
             <>
               <div className="hidden lg:flex fixed left-[65%] bottom-[10%] flex-col items-center z-10">
-                <Image
+                <motion.img
+                  style={{ height: "50vh", width: "300px" }}
                   src={focusedCardImage}
                   alt="Focused Image"
-                  width={250}
-                  height={330}
                   loading="lazy"
                   className="border-4 border-black h-[50vh] shadow-[0_0_30px_10px_rgba(6,90,123,1)]"
                 />
@@ -183,11 +183,10 @@ export default function Team({ teamData, year }: TeamProps) {
               {mobilePopupOpen && focusedCardImage && (
                 <div className="lg:hidden fixed inset-0 backdrop-blur-lg bg-black/30 flex items-center justify-center z-50 p-4">
                   <div className="relative flex flex-col items-center">
-                    <Image
+                    <motion.img
+                      style={{ height: "80vh", width: "90vw" }}
                       src={focusedCardImage}
                       alt="Focused Image"
-                      width={220}
-                      height={280}
                       loading="lazy"
                       className="w-full h-auto max-h-[45vh] max-w-[70vw] object-contain"
                     />
