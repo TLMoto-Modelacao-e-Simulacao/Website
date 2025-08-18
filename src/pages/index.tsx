@@ -7,7 +7,7 @@ import { SponsorSection } from "../components/homePage/SponsorSection";
 export default function Home() {
   return (
     <div className="flex h-screen">
-      <div className="w-full overflow-auto h-screen">
+      <div className="w-full h-screen">
         <HeroSection />
         <AboutSection />
         <CompetitionsSection />

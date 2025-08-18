@@ -33,15 +33,54 @@ export default function MyNavbar() {
   const liStyleActive =
     liStyle + " text-[#3293e0] font-bold text-shadow-[0_0_2vh_#97bddc,0_0_2vh_#3293e0]";
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (router.pathname === "/") {
+      e.preventDefault();
+      router.reload();
+    }
+  };
+
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Close mobile menu when resizing to large screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        // xl breakpoint
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <nav
-      className="h-[14vh] left-0 top-0 z-40 w-screen bg-transparent fixed text-[clamp(2vh,2vw,5vh)]"
+      className={`h-[14vh] left-0 top-0 z-40 w-screen fixed text-[clamp(2vh,2vw,5vh)] 
+    transition-all ${isOpen ? "duration-0" : "duration-300"} 
+    ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
       aria-label="Main Navigation"
     >
       <div className="hidden xl:flex w-[85%] h-[1vh] absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_right,transparent,_#97bddc,_#3293e0,_#97bddc,_transparent)]"></div>
       <ul className="hidden xl:flex px-5 w-full h-full justify-around items-center list-none">
         <li className="h-[80%]">
-          <Link href="/" aria-label="Home" className="h-[80%]">
+          <Link href="/" aria-label="Home" className="h-[80%]" onClick={handleClick}>
             <div className="aspect-[207/169] h-full">
               <Image
                 src="/images/home/home.webp"
@@ -66,8 +105,10 @@ export default function MyNavbar() {
         <li className="aspect-[207/169] h-full"></li>
       </ul>
       <div
-        className={`fixed inset-0 z-30 transition-opacity duration-300 pointer-events-none ${
-          isOpen ? "opacity-100 backdrop-blur-sm bg-black/40 pointer-events-auto" : "opacity-0"
+        className={`fixed inset-0 z-30 transition-all transition-[backdrop-filter] duration-300 h-screen pointer-events-none ${
+          isOpen
+            ? "opacity-100 backdrop-blur-sm bg-black/60 pointer-events-auto"
+            : "opacity-0 backdrop-blur-none"
         }`}
         aria-hidden={!isOpen}
         onClick={() => setIsOpen(false)}
@@ -110,7 +151,7 @@ export default function MyNavbar() {
         </div>
         {/* Slide-down Mobile Menu */}
         <ul
-          className={`absolute left-0 text-3xl right-0 top-full z-40 px-7 py-13 rounded-b-2xl flex flex-col list-none gap-5 transition-all duration-400 ${
+          className={`absolute left-0 text-3xl right-0 top-full z-40 px-7 py-13 rounded-b-2xl flex flex-col list-none gap-10 transition-all duration-300 ${
             isOpen
               ? "opacity-100 pointer-events-auto translate-y-0"
               : "opacity-0 pointer-events-none -translate-y-3"
