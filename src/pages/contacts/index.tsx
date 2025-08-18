@@ -68,13 +68,13 @@ export default function Contacts() {
       <MyDefaultPage>
 
       {/* Main Content */}
-      <div className="relative flex max-md:flex-col items-center justify-center mt-[10vh] max-md:p-5">
+      <div className="relative flex max-md:flex-col items-center justify-center mt-[10vh] max-lg:mt-[18vh]  max-md:p-5">
         {/* Form Container */}
-        <div className="m-[5%] ml-[10%] w-[60%] p-[1.3%] bg-white rounded-lg shadow-md font-sans max-md:w-[75%] max-md:ml-0 max-md:m-0 max-md:mb-8">
+        <div className="m-[5%] ml-[10%] w-[60%] p-[1.3%] bg-white rounded-lg shadow-md font-sans max-md:w-[90%] max-md:ml-0 max-md:m-0 max-md:mb-8 ">
           <h2 className="text-[#007bff] text-xl md:text-2xl -mt-[1.5%] max-md:mt-0 max-md:text-xl">Send a Message</h2>
           
-          <form onSubmit={handleSubmit} className="flex flex-col">
-            <label htmlFor="name" className="mt-3.3 max-md:mt-3  max-md:text-sm">Name</label>
+          <form onSubmit={handleSubmit} className="flex flex-col ">
+            <label htmlFor="name" className="mt-3.3 max-md:mt-3 max-md:ml-[5%] max-md:text-sm">Name</label>
             <input
               type="text"
               id="name"
@@ -83,10 +83,10 @@ export default function Contacts() {
               value={body.name}
               onChange={handleChange}
               required
-              className="w-full p-2.5 mt-1 border border-gray-300 rounded-md max-md:p-2"
+              className="w-full p-2.5 mt-1 border border-gray-300 rounded-md max-md:p-2 max-md:w-[90%] max-md:ml-[5%]"
             />
 
-            <div className="flex gap-3 mt-3 max-md:flex-col">
+            <div className="flex gap-3 mt-3 max-md:flex-col max-md:w-[90%] max-md:ml-[5%]">
               <div className="flex-1 max-md:mb-3">
                 <label htmlFor="email" className="max-md:text-sm">Email</label>
                 <input
@@ -114,7 +114,7 @@ export default function Contacts() {
               </div>
             </div>
 
-            <label htmlFor="message" className="mt-3 max-md:text-sm">Message</label>
+            <label htmlFor="message" className="mt-3 max-md:text-sm max-md:ml-[5%]">Message</label>
             <textarea
               id="message"
               name="message"
@@ -123,7 +123,7 @@ export default function Contacts() {
               onChange={handleChange}
               required
               minLength={10}
-              className="w-full p-2.5 mt-1 border border-gray-300 rounded-md h-28 max-md:p-2 max-md:h-32"
+              className="w-full p-2.5 mt-1 border max-md:ml-[5%] max-md:w-[90%] border-gray-300 rounded-md h-28 max-md:p-2 max-md:h-32"
             ></textarea>
 
             {/* Honeypot field */}
@@ -139,7 +139,7 @@ export default function Contacts() {
 
             <button 
               type="submit" 
-              className="mt-4 bg-[#39a6ff] text-white py-2.5 rounded-md cursor-pointer hover:bg-[#39a6ff] transition-colors max-md:py-2 max-md:text-sm"
+              className="mt-4 bg-[#39a6ff] max-md:w-[90%] max-md:ml-[5%] text-white py-2.5 rounded-md cursor-pointer hover:bg-[#39a6ff] transition-colors max-md:py-2 max-md:text-sm"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Sending...' : 'Submit'}
@@ -166,7 +166,7 @@ export default function Contacts() {
         </div>
         
         {/* Contact Info Column */}
-        <div className="flex flex-col w-1/3 mr-[10%] max-xl:w-lg max-md:w-[90%] max-md:mr-0 max-md:max-w-[75%] max-sm:w-[75%]">
+        <div className="flex flex-col w-1/3 mr-[10%] max-xl:w-lg max-md:w-[90%] max-md:mr-0 ">
           <div className="bg-[#39a6ff] text-white p-5 rounded-lg shadow-md w-full font-sans max-md:p-4">
             <h3 className="mb-2.5 text-xl md:text-2xl max-md:text-lg">Contact Info</h3>
             <p><strong>Pavilhão de Mecânica III</strong></p>
