@@ -1,86 +1,173 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cards } from 'src/components/textContent/GarageSectionTexts';
 import { TransitionLink } from '../utils/TransitionLink';
 
 export default function MyGarageCards() {
+  const DESKTOP_VISIBLE = 3;
+  const GAP_PX = 16;
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const itemRef = useRef<HTMLDivElement | null>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [itemHeight, setItemHeight] = useState<number | null>(null);
+
+  const desiredVisible = isMobile ? 1 : DESKTOP_VISIBLE;
+  const visibleCount = Math.min(desiredVisible, cards.length);
+  const maxIndex = Math.max(0, cards.length - visibleCount);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mq: MediaQueryList = window.matchMedia('(max-width: 639px)');
+
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile((e as any).matches);
+    };
+
+    setIsMobile(mq.matches);
+
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handler as EventListener);
+    } else if (typeof (mq as any).addListener === 'function') {
+      (mq as any).addListener(handler);
+    }
+
+    return () => {
+      if (typeof mq.removeEventListener === 'function') {
+        mq.removeEventListener('change', handler as EventListener);
+      } else if (typeof (mq as any).removeListener === 'function') {
+        (mq as any).removeListener(handler);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth);
+      } else {
+        setContainerWidth(0);
+      }
+
+      if (itemRef.current) {
+        setItemHeight(itemRef.current.clientHeight);
+      } else {
+        setItemHeight(null);
+      }
+    };
+
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
+
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? cards.length - 1 : prev - 1));
+    if (cards.length <= visibleCount) return;
+    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === cards.length - 1 ? 0 : prev + 1));
+    if (cards.length <= visibleCount) return;
+    setCurrentIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
   };
+
+  const totalGaps = Math.max(0, visibleCount - 1) * GAP_PX;
+
+  const itemWidthPx =
+    containerWidth > 0 && !isMobile ? Math.floor((containerWidth - totalGaps) / visibleCount) : null;
+
+  const translatePx = (() => {
+    if (isMobile) {
+      return itemHeight !== null ? currentIndex * (itemHeight + GAP_PX) : 0;
+    }
+    return itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : 0;
+  })();
+
+  const stepPercent = 100 / visibleCount;
+  const translatePercent = currentIndex * stepPercent;
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
-      <video
-        autoPlay
-        loop
-        muted
-        className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
-      >
+      <video autoPlay muted className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
         <source src="/videos/garage/garage_menu.mp4" type="video/mp4" />
       </video>
 
-      <div className="relative w-full max-w-4xl p-6">
-        <div className="overflow-hidden">
+      <div className="relative w-full max-w-6xl p-6">
+        <div ref={containerRef} className="overflow-hidden h-[26rem] sm:h-auto" aria-roledescription="carousel container">
           <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            className={`flex gap-4 flex-col sm:flex-row transition-transform duration-500 ease-in-out`}
+            style={
+              itemWidthPx !== null || itemHeight !== null
+                ? isMobile
+                  ? { transform: `translateY(-${translatePx}px)` }
+                  : { transform: `translateX(-${translatePx}px)` }
+                : isMobile
+                ? { transform: `translateY(-${translatePercent}%)` }
+                : { transform: `translateX(-${translatePercent}%)` }
+            }
           >
             {cards.map((card, index) => (
-              <div key={index} className="flex-shrink-0 w-full flex justify-center">
-                <div className="relative w-[28rem] h-[32rem] overflow-hidden rounded-lg shadow-lg group">
-                  <img
-                    src={card.imageSrc}
-                    alt={card.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-4">
-                    <h3 className="text-lg font-bold">{card.title}</h3>
-                    <p className="text-sm mt-2 text-center">{card.description}</p>
-                    <TransitionLink
-                      href={card.detailsLink}
-                      className="mt-3 text-blue-300 underline"
-                    >
-                      More Details
-                    </TransitionLink>
+              <div
+                key={index}
+                className="flex-shrink-0 flex justify-center"
+                ref={index === 0 ? itemRef : null}
+                style={
+                  !isMobile
+                    ? itemWidthPx !== null
+                      ? { flex: `0 0 ${itemWidthPx}px` }
+                      : { flex: `0 0 ${100 / visibleCount}%` }
+                    : { flex: '0 0 100%' }
+                }
+                aria-hidden={index < currentIndex || index >= currentIndex + visibleCount}
+              >
+                <TransitionLink href={card.detailsLink} className="w-full block perspective-[1000px] group focus:outline-none">
+                  <div
+                    className={
+                      `relative w-[300px] h-[26rem] mx-auto rounded-lg shadow-lg [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] will-change-transform`
+                    }
+                    role="button"
+                    aria-label={`${card.title} — ver detalhes`}
+                  >
+                    <div className="absolute inset-0 rounded-lg overflow-hidden [backface-visibility:hidden] bg-gray-800">
+                      <img
+                        src={card.imageSrc}
+                        alt={card.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="absolute inset-0 rounded-lg overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden] bg-gray-900 flex flex-col justify-center items-center p-6 text-center">
+                      <h3 className="text-white text-xl font-bold mb-2">{card.title}</h3>
+                      <p className="text-sm text-gray-200 mt-">{card.description}</p>
+                      <span className="mt-auto text-sm text-blue-300 underline">Ver detalhes</span>
+                    </div>
                   </div>
-                </div>
+                </TransitionLink>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {cards.map((_, idx) => (
-            <button
-              key={idx}
-              className={`
-                w-2 h-2 rounded-full
-                ${idx === currentIndex ? 'bg-white' : 'bg-gray-400'}
-                transition-opacity
-                focus:outline-none
-              `}
-              onClick={() => setCurrentIndex(idx)}
-              aria-label={`Slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-
         <button
           onClick={prevSlide}
-          className="fixed left-4 sm:left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition"
+          className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition disabled:opacity-40"
           aria-label="Previous Slide"
+          disabled={cards.length <= visibleCount}
         >
           &#10094;
         </button>
         <button
           onClick={nextSlide}
-          className="fixed right-4 sm:right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition"
+          className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition disabled:opacity-40"
           aria-label="Next Slide"
+          disabled={cards.length <= visibleCount}
         >
           &#10095;
         </button>

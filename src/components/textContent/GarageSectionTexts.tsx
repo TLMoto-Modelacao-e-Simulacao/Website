@@ -60,7 +60,7 @@ export const cards = [
   },
   {
     id: 'm04',
-    imageSrc: '/images/garage/m04.webp',
+    imageSrc: '/images/garage/04.webp',
     title: 'TLM04E',
     description: `Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue.`,
     detailsLink: '/garage/m04',

@@ -72,7 +72,7 @@ export default function MyNavbar() {
 
   return (
     <nav
-      className={`h-[14vh] left-0 top-0 z-40 w-screen fixed text-[clamp(2vh,2vw,5vh)] 
+      className={`h-[14vh] left-0 top-0 z-1000 w-screen fixed text-[clamp(2vh,2vw,5vh)] 
     transition-all ${isOpen ? "duration-0" : "duration-300"} 
     ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
       aria-label="Main Navigation"
