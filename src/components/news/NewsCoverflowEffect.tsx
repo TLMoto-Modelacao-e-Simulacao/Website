@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 
 interface Newsletter {
   name: string;
   month: number;
   link: string;
+  linkPt?: string;
   year?: string;
   fullPath?: string;
 }
@@ -20,11 +21,39 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
   const [selectedYear, setSelectedYear] = useState("2025");
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [language, setLanguage] = useState<"pt" | "en">("pt");
+  // Estados do carrossel apenas para mobile
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Years visible to user (excluding Complete Archive for now)
   const visibleYears = availableYears.filter(year => year !== "Complete Archive");
+
+  // Textos em português e inglês
+  const texts = {
+    pt: {
+      mainTitle: "A newsletter de Março está repleta das mais recentes informações, entrevistas e dicas técnicas, sendo uma leitura obrigatória para te manteres atualizado. Não percas as futuras edições e fica a conhecer todo o trabalho realizado pela nossa equipa.",
+      subscribeButton: "Subscrever a nossa Newsletter",
+      allNewsletters: "Todas as Newsletters",
+      completeArchive: "Arquivo completo organizado por ano",
+      clickToView: "Click para visualizar",
+      tapToView: "Toque para visualizar",
+      latestNewsletter: "Newsletter Mais Recente",
+      newsletter: "Newsletter",
+      closeModal: "Fechar modal"
+    },
+    en: {
+      mainTitle: "The March 2025 newsletter is packed with the latest insights, interviews, and expert tips, it's a must-read to stay ahead. Don't miss out on future editions and stay updated on all the work done by the team.",
+      subscribeButton: "Subscribe to our Newsletter",
+      allNewsletters: "All Newsletters",
+      completeArchive: "Complete archive organized by year",
+      clickToView: "Click to view",
+      tapToView: "Tap to view",
+      latestNewsletter: "Latest Newsletter",
+      newsletter: "Newsletter",
+      closeModal: "Close modal"
+    }
+  };
 
   // Estados para o modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,71 +62,83 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
 
   // Função para combinar todas as newsletters
   const combineAllNewsletters = (): Newsletter[] => {
-    const newsletterData: { [key: string]: { name: string; month: number; link: string }[] } = {
+    const newsletterData: { [key: string]: { name: string; month: number; link: string; linkPt?: string }[] } = {
       2021: [
         {
           name: "january.png",
           month: 1,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_01.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/jggt/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/mrmn/",
         },
         {
           name: "may.png",
           month: 5,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_05.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/pdtr/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/lrhz/",
         },
         {
           name: "august.png",
           month: 8,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_08.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/swnv/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/xdfz/",
         },
         {
           name: "november.png",
           month: 11,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_11.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/rfgg/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/kjkg/",
         },
       ],
       2022: [
         {
           name: "february.png",
           month: 2,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_02.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/sytw/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/ooky/",
         },
         {
           name: "may.png",
           month: 5,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_05.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/vpnh/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/ynqz/",
         },
         {
           name: "august.png",
           month: 8,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_08.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/wpko/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/gwde/",
         },
         {
           name: "november.png",
           month: 11,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_11.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/whql/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/aafy/",
         },
       ],
       2023: [
         {
           name: "march.png",
           month: 3,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_03.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/lzir/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/khio/",
         },
         {
           name: "june.png",
           month: 6,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_06.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/jjgo/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/yikm/",
         },
         {
           name: "october.png",
           month: 10,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_10.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/mctf/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/lsxd/",
         },
         {
           name: "december.png",
           month: 12,
-          link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_12.pdf",
+          link: "https://online.pubhtml5.com/rzzqg/xzpj/",
+          linkPt: "https://online.pubhtml5.com/rzzqg/puhg/",
         },
       ],
       2024: [
@@ -105,21 +146,25 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
           name: "march.png",
           month: 3,
           link: "https://online.pubhtml5.com/ffstg/javr/",
+          linkPt: "https://online.pubhtml5.com/ffstg/aqvm/",
         },
         {
           name: "june.png",
           month: 6,
           link: "https://online.pubhtml5.com/qlvfj/teux/",
+          linkPt: "https://online.pubhtml5.com/qlvfj/prrj/",
         },
         {
           name: "september.png",
           month: 9,
           link: "https://online.pubhtml5.com/qlvfj/svrs/",
+          linkPt: "https://online.pubhtml5.com/qlvfj/xaiw/",
         },
         {
           name: "december.jpg",
           month: 12,
           link: "https://online.pubhtml5.com/qlvfj/gzzc/",
+          linkPt: "https://online.pubhtml5.com/qlvfj/zffw/",
         },
       ],
       2025: [
@@ -127,6 +172,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
           name: "march.jpg",
           month: 3,
           link: "https://online.pubhtml5.com/qlvfj/ccjc/",
+          linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
         },
       ],
     };
@@ -176,9 +222,12 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
 
   // Sistema de cliques (simples, duplo, ctrl+click)
   const handleImageClick = (newsletter: Newsletter, event: React.MouseEvent) => {
+    // Determinar qual link usar baseado no idioma
+    const linkToUse = language === "pt" && newsletter.linkPt ? newsletter.linkPt : newsletter.link;
+    
     if (event.ctrlKey || event.metaKey) {
       // Ctrl+Click ou Cmd+Click - abre diretamente em nova aba
-      window.open(newsletter.link, "_blank");
+      window.open(linkToUse, "_blank");
       return;
     }
 
@@ -189,15 +238,15 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
     const timer = setTimeout(() => {
       const title =
         selectedYear === "Complete Archive"
-          ? `Newsletter ${newsletter.year} - ${getMonthName(newsletter.month)}`
-          : `Newsletter ${selectedYear}`;
+          ? `${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`
+          : `${texts[language].newsletter} ${selectedYear}`;
       openModal(newsletter.fullPath!, title);
     }, 200);
 
     // Duplo-click - cancela o timer e abre em nova aba
     const handleDoubleClick = () => {
       clearTimeout(timer);
-      window.open(newsletter.link, "_blank");
+      window.open(linkToUse, "_blank");
     };
 
     // Adiciona listener temporário para duplo-click
@@ -215,21 +264,37 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
 
   // Função auxiliar para nomes dos meses
   const getMonthName = (monthNumber: number) => {
-    const months: { [key: number]: string } = {
-      1: "JAN",
-      2: "FEB",
-      3: "MAR",
-      4: "APR",
-      5: "MAY",
-      6: "JUN",
-      7: "JUL",
-      8: "AUG",
-      9: "SEP",
-      10: "OCT",
-      11: "NOV",
-      12: "DEC",
+    const months: Record<"pt" | "en", Record<number, string>> = {
+      pt: {
+        1: "JAN",
+        2: "FEV",
+        3: "MAR",
+        4: "ABR",
+        5: "MAI",
+        6: "JUN",
+        7: "JUL",
+        8: "AGO",
+        9: "SET",
+        10: "OUT",
+        11: "NOV",
+        12: "DEZ",
+      },
+      en: {
+        1: "JAN",
+        2: "FEB",
+        3: "MAR",
+        4: "APR",
+        5: "MAY",
+        6: "JUN",
+        7: "JUL",
+        8: "AUG",
+        9: "SEP",
+        10: "OCT",
+        11: "NOV",
+        12: "DEC",
+      },
     };
-    return months[monthNumber] || "";
+    return months[language][monthNumber] || "";
   };
 
   // Função para navegar entre anos (mobile)
@@ -261,46 +326,190 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
     return () => window.removeEventListener("resize", checkMobile);
   }, [isMobile]);
 
-  // Carregar newsletters quando o ano muda
-  useEffect(() => {
-    const combinedNewsletters = combineAllNewsletters();
-    setNewsletters(combinedNewsletters);
-    setCurrentSlide(0);
-  }, [selectedYear]);
+  // Função para obter todas as newsletters (desktop) ou por ano (mobile)
+  const getAllNewslettersForDisplay = useCallback((): Newsletter[] => {
+    if (!isMobile) {
+      // Desktop: mostrar todas as newsletters organizadas por ano (mais recente → mais antiga)
+      const newsletterData: { [key: string]: { name: string; month: number; link: string; linkPt?: string }[] } = {
+        2025: [
+          {
+            name: "march.jpg",
+            month: 3,
+            link: "https://online.pubhtml5.com/qlvfj/ccjc/",
+            linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
+          },
+        ],
+        2024: [
+          {
+            name: "march.png",
+            month: 3,
+            link: "https://online.pubhtml5.com/ffstg/javr/",
+            linkPt: "https://online.pubhtml5.com/ffstg/aqvm/",
+          },
+          {
+            name: "june.png",
+            month: 6,
+            link: "https://online.pubhtml5.com/qlvfj/teux/",
+            linkPt: "https://online.pubhtml5.com/qlvfj/prrj/",
+          },
+          {
+            name: "september.png",
+            month: 9,
+            link: "https://online.pubhtml5.com/qlvfj/svrs/",
+            linkPt: "https://online.pubhtml5.com/qlvfj/xaiw/",
+          },
+          {
+            name: "december.jpg",
+            month: 12,
+            link: "https://online.pubhtml5.com/qlvfj/gzzc/",
+            linkPt: "https://online.pubhtml5.com/qlvfj/zffw/",
+          },
+        ],
+        2023: [
+          {
+            name: "march.png",
+            month: 3,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_03.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_03.pdf",
+          },
+          {
+            name: "june.png",
+            month: 6,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_06.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_06.pdf",
+          },
+          {
+            name: "october.png",
+            month: 10,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_10.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_10.pdf",
+          },
+          {
+            name: "december.png",
+            month: 12,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_12.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_12.pdf",
+          },
+        ],
+        2022: [
+          {
+            name: "february.png",
+            month: 2,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_02.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_02.pdf",
+          },
+          {
+            name: "may.png",
+            month: 5,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_05.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_05.pdf",
+          },
+          {
+            name: "august.png",
+            month: 8,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_08.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_08.pdf",
+          },
+          {
+            name: "november.png",
+            month: 11,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_11.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_11.pdf",
+          },
+        ],
+        2021: [
+          {
+            name: "january.png",
+            month: 1,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_01.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_01.pdf",
+          },
+          {
+            name: "may.png",
+            month: 5,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_05.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_05.pdf",
+          },
+          {
+            name: "august.png",
+            month: 8,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_08.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_08.pdf",
+          },
+          {
+            name: "november.png",
+            month: 11,
+            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_11.pdf",
+            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_11.pdf",
+          },
+        ],
+      };
 
-  // Navigation functions with circular carousel logic (like your example)
-  const navigateSlide = (direction: "prev" | "next") => {
-    if (isTransitioning || newsletters.length === 0) return;
+      const allNewsletters: Newsletter[] = [];
+      // Ordenar anos de mais recente para mais antigo (2025, 2024, 2023, 2022, 2021)
+      const sortedYears = Object.keys(newsletterData).sort((a, b) => parseInt(b) - parseInt(a));
+      
+      sortedYears.forEach(year => {
+        // Dentro de cada ano, ordenar por mês (mais recente primeiro)
+        const yearNewsletters = newsletterData[year]
+          .sort((a, b) => b.month - a.month)
+          .map(newsletter => ({
+            ...newsletter,
+            year: year,
+            fullPath: `/images/newsletter/${year}/${newsletter.name}`,
+            link: newsletter.link,
+            linkPt: newsletter.linkPt,
+          }));
+        allNewsletters.push(...yearNewsletters);
+      });
+
+      return allNewsletters;
+    } else {
+      // Mobile: usar a função original por ano
+      return combineAllNewsletters();
+    }
+  }, [isMobile, selectedYear]);
+
+  // Carregar newsletters quando o ano muda (mobile) ou quando o isMobile muda
+  useEffect(() => {
+    const newsletters = getAllNewslettersForDisplay();
+    setNewsletters(newsletters);
+    setCurrentSlide(0);
+  }, [selectedYear, isMobile, language, getAllNewslettersForDisplay]);
+
+  // Navigation functions for mobile carousel only
+  const navigateSlide = useCallback((direction: "prev" | "next") => {
+    if (!isMobile || isTransitioning || newsletters.length === 0) return;
 
     setIsTransitioning(true);
 
     if (direction === "prev") {
-      // Circular navigation: if at first slide, go to last
       setCurrentSlide(prev => (prev === 0 ? newsletters.length - 1 : prev - 1));
     } else {
-      // Circular navigation: if at last slide, go to first
       setCurrentSlide(prev => (prev === newsletters.length - 1 ? 0 : prev + 1));
     }
 
     setTimeout(() => setIsTransitioning(false), 500);
-  };
+  }, [isMobile, isTransitioning, newsletters.length]);
 
-  const goToSlide = (index: number) => {
-    if (isTransitioning || index === currentSlide || index < 0 || index >= newsletters.length)
+  const goToSlide = useCallback((index: number) => {
+    if (!isMobile || isTransitioning || index === currentSlide || index < 0 || index >= newsletters.length)
       return;
 
     setIsTransitioning(true);
     setCurrentSlide(index);
     setTimeout(() => setIsTransitioning(false), 500);
-  };
+  }, [isMobile, isTransitioning, currentSlide, newsletters.length]);
 
   // Reset slide when newsletters change
   useEffect(() => {
     setCurrentSlide(0);
   }, [newsletters]);
 
-  // Keyboard navigation with circular logic
+  // Keyboard navigation for mobile only
   useEffect(() => {
+    if (!isMobile) return;
+    
     const handleKeyDown = (event: KeyboardEvent) => {
       if (newsletters.length === 0) return;
 
@@ -316,10 +525,44 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [newsletters.length]); // Removed currentSlide dependency for simpler logic
+  }, [isMobile, newsletters.length, navigateSlide]);
 
   return (
     <div className="flex flex-col items-center justify-start min-h-[calc(var(--vh)*100)] text-white pt-0">
+      {/* Language Selector - Flags */}
+      <div className="absolute top-34 left-1/2 transform -translate-x-1/2 z-50 flex gap-3">
+        <button
+          onClick={() => setLanguage("pt")}
+          className={`transition-all duration-300 hover:scale-110 ${
+            language === "pt" ? "opacity-100 scale-110" : "opacity-70"
+          }`}
+          title="Português"
+        >
+          <Image
+            src="/images/newsletter/flags/flagPortugal.png"
+            alt="Português"
+            width={32}
+            height={22}
+            className="rounded-sm shadow-lg"
+          />
+        </button>
+        <button
+          onClick={() => setLanguage("en")}
+          className={`transition-all duration-300 hover:scale-110 ${
+            language === "en" ? "opacity-100 scale-110" : "opacity-70"
+          }`}
+          title="English"
+        >
+          <Image
+            src="/images/newsletter/flags/flagUK.png"
+            alt="English"
+            width={32}
+            height={22}
+            className="rounded-sm shadow-lg"
+          />
+        </button>
+      </div>
+
       {/* Modal */}
       {isModalOpen && (
         <div
@@ -334,7 +577,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
             <button
               className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white border-none rounded-full w-10 h-10 cursor-pointer flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 p-0 sm:w-9 sm:h-9"
               onClick={closeModal}
-              aria-label="Fechar modal"
+              aria-label={texts[language].closeModal}
             >
               <svg
                 width="16"
@@ -364,30 +607,9 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
         </div>
       )}
 
-      {/* Year Selection - Desktop */}
-      {!isMobile && (
-        <div className="flex justify-center items-center gap-8 mt-29 px-4 max-w-6xl mx-auto">
-          <div className="flex gap-4">
-            {visibleYears.map(year => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(year)}
-                className={`py-4 px-8 rounded-lg text-xl font-medium tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${
-                  selectedYear === year
-                    ? "bg-blue-500 text-white scale-110 font-bold"
-                    : "bg-gray-300 text-black hover:bg-gray-400"
-                }`}
-              >
-                {year}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Year Selection - Mobile */}
       {isMobile && (
-        <div className="flex items-center justify-center gap-4 mt-14 px-4">
+        <div className="flex items-center justify-center gap-4 mt-26 px-4">
           <button
             onClick={() => navigateYear("prev")}
             disabled={visibleYears.indexOf(selectedYear) === 0}
@@ -434,37 +656,39 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
         </div>
       )}
 
-      {/* Newsletter Carousel - Desktop */}
-      {!isMobile && (
-        <div className="relative w-full max-w-6xl mx-auto mt-0 px-4">
-          {/* Main Carousel Container */}
-          <div className="relative h-[480px] overflow-hidden rounded-lg">
-            {/* Carousel Track */}
-            <div
-              className="flex transition-transform duration-500 ease-in-out h-full"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {newsletters.map((newsletter, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full flex justify-center items-center px-8"
+      {/* Featured Newsletter - Desktop Only */}
+      {!isMobile && newsletters.length > 0 && (
+        <div className="relative w-full max-w-7xl mx-auto mt-55 mb-16 px-8">
+          <div className="flex items-center justify-between gap-16">
+            {/* Left Content */}
+            <div className="flex-1 max-w-2xl">
+              <h1 className="text-3xl font-bold text-white mb-8 leading-tight">
+                {texts[language].mainTitle}
+              </h1>
+              
+              {onSubscribeClick && (
+                <button
+                  onClick={onSubscribeClick}
+                  className="group border-2 border-blue-500 text-blue-500 font-semibold py-4 px-10 rounded-lg text-lg tracking-wide transition-all duration-300 hover:bg-blue-500 hover:text-white hover:shadow-xl hover:scale-105"
+                  type="button"
                 >
-                  <div
-                    className="relative w-[315px] h-[441px] overflow-hidden rounded-xl shadow-2xl group cursor-pointer transition-all duration-300 hover:scale-102 hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)] bg-gray-100"
-                    onClick={e => handleImageClick(newsletter, e)}
-                    title={
-                      selectedYear === "Complete Archive"
-                        ? `Click para visualizar • Duplo-click para abrir • Ctrl+Click para link direto`
-                        : `Click para visualizar • Duplo-click ou Ctrl+Click para abrir diretamente`
-                    }
-                  >
+                  {texts[language].subscribeButton}
+                </button>
+              )}
+              </div>
+
+              {/* Right Newsletter */}
+              <div className="flex-shrink-0">
+                <div
+                  className="relative w-[350px] h-[490px] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+                  onClick={e => handleImageClick(newsletters[0], e)}
+                  title={`${texts[language].latestNewsletter} ${newsletters[0].year} - ${getMonthName(newsletters[0].month)} • ${texts[language].clickToView} • Duplo-click para abrir • Ctrl+Click para link direto`}
+                >
+                  {/* Newsletter Image */}
+                  <div className="relative w-full h-full overflow-hidden rounded-lg shadow-2xl bg-gray-100">
                     <Image
-                      src={newsletter.fullPath!}
-                      alt={
-                        selectedYear === "Complete Archive"
-                          ? `Newsletter ${newsletter.year} - ${getMonthName(newsletter.month)}`
-                          : `Newsletter ${selectedYear}`
-                      }
+                      src={newsletters[0].fullPath!}
+                      alt={`${texts[language].latestNewsletter} ${newsletters[0].year} - ${getMonthName(newsletters[0].month)}`}
                       fill
                       className="object-contain transition-transform duration-300 group-hover:scale-110"
                       onError={e => {
@@ -472,76 +696,69 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                         target.src = "/images/newsletter/placeholder.jpg";
                       }}
                     />
-
-                    {/* Overlay effect on hover */}
+                    
+                    {/* Hover overlay */}
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-6">
                       <h3 className="text-xl font-bold mb-2 text-center">
-                        {selectedYear === "Complete Archive"
-                          ? `Newsletter ${newsletter.year}`
-                          : `Newsletter ${selectedYear}`}
+                        {getMonthName(newsletters[0].month)} {newsletters[0].year}
                       </h3>
-                      <p className="text-sm text-center mb-4">
-                        {getMonthName(newsletter.month)}
-                        {selectedYear === "Complete Archive" && ` ${newsletter.year}`}
-                      </p>
                       <div className="text-blue-300 underline cursor-pointer hover:text-blue-200">
-                        Click para visualizar
+                        {texts[language].clickToView}
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
+        </div>
+      )}
+
+      {/* Divider Line */}
+      {!isMobile && newsletters.length > 0 && (
+        <div className="w-full max-w-6xl mx-auto mb-12">
+          <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
+          <div className="text-center mt-8">
+            <h3 className="text-2xl font-bold text-white mb-2">{texts[language].allNewsletters}</h3>
+            <p className="text-gray-300">{texts[language].completeArchive}</p>
           </div>
+        </div>
+      )}
 
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => navigateSlide("prev")}
-            className="absolute left-40 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all duration-300 z-40 hover:scale-110"
-            aria-label="Previous Slide"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="15,18 9,12 15,6"></polyline>
-            </svg>
-          </button>
+      {/* Newsletter Grid - Desktop */}
+      {!isMobile && (
+        <div className="relative w-full max-w-7xl mx-auto mt-8 px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-12 place-items-center">
+            {newsletters.map((newsletter, index) => (
+              <div
+                key={index}
+                className="relative w-[280px] h-[392px] overflow-hidden rounded-xl shadow-xl group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-gray-100"
+                onClick={e => handleImageClick(newsletter, e)}
+                title={`${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)} • ${texts[language].clickToView} • Duplo-click para abrir • Ctrl+Click para link direto`}
+              >
+                <Image
+                  src={newsletter.fullPath!}
+                  alt={`${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`}
+                  fill
+                  className="object-contain transition-transform duration-300 group-hover:scale-110"
+                  onError={e => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/images/newsletter/placeholder.jpg";
+                  }}
+                />
 
-          <button
-            onClick={() => navigateSlide("next")}
-            className="absolute right-40 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-all duration-300 z-40 hover:scale-110"
-            aria-label="Next Slide"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="9,18 15,12 9,6"></polyline>
-            </svg>
-          </button>
-
-          {/* Pagination Dots */}
-          <div className="absolute mt-0 left-1/2 transform -translate-x-1/2 flex space-x-3">
-            {newsletters.map((_, idx) => (
-              <button
-                key={idx}
-                className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none ${
-                  idx === currentSlide
-                    ? "bg-white scale-125 shadow-lg"
-                    : "bg-gray-400 hover:bg-gray-300 hover:scale-110"
-                }`}
-                onClick={() => goToSlide(idx)}
-                aria-label={`Slide ${idx + 1}`}
-              />
+                {/* Overlay effect on hover */}
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-6">
+                  <h3 className="text-lg font-bold mb-2 text-center">
+                    {texts[language].newsletter} {newsletter.year}
+                  </h3>
+                  <p className="text-sm text-center mb-4">
+                    {getMonthName(newsletter.month)} {newsletter.year}
+                  </p>
+                  <div className="text-blue-300 underline cursor-pointer hover:text-blue-200 text-sm">
+                    {texts[language].clickToView}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -555,7 +772,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
             onClick={onSubscribeClick}
             type="button"
           >
-            Subscribe to our Newsletter
+            {texts[language].subscribeButton}
           </button>
         </div>
       )}
@@ -580,16 +797,16 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                     onClick={e => handleImageClick(newsletter, e)}
                     title={
                       selectedYear === "Complete Archive"
-                        ? `Toque para visualizar • Duplo-toque para abrir`
-                        : `Toque para visualizar • Duplo-toque para abrir diretamente`
+                        ? `${texts[language].tapToView} • Duplo-toque para abrir`
+                        : `${texts[language].tapToView} • Duplo-toque para abrir diretamente`
                     }
                   >
                     <Image
                       src={newsletter.fullPath!}
                       alt={
                         selectedYear === "Complete Archive"
-                          ? `Newsletter ${newsletter.year} - ${getMonthName(newsletter.month)}`
-                          : `Newsletter ${selectedYear}`
+                          ? `${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`
+                          : `${texts[language].newsletter} ${selectedYear}`
                       }
                       fill
                       className="object-contain transition-transform duration-300 group-hover:scale-110"
@@ -603,15 +820,15 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-4">
                       <h3 className="text-lg font-bold mb-2 text-center">
                         {selectedYear === "Complete Archive"
-                          ? `Newsletter ${newsletter.year}`
-                          : `Newsletter ${selectedYear}`}
+                          ? `${texts[language].newsletter} ${newsletter.year}`
+                          : `${texts[language].newsletter} ${selectedYear}`}
                       </h3>
                       <p className="text-sm text-center mb-3">
                         {getMonthName(newsletter.month)}
                         {selectedYear === "Complete Archive" && ` ${newsletter.year}`}
                       </p>
                       <div className="text-blue-300 underline cursor-pointer hover:text-blue-200 text-sm">
-                        Toque para visualizar
+                        {texts[language].tapToView}
                       </div>
                     </div>
                   </div>
@@ -623,7 +840,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
           {/* Mobile Navigation Arrows */}
           <button
             onClick={() => navigateSlide("prev")}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
+            className="absolute left-2 top-2/5 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
             aria-label="Previous Slide"
           >
             <svg
@@ -640,7 +857,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
 
           <button
             onClick={() => navigateSlide("next")}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
+            className="absolute right-2 top-2/5 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
             aria-label="Next Slide"
           >
             <svg
@@ -677,7 +894,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                 onClick={onSubscribeClick}
                 type="button"
               >
-                Subscribe to our Newsletter
+                {texts[language].subscribeButton}
               </button>
             </div>
           )}
