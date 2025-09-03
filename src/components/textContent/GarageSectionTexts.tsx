@@ -59,9 +59,9 @@ export const cards = [
         This milestone underscores the global recognition of their innovation.`,
   },
   {
-    id: "m04",
-    imageSrc: "/images/garage/04.webp",
-    title: "TLM04E",
+    id: 'm04',
+    imageSrc: '/images/garage/04.webp',
+    title: 'TLM04E',
     description: `Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue.`,
     detailsLink: "/garage/m04",
     video: "/videos/garage/details/desktop/marlboro/m04_marlboro.mp4",

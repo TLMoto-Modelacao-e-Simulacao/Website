@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { cards, backgrounds } from "src/components/textContent/GarageSectionTexts";
 import MyStatsChart from "src/components/garage/GarageStatsChart";
-import { motion } from "framer-motion";
 
 export default function GarageDetailPage() {
   const router = useRouter();
@@ -15,10 +14,10 @@ export default function GarageDetailPage() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 768); 
     };
 
-    handleResize();
+    handleResize(); 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -29,6 +28,7 @@ export default function GarageDetailPage() {
 
   const motoBackgrounds = backgrounds[card.id as keyof typeof backgrounds] ?? [card.video];
   const currentVideo = motoBackgrounds[bgIndex];
+
 
   const motoImage =
     typeof id === "string" ? `/images/garage/${id.replace("m", "").padStart(2, "0")}.webp` : "";
@@ -42,7 +42,7 @@ export default function GarageDetailPage() {
   return (
     <div className="relative h-screen w-screen overflow-hidden">
       {isMobile ? (
-        <motion.img
+        <img
           src={motoImage}
           alt={`${card.title} background`}
           className="absolute inset-0 w-full h-full object-cover z-0"
@@ -51,7 +51,7 @@ export default function GarageDetailPage() {
         <video
           key={`${card.id}-${bgIndex}`}
           src={currentVideo}
-          className="absolute inset-0 min-w-full min-h-full object-cover object-[25%_100%] z-[0]"
+          className="absolute inset-0 min-w-full min-h-full object-cover z-[-1000]"
           autoPlay
           muted
           preload="auto"
@@ -59,8 +59,8 @@ export default function GarageDetailPage() {
         />
       )}
 
-      <div className="relative z-40 w-full h-full flex flex-col justify-center items-start box-border p-2 sm:p-4 md:p-6">
-        <div className="w-full mt-[40vh] sm:max-w-md md:max-w-lg lg:max-w-xl px-2 sm:px-4 md:px-0 ml-0 sm:ml-2 md:ml-4 lg:ml-8 xl:ml-12 transform lg:-translate-x-2 min-w-0 md:mt-[30vh]">
+      <div className="relative z-40 w-full h-full flex flex-col justify-end items-start box-border p-2 sm:p-4 md:p-6">
+        <div className="w-full mb-25 sm:max-w-md md:max-w-lg lg:max-w-xl px-2 sm:px-4 md:px-0 ml-0 sm:ml-2 md:ml-4 lg:ml-8 xl:ml-12 transform lg:-translate-x-2 min-w-0 mb-4 sm:mb-6 md:mb-8 lg:mb-25">
           <MyStatsChart
             stats={card.stats}
             motoId={card.id}
@@ -78,6 +78,8 @@ export default function GarageDetailPage() {
             Theme
           </button>
         )}
+
+        
       </div>
     </div>
   );

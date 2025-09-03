@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { cards } from "src/components/textContent/GarageSectionTexts";
-import { TransitionLink } from "../utils/TransitionLink";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from 'react';
+import { cards } from 'src/components/textContent/GarageSectionTexts';
+import { TransitionLink } from '../utils/TransitionLink';
 
 export default function MyGarageCards() {
   const DESKTOP_VISIBLE = 3;
@@ -20,27 +19,27 @@ export default function MyGarageCards() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
-    const mq: MediaQueryList = window.matchMedia("(max-width: 639px)");
+    const mq: MediaQueryList = window.matchMedia('(max-width: 639px)');
 
     const handler = (e: MediaQueryListEvent | MediaQueryList) => {
-      setIsMobile((e as MediaQueryList).matches);
+      setIsMobile((e as any).matches);
     };
 
     setIsMobile(mq.matches);
 
-    if (typeof mq.addEventListener === "function") {
-      mq.addEventListener("change", handler as EventListener);
-    } else if (typeof (mq as MediaQueryList).addListener === "function") {
-      (mq as MediaQueryList).addListener(handler);
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handler as EventListener);
+    } else if (typeof (mq as any).addListener === 'function') {
+      (mq as any).addListener(handler);
     }
 
     return () => {
-      if (typeof mq.removeEventListener === "function") {
-        mq.removeEventListener("change", handler as EventListener);
-      } else if (typeof (mq as MediaQueryList).removeListener === "function") {
-        (mq as MediaQueryList).removeListener(handler);
+      if (typeof mq.removeEventListener === 'function') {
+        mq.removeEventListener('change', handler as EventListener);
+      } else if (typeof (mq as any).removeListener === 'function') {
+        (mq as any).removeListener(handler);
       }
     };
   }, []);
@@ -61,37 +60,30 @@ export default function MyGarageCards() {
     };
 
     measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
   }, []);
 
   useEffect(() => {
-    setCurrentIndex(prev => Math.min(prev, maxIndex));
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
 
   const prevSlide = () => {
     if (cards.length <= visibleCount) return;
-    setCurrentIndex(prev => (prev === 0 ? maxIndex : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const nextSlide = () => {
     if (cards.length <= visibleCount) return;
-    setCurrentIndex(prev => (prev === maxIndex ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
   };
 
   const totalGaps = Math.max(0, visibleCount - 1) * GAP_PX;
 
   const itemWidthPx =
-    containerWidth > 0 && !isMobile
-      ? Math.floor((containerWidth - totalGaps) / visibleCount)
-      : null;
+    containerWidth > 0 ? Math.floor((containerWidth - totalGaps) / visibleCount) : null;
 
-  const translatePx = (() => {
-    if (isMobile) {
-      return itemHeight !== null ? currentIndex * (itemHeight + GAP_PX) : 0;
-    }
-    return itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : 0;
-  })();
+  const translatePx = itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : 0;
 
   const stepPercent = 100 / visibleCount;
   const translatePercent = currentIndex * stepPercent;
@@ -103,21 +95,13 @@ export default function MyGarageCards() {
       </video>
 
       <div className="relative w-full max-w-6xl p-6">
-        <div
-          ref={containerRef}
-          className="overflow-hidden h-[26rem] sm:h-auto"
-          aria-roledescription="carousel container"
-        >
+        <div ref={containerRef} className="overflow-hidden h-[26rem] sm:h-auto" aria-roledescription="carousel container">
           <div
-            className={`flex gap-4 flex-col sm:flex-row transition-transform duration-500 ease-in-out`}
+            className={`flex gap-4 flex-row transition-transform duration-500 ease-in-out`}
             style={
-              itemWidthPx !== null || itemHeight !== null
-                ? isMobile
-                  ? { transform: `translateY(-${translatePx}px)` }
-                  : { transform: `translateX(-${translatePx}px)` }
-                : isMobile
-                  ? { transform: `translateY(-${translatePercent}%)` }
-                  : { transform: `translateX(-${translatePercent}%)` }
+              itemWidthPx !== null
+                ? { transform: `translateX(-${translatePx}px)` }
+                : { transform: `translateX(-${translatePercent}%)` }
             }
           >
             {cards.map((card, index) => (
@@ -126,25 +110,24 @@ export default function MyGarageCards() {
                 className="flex-shrink-0 flex justify-center"
                 ref={index === 0 ? itemRef : null}
                 style={
-                  !isMobile
-                    ? itemWidthPx !== null
-                      ? { flex: `0 0 ${itemWidthPx}px` }
-                      : { flex: `0 0 ${100 / visibleCount}%` }
-                    : { flex: "0 0 100%" }
+                  itemWidthPx !== null
+                    ? { flex: `0 0 ${itemWidthPx}px` }
+                    : !isMobile
+                    ? { flex: `0 0 ${100 / visibleCount}%` }
+                    : { flex: '0 0 100%' }
                 }
                 aria-hidden={index < currentIndex || index >= currentIndex + visibleCount}
               >
-                <TransitionLink
-                  href={card.detailsLink}
-                  className="w-full block perspective-[1000px] group focus:outline-none"
-                >
+                <TransitionLink href={card.detailsLink} className="w-full block perspective-[1000px] group focus:outline-none">
                   <div
-                    className={`relative w-[300px] h-[26rem] mx-auto rounded-lg shadow-lg [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] will-change-transform`}
+                    className={
+                      `relative w-[300px] h-[26rem] mx-auto rounded-lg shadow-lg [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] will-change-transform`
+                    }
                     role="button"
                     aria-label={`${card.title} — ver detalhes`}
                   >
                     <div className="absolute inset-0 rounded-lg overflow-hidden [backface-visibility:hidden] bg-gray-800">
-                      <motion.img
+                      <img
                         src={card.imageSrc}
                         alt={card.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
