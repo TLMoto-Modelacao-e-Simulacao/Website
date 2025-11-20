@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { withBasePath } from "@/src/utils/basePath";
 
 const TEAM_DIR = path.join(process.cwd(), "public/images/team");
 const TEAM_DATA_DIR = path.join(process.cwd(), "src/components/textContent/team");
@@ -28,7 +29,9 @@ export function getTeamMembersWithLinkedIn(year: string) {
 
   let teampic = "";
   if (pathpics.length > 0)
-    teampic = `/images/team/${year}/${encodeURIComponent(pathpics[0].normalize("NFC"))}`;
+    teampic = withBasePath(
+      `/images/team/${year}/${encodeURIComponent(pathpics[0].normalize("NFC"))}`
+    );
 
   let teamData: Record<
     string,
@@ -52,8 +55,12 @@ export function getTeamMembersWithLinkedIn(year: string) {
         .filter((member: { image: string }) => member.image && member.image !== "")
         .map(member => ({
           name: member.name,
-          image: `/images/team/${year}/${encodeURIComponent(category.normalize("NFC"))}/${encodeURIComponent(member.image)}`,
-          cardImage: `/images/team/${year}/${encodeURIComponent(category.normalize("NFC"))}/${encodeURIComponent(member.cardImage)}`,
+          image: withBasePath(
+            `/images/team/${year}/${encodeURIComponent(category.normalize("NFC"))}/${encodeURIComponent(member.image)}`
+          ),
+          cardImage: withBasePath(
+            `/images/team/${year}/${encodeURIComponent(category.normalize("NFC"))}/${encodeURIComponent(member.cardImage)}`
+          ),
           linkedin: member.linkedin || null,
         }));
 
@@ -80,5 +87,6 @@ export function getImages(folderPath: string): string[] {
   return fs
     .readdirSync(absPath, { encoding: "utf8" })
     .filter(file => /\.webp$/i.test(file))
-    .map(file => path.posix.join("/", folderPath, file)); // URL-friendly path
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
+    .map(file => withBasePath(path.posix.join("/", folderPath, file))); // URL-friendly path
 }

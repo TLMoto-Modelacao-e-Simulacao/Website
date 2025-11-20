@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { cards } from "src/components/textContent/GarageSectionTexts";
 import { TransitionLink } from "../utils/TransitionLink";
 import { motion } from "framer-motion";
+import { withBasePath } from "@/src/utils/basePath";
 
 export default function MyGarageCards() {
   const DESKTOP_VISIBLE = 3;
@@ -85,7 +86,7 @@ export default function MyGarageCards() {
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
       <video autoPlay muted className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
-        <source src="/videos/garage/garage_menu.mp4" type="video/mp4" />
+        <source src={withBasePath("/videos/garage/garage_menu.mp4")} type="video/mp4" />
       </video>
 
       <div className="relative w-full max-w-6xl p-6">

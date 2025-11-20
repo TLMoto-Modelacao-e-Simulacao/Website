@@ -1,14 +1,17 @@
-import { useRouter } from "next/router";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { useState, useEffect } from "react";
 import { cards, backgrounds } from "src/components/textContent/GarageSectionTexts";
 import MyStatsChart from "src/components/garage/GarageStatsChart";
 import { motion } from "framer-motion";
+import { withBasePath } from "@/src/utils/basePath";
 
-export default function GarageDetailPage() {
-  const router = useRouter();
-  const { id } = router.query;
+type Card = (typeof cards)[number];
 
-  const card = cards.find(card => card.id === id);
+type GarageDetailPageProps = {
+  card: Card;
+};
+
+export default function GarageDetailPage({ card }: GarageDetailPageProps) {
   const [showHistory] = useState(false);
   const [bgIndex, setBgIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -23,15 +26,12 @@ export default function GarageDetailPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!card) {
-    return <p className="text-white text-center text-xl">Card not found</p>;
-  }
-
   const motoBackgrounds = backgrounds[card.id as keyof typeof backgrounds] ?? [card.video];
   const currentVideo = motoBackgrounds[bgIndex];
 
-  const motoImage =
-    typeof id === "string" ? `/images/garage/${id.replace("m", "").padStart(2, "0")}.webp` : "";
+  const motoImage = withBasePath(
+    `/images/garage/${card.id.replace("m", "").padStart(2, "0")}.webp`
+  );
 
   const toggleBackground = () => {
     if (motoBackgrounds.length > 1) {
@@ -82,3 +82,29 @@ export default function GarageDetailPage() {
     </div>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: cards.map(card => ({ params: { id: card.id } })),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<{ card: Card }> = async ({ params }) => {
+  const idParam = params?.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam;
+
+  const card = id ? cards.find(cardItem => cardItem.id === id) : undefined;
+
+  if (!card) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      card,
+    },
+  };
+};

@@ -8,6 +8,7 @@ import {
 } from "../../components/utils/FetchFolderImages";
 import MyDefaultPage from "../../components/DefaultPage";
 import { motion } from "framer-motion";
+import { resolveInternalHref } from "../../utils/useInternalHref";
 
 export async function getStaticProps({ params }: { params: { year: string } }) {
   const { year } = params;
@@ -64,7 +65,14 @@ export default function Team({ teamData, year }: TeamProps) {
 
     if (newIndex >= 0 && newIndex < AVAILABLE_YEARS.length) {
       const newYear = AVAILABLE_YEARS[newIndex];
-      return router.push(`/team/${newYear}`);
+      const { href, isFileProtocol } = resolveInternalHref(`/team/${newYear}`);
+
+      if (isFileProtocol) {
+        window.location.href = href;
+        return;
+      }
+
+      router.push(href);
     }
   };
 

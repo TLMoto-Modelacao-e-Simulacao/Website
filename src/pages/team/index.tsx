@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getAvailableYears } from "../../components/utils/FetchFolderImages";
+import { resolveInternalHref } from "../../utils/useInternalHref";
 
 export async function getStaticProps() {
   const years = await getAvailableYears();
@@ -18,7 +19,13 @@ export default function TeamIndex({ years }: TeamIndexProps) {
 
   useEffect(() => {
     if (years.length > 0) {
-      router.replace(`/team/${years[0]}`);
+      const { href, isFileProtocol } = resolveInternalHref(`/team/${years[0]}`);
+
+      if (isFileProtocol) {
+        window.location.href = href;
+      } else {
+        router.replace(href);
+      }
     }
   }, [years, router]);
 

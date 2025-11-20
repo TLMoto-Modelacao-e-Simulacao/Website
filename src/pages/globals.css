@@ -135,20 +135,17 @@ body {
 }
 
 @layer base {
-  /* Development Feature: To see every element's border and outline, comment everything else*/
-  /** {
-   
-    @apply border border-solid border-border outline-ring/50;
-   } */
-  * {
-    @apply border-border outline-ring/50;
-  }
+  /*
+    Development Feature: To see every element's border and outline, uncomment the block below.
+    * {
+      @apply border-border outline-ring/50;
+    }
+  */
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Newsletter Modal Animation */
 @keyframes modalAppear {
   from {
     opacity: 0;

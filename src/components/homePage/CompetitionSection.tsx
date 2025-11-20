@@ -4,6 +4,7 @@ import { Trophy, MapPin, Calendar, Users, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { TransitionLink } from "../utils/TransitionLink";
+import { withBasePath } from "@/src/utils/basePath";
 
 const containerVariants = {
   hidden: {},
@@ -51,6 +52,9 @@ const CompetitionsSection = () => {
     },
   ];
 
+  const backgroundRelative = "/images/home/aragon_background.webp";
+  const backgroundSrc = withBasePath(backgroundRelative);
+
   return (
     <motion.section
       id="section3"
@@ -58,7 +62,7 @@ const CompetitionsSection = () => {
       whileInView="visible"
       viewport={{ once: false, amount: 0.3 }}
       className={`bg-no-repeat bg-cover bg-center ${sectionStyle}`}
-      style={{ backgroundImage: `url(/images/home/aragon_background.webp)` }}
+      style={{ backgroundImage: `url('${backgroundSrc}')` }}
     >
       <div className="absolute inset-0 bg-black/40 pointer-events-none z-0" />
       <div
@@ -103,7 +107,7 @@ const CompetitionsSection = () => {
           <div className="animate-slide-in-left">
             <div className="relative rounded-2xl overflow-hidden group">
               <Image
-                src="/images/home/aragon_background.webp"
+                src={backgroundRelative}
                 width={600}
                 height={500}
                 alt="Racing Competition"

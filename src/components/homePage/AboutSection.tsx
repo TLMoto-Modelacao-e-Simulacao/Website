@@ -9,6 +9,7 @@ import {
   useMotionValueEvent,
   animate,
 } from "framer-motion";
+import { withBasePath } from "@/src/utils/basePath";
 
 const containerVariants = {
   hidden: {},
@@ -64,6 +65,9 @@ const AboutSection: React.FC = () => {
     { icon: <Lightbulb />, title: "Prototypes", to: 4, suffix: "+", delay: 0.4 },
   ] as const;
 
+  const backgroundRelative = "/images/home/team_background.webp";
+  const backgroundSrc = withBasePath(backgroundRelative);
+
   return (
     <motion.section
       id="section2"
@@ -73,13 +77,13 @@ const AboutSection: React.FC = () => {
       className={`bg-no-repeat bg-cover bg-center ${sectionStyle}`}
     >
       <div
-        className="
+        className={`
           absolute inset-0
-          bg-[url(/images/home/team_background.webp)]
           bg-cover bg-center
           filter
           -z-10
-        "
+        `}
+        style={{ backgroundImage: `url('${backgroundSrc}')` }}
       />
       <div className="absolute inset-0 bg-black/60 pointer-events-none z-0" />
 

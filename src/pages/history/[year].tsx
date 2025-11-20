@@ -1,24 +1,23 @@
 import { getImages } from "../../components/utils/FetchFolderImages";
 import MyDefaultPage from "../../components/DefaultPage";
 import { timelineData, TimelineDataItem } from "@/src/components/textContent/TimelineSectionTexts";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { resolveInternalHref } from "../../utils/useInternalHref";
 import TiltedCard from "@/src/components/extras/TiltedCard";
 import { motion, AnimatePresence } from "framer-motion";
+
+type TimelineEventWithImages = TimelineDataItem & { images: string[] };
 
 export async function getStaticProps({ params }: { params: { year: string } }) {
   const { year } = params;
 
-  const events = timelineData[year] || [];
-  const yearData = events.reduce(
-    (acc, event) => {
-      acc[event.imageFolder] = getImages(event.imageFolder);
-      return acc;
-    },
-    {} as Record<string, string[]>
-  );
+  const events: TimelineEventWithImages[] = (timelineData[year] || []).map(event => ({
+    ...event,
+    images: getImages(event.imageFolder),
+  }));
 
-  return { props: { yearData, selectedYear: year } };
+  return { props: { events, selectedYear: year } };
 }
 
 export async function getStaticPaths() {
@@ -34,214 +33,233 @@ export async function getStaticPaths() {
 }
 
 export default function History({
-  yearData,
+  events,
   selectedYear,
 }: {
-  yearData: { [key: string]: string[] };
+  events: TimelineEventWithImages[];
   selectedYear: string;
 }) {
-  // inside History component
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const router = useRouter();
-  const years = Object.keys(timelineData).map(String);
+  const safeEvents = Array.isArray(events) ? events : [];
+  const years = useMemo(() => {
+    const uniqueYears = new Set<string>(Object.keys(timelineData).map(String));
+    uniqueYears.add(selectedYear);
+
+    return Array.from(uniqueYears).sort((a, b) => Number(a) - Number(b));
+  }, [selectedYear]);
+  const selectedIndex = useMemo(() => {
+    const index = years.indexOf(selectedYear);
+
+    if (index !== -1) {
+      return index;
+    }
+
+    return years.length > 0 ? years.length - 1 : -1;
+  }, [years, selectedYear]);
+  const previousYear = selectedIndex > 0 ? years[selectedIndex - 1] : undefined;
+  const nextYear =
+    selectedIndex !== -1 && selectedIndex < years.length - 1 ? years[selectedIndex + 1] : undefined;
 
   const timelineRef = useRef<HTMLDivElement | null>(null);
+
+  const navigateToYear = (year?: string) => {
+    if (!year) {
+      return;
+    }
+
+    const { href, isFileProtocol } = resolveInternalHref(`/history/${year}`);
+
+    if (isFileProtocol) {
+      window.location.href = href;
+      return;
+    }
+
+    router.push(href);
+  };
   return (
     <MyDefaultPage>
       <div className="flex flex-col mb-[5%]">
         {/* Timeline Years */}
         <div
           ref={timelineRef}
-          className="hidden md:flex items-center mt-[10%] relative w-2/3 mx-auto
-    "
+          className="hidden md:flex items-center mt-[10%] relative w-2/3 mx-auto"
         >
           {/* Horizontal line on top */}
           <div className="absolute top-0 left-0 w-full h-[0.5vh] bg-sky-400 z-50" />
 
-          {(() => {
-            const idx = years.indexOf(selectedYear);
-
-            return (
-              <div className="grid grid-cols-11 items-start w-full">
-                {/* Prev year (col 1) */}
-                <div className="flex justify-center">
-                  <motion.button
-                    className="flex flex-col items-center group cursor-pointer"
-                    onClick={() => idx > 0 && router.push(`/history/${years[idx - 1]}`)}
-                  >
-                    {idx > 0 ? (
-                      <>
-                        <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
-                        <motion.div
-                          className="mt-2 text-xl font-bold tracking-wide text-white opacity-60 
+          {years.length > 0 && (
+            <div className="grid grid-cols-11 items-start w-full">
+              {/* Prev year (col 1) */}
+              <div className="flex justify-center">
+                <motion.button
+                  className="flex flex-col items-center group cursor-pointer"
+                  onClick={() => navigateToYear(previousYear)}
+                >
+                  {previousYear ? (
+                    <>
+                      <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <motion.div
+                        className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
               group-hover:text-sky-400 group-hover:opacity-100 transition-all"
-                        >
-                          {years[idx - 1]}
-                        </motion.div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
-                        <span className="mt-2 text-xl font-bold opacity-0">-</span>
-                      </>
-                    )}
-                  </motion.button>
-                </div>
-
-                {/* Ticks col 2 */}
-                <div className="flex justify-center">
-                  {idx > 0 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
+                      >
+                        {previousYear}
+                      </motion.div>
+                    </>
                   ) : (
-                    <div className="h-20" /> // placeholder
+                    <>
+                      <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
+                      <span className="mt-2 text-xl font-bold opacity-0">-</span>
+                    </>
                   )}
-                </div>
-
-                {/* Ticks col 3 */}
-                <div className="flex justify-center">
-                  {idx > 0 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" />
-                  )}
-                </div>
-
-                {/* Ticks col 4 */}
-                <div className="flex justify-center">
-                  {idx > 0 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" /> // placeholder
-                  )}
-                </div>
-
-                {/* Ticks col 5 */}
-                <div className="flex justify-center">
-                  {idx > 0 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" /> // placeholder
-                  )}
-                </div>
-
-                {/* Current year (col 6) */}
-                <div className="flex justify-center">
-                  <motion.div className="flex flex-col items-center">
-                    <div className="w-[0.5vh] h-[10vh] bg-sky-400" />
-                    <motion.div className="mt-2 text-xl font-bold tracking-wide text-sky-400 scale-125">
-                      {years[idx]}
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                {/* Ticks col 7 */}
-                <div className="flex justify-center">
-                  {idx < years.length - 1 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" />
-                  )}
-                </div>
-
-                {/* Ticks col 8 */}
-                <div className="flex justify-center">
-                  {idx < years.length - 1 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" />
-                  )}
-                </div>
-
-                {/* Ticks col 9 */}
-                <div className="flex justify-center">
-                  {idx < years.length - 1 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" />
-                  )}
-                </div>
-
-                {/* Ticks col 10 */}
-                <div className="flex justify-center">
-                  {idx < years.length - 1 ? (
-                    <div className="flex flex-col items-center gap-y-2">
-                      <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                    </div>
-                  ) : (
-                    <div className="h-20" />
-                  )}
-                </div>
-
-                {/* Next year (col 11) */}
-                <div className="flex justify-center">
-                  <motion.button
-                    className="flex flex-col items-center group cursor-pointer"
-                    onClick={() =>
-                      idx < years.length - 1 && router.push(`/history/${years[idx + 1]}`)
-                    }
-                  >
-                    {idx < years.length - 1 ? (
-                      <>
-                        <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
-                        <motion.div
-                          className="mt-2 text-xl font-bold tracking-wide text-white opacity-60 
-              group-hover:text-sky-400 group-hover:opacity-100 transition-all"
-                        >
-                          {years[idx + 1]}
-                        </motion.div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
-                        <span className="mt-2 text-xl font-bold opacity-0">-</span>
-                      </>
-                    )}
-                  </motion.button>
-                </div>
+                </motion.button>
               </div>
-            );
-          })()}
+
+              {/* Ticks col 2 */}
+              <div className="flex justify-center">
+                {previousYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Ticks col 3 */}
+              <div className="flex justify-center">
+                {previousYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 4 */}
+              <div className="flex justify-center">
+                {previousYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Ticks col 5 */}
+              <div className="flex justify-center">
+                {previousYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Current year (col 6) */}
+              <div className="flex justify-center">
+                <motion.div className="flex flex-col items-center">
+                  <div className="w-[0.5vh] h-[10vh] bg-sky-400" />
+                  <motion.div className="mt-2 text-xl font-bold tracking-wide text-sky-400 scale-125">
+                    {selectedIndex !== -1 ? years[selectedIndex] : selectedYear}
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              {/* Ticks col 7 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 8 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 9 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 10 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Next year (col 11) */}
+              <div className="flex justify-center">
+                <motion.button
+                  className="flex flex-col items-center group cursor-pointer"
+                  onClick={() => navigateToYear(nextYear)}
+                >
+                  {nextYear ? (
+                    <>
+                      <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <motion.div
+                        className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
+              group-hover:text-sky-400 group-hover:opacity-100 transition-all"
+                      >
+                        {nextYear}
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
+                      <span className="mt-2 text-xl font-bold opacity-0">-</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Timeline Years - Mobile */}
         <div className="flex items-center text-white text-5xl justify-center gap-4 my-4 mt-35 md:hidden">
           {/* Previous Year */}
           <button
-            onClick={() => {
-              const idx = years.indexOf(selectedYear);
-              if (idx > 0) router.push(`/history/${years[idx - 1]}`);
-            }}
-            disabled={selectedYear === years[0]}
+            onClick={() => navigateToYear(previousYear)}
+            disabled={!previousYear}
             className="disabled:opacity-40"
           >
             &lt;
           </button>
 
           <div className="relative">
-            <text>{selectedYear}</text>
+            <text>{selectedIndex !== -1 ? years[selectedIndex] : selectedYear}</text>
           </div>
 
           {/* Next Year */}
           <button
-            onClick={() => {
-              const idx = years.indexOf(selectedYear);
-              if (idx < years.length - 1) router.push(`/history/${years[idx + 1]}`);
-            }}
-            disabled={selectedYear === years[years.length - 1]}
+            onClick={() => navigateToYear(nextYear)}
+            disabled={!nextYear}
             className="disabled:opacity-40"
           >
             &gt;
@@ -255,31 +273,35 @@ export default function History({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {timelineData[selectedYear].map((item: TimelineDataItem) => (
-            <div key={item.title} className="mt-[2.5vh] mb-[2.5vh] lg:mb-[0vh] xl:mb-[10vh]">
-              <h3 className="text-4xl font-bold mb-[0.125vh]">{item.title}</h3>
-              <p className="text-xl mb-[2vh]">{item.description}</p>
-              <div className="grid grid-cols-2 gap-y-[1.5vh] justify-items-center md:grid-cols-3 lg:gap-x-[1.5vw] lg:gap-y-[1.5vh] lg:grid-cols-4 xl:gap-x-[2vw] xl:gap-y-[2vh]">
-                {yearData[item.imageFolder].map((element: string) => (
-                  <div key={element} onClick={() => setFullscreenImage(element)}>
-                    <TiltedCard
-                      imageSrc={element}
-                      containerHeight="clamp(125px, 35vw, 200px)"
-                      containerWidth="clamp(125px, 35vw, 200px)"
-                      imageHeight="clamp(125px, 35vw, 200px)"
-                      imageWidth="clamp(125px, 35vw, 200px)"
-                      rotateAmplitude={12}
-                      scaleOnHover={1.5}
-                      showMobileWarning={false}
-                      showTooltip={false}
-                      displayOverlayContent={true}
-                      overlayContent=""
-                    />
-                  </div>
-                ))}
+          {safeEvents.map(item => {
+            const galleryImages = Array.isArray(item.images) ? item.images : [];
+
+            return (
+              <div key={item.title} className="mt-[2.5vh] mb-[2.5vh] lg:mb-[0vh] xl:mb-[10vh]">
+                <h3 className="text-4xl font-bold mb-[0.125vh]">{item.title}</h3>
+                <p className="text-xl mb-[2vh]">{item.description}</p>
+                <div className="grid grid-cols-2 gap-y-[1.5vh] justify-items-center md:grid-cols-3 lg:gap-x-[1.5vw] lg:gap-y-[1.5vh] lg:grid-cols-4 xl:gap-x-[2vw] xl:gap-y-[2vh]">
+                  {galleryImages.map(element => (
+                    <div key={element} onClick={() => setFullscreenImage(element)}>
+                      <TiltedCard
+                        imageSrc={element}
+                        containerHeight="clamp(125px, 35vw, 200px)"
+                        containerWidth="clamp(125px, 35vw, 200px)"
+                        imageHeight="clamp(125px, 35vw, 200px)"
+                        imageWidth="clamp(125px, 35vw, 200px)"
+                        rotateAmplitude={12}
+                        scaleOnHover={1.5}
+                        showMobileWarning={false}
+                        showTooltip={false}
+                        displayOverlayContent={true}
+                        overlayContent=""
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
         <AnimatePresence>
           {fullscreenImage && (

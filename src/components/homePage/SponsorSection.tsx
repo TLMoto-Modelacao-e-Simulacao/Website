@@ -1,11 +1,15 @@
 import React from "react";
 import InfiniteLogoCarousel from "./InfiniteLogoCarousel";
+import { withBasePath } from "@/src/utils/basePath";
 
 const SponsorsCarousel: React.FC = () => {
+  const backgroundRelative = "/images/home/aragon_background.webp";
+  const backgroundSrc = withBasePath(backgroundRelative);
+
   return (
     <section
       className="py-20 relative overflow-hidden bg-no-repeat bg-cover bg-center"
-      style={{ backgroundImage: "url(/images/home/aragon_background.webp)" }}
+      style={{ backgroundImage: `url('${backgroundSrc}')` }}
     >
       <div className="absolute inset-0 bg-black/40 pointer-events-none z-0" />
       <div

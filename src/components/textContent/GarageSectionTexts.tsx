@@ -1,4 +1,6 @@
-export const cards = [
+import { withBasePath } from "@/src/utils/basePath";
+
+const cardData = [
   {
     id: "m01",
     imageSrc: "/images/garage/01.webp",
@@ -79,7 +81,13 @@ export const cards = [
   },
 ];
 
-export const backgrounds = {
+export const cards = cardData.map(card => ({
+  ...card,
+  imageSrc: withBasePath(card.imageSrc),
+  video: withBasePath(card.video),
+}));
+
+const backgroundData = {
   m01: ["/videos/garage/details/desktop/m01.mp4"],
   m02: ["/videos/garage/details/desktop/sun/m02_sun.mp4"],
   m03: [
@@ -92,7 +100,11 @@ export const backgrounds = {
     "/videos/garage/details/desktop/gulf/m04_gulf.mp4",
     "/videos/garage/details/desktop/bordeaux/m04_bordeaux.mp4",
   ],
-};
+} as const;
+
+export const backgrounds = Object.fromEntries(
+  Object.entries(backgroundData).map(([key, values]) => [key, values.map(withBasePath)])
+) as Record<keyof typeof backgroundData, string[]>;
 
 export const themeColors = {
   m01: "0,82,212", // azul

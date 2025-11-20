@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { withBasePath } from "@/src/utils/basePath";
+
+const PLACEHOLDER_IMAGE = withBasePath("/images/newsletter/placeholder.jpg");
+
+function buildNewsletterImagePath(year: string, name: string) {
+  return withBasePath(`/images/newsletter/${year}/${name}`);
+}
 
 interface Newsletter {
   name: string;
@@ -309,7 +316,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
             allNewsletters.push({
               ...newsletter,
               year: year,
-              fullPath: `/images/newsletter/${year}/${newsletter.name}`,
+              fullPath: buildNewsletterImagePath(year, newsletter.name),
               link: newsletter.link, // Usar o link específico de cada newsletter
             });
           });
@@ -326,7 +333,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
         return (newsletterData[selectedYear] || []).map(newsletter => ({
           ...newsletter,
           year: selectedYear,
-          fullPath: `/images/newsletter/${selectedYear}/${newsletter.name}`,
+          fullPath: buildNewsletterImagePath(selectedYear, newsletter.name),
           link: newsletter.link, // Usar o link específico de cada newsletter
         }));
       }
@@ -461,7 +468,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
           .map(newsletter => ({
             ...newsletter,
             year: year,
-            fullPath: `/images/newsletter/${year}/${newsletter.name}`,
+            fullPath: buildNewsletterImagePath(year, newsletter.name),
             link: newsletter.link,
             linkPt: newsletter.linkPt,
           }));
@@ -710,7 +717,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                     className="object-contain transition-transform duration-300 group-hover:scale-110"
                     onError={e => {
                       const target = e.target as HTMLImageElement;
-                      target.src = "/images/newsletter/placeholder.jpg";
+                      target.src = PLACEHOLDER_IMAGE;
                     }}
                   />
 
@@ -759,7 +766,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                   className="object-contain transition-transform duration-300 group-hover:scale-110"
                   onError={e => {
                     const target = e.target as HTMLImageElement;
-                    target.src = "/images/newsletter/placeholder.jpg";
+                    target.src = PLACEHOLDER_IMAGE;
                   }}
                 />
 
@@ -829,7 +836,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
                       className="object-contain transition-transform duration-300 group-hover:scale-110"
                       onError={e => {
                         const target = e.target as HTMLImageElement;
-                        target.src = "/images/newsletter/placeholder.jpg";
+                        target.src = PLACEHOLDER_IMAGE;
                       }}
                     />
 

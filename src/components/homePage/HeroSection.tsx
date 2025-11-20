@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { withBasePath } from "@/src/utils/basePath";
 
 const HeroSection = () => {
   const [showVideo, setShowVideo] = useState(false);
@@ -25,6 +26,11 @@ const HeroSection = () => {
     }
   };
 
+  const posterRelative = "/images/home/moto_blue_black_background.webp";
+  const videoRelative = "/videos/intro_video_background.mp4";
+  const posterSrc = withBasePath(posterRelative);
+  const videoSrc = withBasePath(videoRelative);
+
   return (
     <motion.section
       id="section1"
@@ -41,14 +47,14 @@ const HeroSection = () => {
           autoPlay
           playsInline
           disablePictureInPicture
-          poster="/images/home/moto_blue_black_background.webp"
+          poster={posterSrc}
         >
-          <source src="/videos/intro_video_background.mp4" type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       ) : (
         <div className="hidden xl:block absolute inset-0 w-full h-full z-0">
           <Image
-            src="/images/home/moto_blue_black_background.webp"
+            src={posterRelative}
             alt="TLMoto background"
             fill
             style={{ objectFit: "cover" }}
@@ -60,7 +66,7 @@ const HeroSection = () => {
       )}
       <div
         className="block xl:hidden absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center z-0"
-        style={{ backgroundImage: "url(/images/home/moto_blue_black_background.webp)" }}
+        style={{ backgroundImage: `url('${posterSrc}')` }}
       />
       {/* Main content */}
       <button
