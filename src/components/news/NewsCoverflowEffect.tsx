@@ -40,7 +40,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
   const texts = {
     pt: {
       mainTitle:
-        "A newsletter de Março está repleta das mais recentes informações, entrevistas e dicas técnicas, sendo uma leitura obrigatória para te manteres atualizado. Não percas as futuras edições e fica a conhecer todo o trabalho realizado pela nossa equipa.",
+        "A newsletter de Setembro está repleta das mais recentes informações, entrevistas e dicas técnicas, sendo uma leitura obrigatória para te manteres atualizado. Não percas as futuras edições e fica a conhecer todo o trabalho realizado pela nossa equipa.",
       subscribeButton: "Subscreve a nossa Newsletter",
       allNewsletters: "Todas as Newsletters",
       completeArchive: "Arquivo completo organizado por ano",
@@ -52,7 +52,7 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
     },
     en: {
       mainTitle:
-        "The March 2025 newsletter is packed with the latest insights, interviews, and expert tips, it's a must-read to stay ahead. Don't miss out on future editions and stay updated on all the work done by the team.",
+        "The Semptember newsletter is packed with the latest insights, interviews, and expert tips, it's a must-read to stay ahead. Don't miss out on future editions and stay updated on all the work done by the team.",
       subscribeButton: "Subscribe to our Newsletter",
       allNewsletters: "All Newsletters",
       completeArchive: "Complete archive organized by year",
@@ -306,6 +306,18 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
             link: "https://online.pubhtml5.com/qlvfj/ccjc/",
             linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
           },
+          {
+            name: "june.jpg",
+            month: 6,
+            link: "https://pubhtml5.com/ssrma/hdmv/",
+            linkPt: "https://pubhtml5.com/ssrma/sxzj/",
+          },
+          {
+            name: "september.jpg",
+            month: 9,
+            link: "https://pubhtml5.com/ofgde/vknm/",
+            linkPt: "https://pubhtml5.com/ofgde/lumw/",
+          },
         ],
       };
 
@@ -349,6 +361,18 @@ export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverf
             month: 3,
             link: "https://online.pubhtml5.com/qlvfj/ccjc/",
             linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
+          },
+          {
+            name: "june.jpg",
+            month: 6,
+            link: "https://pubhtml5.com/ssrma/hdmv/",
+            linkPt: "https://pubhtml5.com/ssrma/sxzj/",
+          },
+          {
+            name: "september.jpg",
+            month: 9,
+            link: "https://pubhtml5.com/ofgde/vknm/",
+            linkPt: "https://pubhtml5.com/ofgde/lumw/",
           },
         ],
         2024: [
