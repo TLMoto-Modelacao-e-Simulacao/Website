@@ -1,953 +1,271 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { withBasePath } from "@/src/utils/basePath";
 
 const PLACEHOLDER_IMAGE = withBasePath("/images/newsletter/placeholder.jpg");
 
-function buildNewsletterImagePath(year: string, name: string) {
-  return withBasePath(`/images/newsletter/${year}/${name}`);
-}
+// Helper para construir caminhos
+const buildPath = (year: string, name: string) => withBasePath(`/images/newsletter/${year}/${name}`);
 
-interface Newsletter {
+// Tipos
+interface NewsletterItem {
   name: string;
+  namePt?: string;
   month: number;
   link: string;
   linkPt?: string;
-  year?: string;
-  fullPath?: string;
 }
 
-interface MyNewsCoverflowEffectProps {
-  onSubscribeClick?: (e: React.MouseEvent) => void;
+interface Newsletter extends NewsletterItem {
+  year: string;
+  fullPath: string;
 }
 
-const availableYears = ["Complete Archive", "2021", "2022", "2023", "2024", "2025"];
+const NEWSLETTER_DATA: Record<string, NewsletterItem[]> = {
+  "2025": [
+    { name: "march.jpg", namePt: "marco25.jpg", month: 3, link: "https://online.pubhtml5.com/qlvfj/ccjc/", linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/" },
+    { name: "june.jpg", namePt: "junho25.jpg", month: 6, link: "https://pubhtml5.com/ssrma/hdmv/", linkPt: "https://pubhtml5.com/ssrma/sxzj/" },
+    { name: "september.jpg", namePt: "setembro25.png", month: 9, link: "https://pubhtml5.com/ofgde/vknm/", linkPt: "https://pubhtml5.com/ofgde/lumw/" },
+  ],
+  "2024": [
+    { name: "march.png", namePt: "marco24.jpg", month: 3, link: "https://online.pubhtml5.com/ffstg/javr/", linkPt: "https://online.pubhtml5.com/ffstg/aqvm/" },
+    { name: "june.png", namePt: "junho24.png", month: 6, link: "https://online.pubhtml5.com/qlvfj/teux/", linkPt: "https://online.pubhtml5.com/qlvfj/prrj/" },
+    { name: "september.png", namePt: "setembro24.png", month: 9, link: "https://online.pubhtml5.com/qlvfj/svrs/", linkPt: "https://online.pubhtml5.com/qlvfj/xaiw/" },
+    { name: "december.jpg", namePt: "dezembro24.jpg", month: 12, link: "https://online.pubhtml5.com/qlvfj/gzzc/", linkPt: "https://online.pubhtml5.com/qlvfj/zffw/" },
+  ],
+  "2023": [
+    { name: "march.png", namePt: "marco23.jpg", month: 3, link: "https://online.pubhtml5.com/rzzqg/lzir/", linkPt: "https://online.pubhtml5.com/rzzqg/khio/" },
+    { name: "june.png", namePt: "junho23.png", month: 6, link: "https://online.pubhtml5.com/rzzqg/jjgo/", linkPt: "https://online.pubhtml5.com/rzzqg/yikm/" },
+    { name: "october.png", namePt: "outubro23.png", month: 10, link: "https://online.pubhtml5.com/rzzqg/mctf/", linkPt: "https://online.pubhtml5.com/rzzqg/lsxd/" },
+    { name: "december.png", namePt: "dezembro23.png", month: 12, link: "https://online.pubhtml5.com/rzzqg/xzpj/", linkPt: "https://online.pubhtml5.com/rzzqg/puhg/" },
+  ],
+  "2022": [
+    { name: "february.png", namePt: "fevereiro22.jpg", month: 2, link: "https://online.pubhtml5.com/rzzqg/sytw/", linkPt: "https://online.pubhtml5.com/rzzqg/ooky/" },
+    { name: "may.png", namePt: "maio22.png", month: 5, link: "https://online.pubhtml5.com/rzzqg/vpnh/", linkPt: "https://online.pubhtml5.com/rzzqg/ynqz/" },
+    { name: "august.png", namePt: "agosto22.png", month: 8, link: "https://online.pubhtml5.com/rzzqg/wpko/", linkPt: "https://online.pubhtml5.com/rzzqg/gwde/" },
+    { name: "november.png", namePt: "novembro22.png", month: 11, link: "https://online.pubhtml5.com/rzzqg/whql/", linkPt: "https://online.pubhtml5.com/rzzqg/aafy/" },
+  ],
+  "2021": [
+    { name: "january.png", namePt: "janeiro21.jpg", month: 1, link: "https://online.pubhtml5.com/rzzqg/jggt/", linkPt: "https://online.pubhtml5.com/rzzqg/mrmn/" },
+    { name: "may.png", namePt: "maio21.jpg", month: 5, link: "https://online.pubhtml5.com/rzzqg/pdtr/", linkPt: "https://online.pubhtml5.com/rzzqg/lrhz/" },
+    { name: "august.png", namePt: "agosto21.jpg", month: 8, link: "https://online.pubhtml5.com/rzzqg/swnv/", linkPt: "https://online.pubhtml5.com/rzzqg/xdfz/" },
+    { name: "november.png", namePt: "novembro21.jpg", month: 11, link: "https://online.pubhtml5.com/rzzqg/rfgg/", linkPt: "https://online.pubhtml5.com/rzzqg/kjkg/" },
+  ],
+};
 
-export default function MyNewsCoverflowEffect({ onSubscribeClick }: MyNewsCoverflowEffectProps) {
+const AVAILABLE_YEARS = ["Complete Archive", "2021", "2022", "2023", "2024", "2025"];
+const VISIBLE_YEARS = AVAILABLE_YEARS.filter(year => year !== "Complete Archive");
+
+//textos
+const TEXTS = {
+  pt: {
+    mainTitle: "A newsletter de Setembro está repleta das mais recentes informações, entrevistas e dicas técnicas, sendo uma leitura obrigatória para te manteres atualizado. Não percas as futuras edições e fica a conhecer todo o trabalho realizado pela nossa equipa.",
+    subscribeButton: "Subscreva a nossa Newsletter",
+    allNewsletters: "Todas as Newsletters",
+    completeArchive: "Arquivo completo organizado por ano",
+    clickToView: "Click para visualizar",
+    tapToView: "Toque para visualizar",
+    latest: "Newsletter Mais Recente",
+    close: "Fechar modal",
+    newsletter: "Newsletter",
+  },
+  en: {
+    mainTitle: "The September newsletter is packed with the latest insights, interviews, and expert tips, it's a must-read to stay ahead. Don't miss out on future editions and stay updated on all the work done by the team.",
+    subscribeButton: "Subscribe to our Newsletter",
+    allNewsletters: "All Newsletters",
+    completeArchive: "Complete archive organized by year",
+    clickToView: "Click to view",
+    tapToView: "Tap to view",
+    latest: "Latest Newsletter",
+    close: "Close modal",
+    newsletter: "Newsletter", 
+  },
+};
+
+const getMonthName = (month: number, lang: "pt" | "en") => {
+  const date = new Date();
+  date.setMonth(month - 1);
+  return date.toLocaleString(lang === "pt" ? "pt-PT" : "en-US", { month: "short" }).toUpperCase();
+};
+
+//subcomponentes
+const SubscribeBtn = ({ text, onClick, className = "" }: { text: string, onClick?: (e: React.MouseEvent) => void, className?: string }) => (
+  <button
+    onClick={onClick}
+    type="button"
+    className={`bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${className}`}
+  >
+    {text}
+  </button>
+);
+
+//componente principal
+
+export default function MyNewsCoverflowEffect({ onSubscribeClick }: { onSubscribeClick?: (e: React.MouseEvent) => void }) {
   const [selectedYear, setSelectedYear] = useState("2025");
-  const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
   const [language, setLanguage] = useState<"pt" | "en">("pt");
-  // Estados do carrossel apenas para mobile
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  //estado do modal
+  const [modal, setModal] = useState({ isOpen: false, image: "", title: "" });
 
-  // Years visible to user (excluding Complete Archive for now)
-  const visibleYears = availableYears.filter(year => year !== "Complete Archive");
+  //ref para o timer do duplo clique
+  const clickTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Textos em português e inglês
-  const texts = {
-    pt: {
-      mainTitle:
-        "A newsletter de Setembro está repleta das mais recentes informações, entrevistas e dicas técnicas, sendo uma leitura obrigatória para te manteres atualizado. Não percas as futuras edições e fica a conhecer todo o trabalho realizado pela nossa equipa.",
-      subscribeButton: "Subscreve a nossa Newsletter",
-      allNewsletters: "Todas as Newsletters",
-      completeArchive: "Arquivo completo organizado por ano",
-      clickToView: "Click para visualizar",
-      tapToView: "Toque para visualizar",
-      latestNewsletter: "Newsletter Mais Recente",
-      newsletter: "Newsletter",
-      closeModal: "Fechar modal",
-    },
-    en: {
-      mainTitle:
-        "The Semptember newsletter is packed with the latest insights, interviews, and expert tips, it's a must-read to stay ahead. Don't miss out on future editions and stay updated on all the work done by the team.",
-      subscribeButton: "Subscribe to our Newsletter",
-      allNewsletters: "All Newsletters",
-      completeArchive: "Complete archive organized by year",
-      clickToView: "Click to view",
-      tapToView: "Tap to view",
-      latestNewsletter: "Latest Newsletter",
-      newsletter: "Newsletter",
-      closeModal: "Close modal",
-    },
-  };
+  //detetar língua do browser
+  useEffect(() => {
+    const userLang = navigator.language;
+    if (userLang && userLang.startsWith("en")) setLanguage("en");
+  }, []);
 
-  // Estados para o modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState("");
-  const [modalTitle, setModalTitle] = useState("");
+  //processar newsletters para exibição
+  const displayedNewsletters = useMemo(() => {
+    const processItem = (year: string, item: NewsletterItem): Newsletter => ({
+      ...item,
+      year,
+      fullPath: buildPath(year, (language === "pt" && item.namePt) ? item.namePt : item.name),
+      link: (language === "pt" && item.linkPt) ? item.linkPt : item.link
+    });
 
-  // Funções do modal
-  const openModal = (imagePath: string, title: string) => {
-    setModalImage(imagePath);
-    setModalTitle(title);
-    setIsModalOpen(true);
-  };
+    let allItems: Newsletter[] = [];
+    const sortedYears = Object.keys(NEWSLETTER_DATA).sort((a, b) => parseInt(b) - parseInt(a));
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalImage("");
-    setModalTitle("");
-  };
+    sortedYears.forEach(year => {
+      const items = NEWSLETTER_DATA[year]
+        .sort((a, b) => b.month - a.month)
+        .map(item => processItem(year, item));
+      allItems = [...allItems, ...items];
+    });
 
-  // Sistema de cliques (simples, duplo, ctrl+click)
+    return allItems;
+  }, [language]);
+
+  //filtrar para mobile
+  const mobileNewsletters = useMemo(() => {
+    if (selectedYear === "Complete Archive") return displayedNewsletters;
+    return displayedNewsletters.filter(n => n.year === selectedYear);
+  }, [selectedYear, displayedNewsletters]);
+
+  //logica de clique para link newsletter
   const handleImageClick = (newsletter: Newsletter, event: React.MouseEvent) => {
-    // Determinar qual link usar baseado no idioma
-    const linkToUse = language === "pt" && newsletter.linkPt ? newsletter.linkPt : newsletter.link;
-
-    if (event.ctrlKey || event.metaKey) {
-      // Ctrl+Click ou Cmd+Click - abre diretamente em nova aba
-      window.open(linkToUse, "_blank");
-      return;
-    }
-
-    // Armazenar referência segura do elemento
-    const targetElement = event.currentTarget as HTMLElement;
-
-    // Click simples - abre modal (com delay para detectar duplo-click)
-    const timer = setTimeout(() => {
-      const title =
-        selectedYear === "Complete Archive"
-          ? `${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`
-          : `${texts[language].newsletter} ${selectedYear}`;
-      openModal(newsletter.fullPath!, title);
-    }, 200);
-
-    // Duplo-click - cancela o timer e abre em nova aba
-    const handleDoubleClick = () => {
-      clearTimeout(timer);
-      window.open(linkToUse, "_blank");
-    };
-
-    // Adiciona listener temporário para duplo-click
-    if (targetElement) {
-      targetElement.addEventListener("dblclick", handleDoubleClick, { once: true });
-
-      // Remove o listener após 300ms se não houver duplo-click
-      setTimeout(() => {
-        if (targetElement && targetElement.removeEventListener) {
-          targetElement.removeEventListener("dblclick", handleDoubleClick);
-        }
-      }, 300);
-    }
+    window.open(newsletter.link, "_blank");
   };
 
-  // Função auxiliar para nomes dos meses
-  const getMonthName = (monthNumber: number) => {
-    const months: Record<"pt" | "en", Record<number, string>> = {
-      pt: {
-        1: "JAN",
-        2: "FEV",
-        3: "MAR",
-        4: "ABR",
-        5: "MAI",
-        6: "JUN",
-        7: "JUL",
-        8: "AGO",
-        9: "SET",
-        10: "OUT",
-        11: "NOV",
-        12: "DEZ",
-      },
-      en: {
-        1: "JAN",
-        2: "FEB",
-        3: "MAR",
-        4: "APR",
-        5: "MAY",
-        6: "JUN",
-        7: "JUL",
-        8: "AUG",
-        9: "SEP",
-        10: "OCT",
-        11: "NOV",
-        12: "DEC",
-      },
-    };
-    return months[language][monthNumber] || "";
+  const navigateYear = (dir: "prev" | "next") => {
+    const idx = VISIBLE_YEARS.indexOf(selectedYear);
+    if (dir === "prev" && idx > 0) setSelectedYear(VISIBLE_YEARS[idx - 1]);
+    if (dir === "next" && idx < VISIBLE_YEARS.length - 1) setSelectedYear(VISIBLE_YEARS[idx + 1]);
   };
 
-  // Função para navegar entre anos (mobile)
-  const navigateYear = (direction: "prev" | "next") => {
-    const currentIndex = visibleYears.indexOf(selectedYear);
-    if (direction === "prev" && currentIndex > 0) {
-      setSelectedYear(visibleYears[currentIndex - 1]);
-    } else if (direction === "next" && currentIndex < visibleYears.length - 1) {
-      setSelectedYear(visibleYears[currentIndex + 1]);
-    }
-  };
-
-  // Detectar tamanho da tela
-  useEffect(() => {
-    const checkMobile = () => {
-      const newIsMobile = window.innerWidth < 768;
-      if (newIsMobile !== isMobile) {
-        setIsMobile(newIsMobile);
-        // Forçar re-render para evitar problemas de layout
-        setTimeout(() => {
-          window.dispatchEvent(new Event("resize"));
-        }, 100);
-      }
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, [isMobile]);
-
-  // Função para obter todas as newsletters (desktop) ou por ano (mobile)
-  const getAllNewslettersForDisplay = useCallback((): Newsletter[] => {
-    // Função para combinar todas as newsletters
-    const combineAllNewsletters = (): Newsletter[] => {
-      const newsletterData: {
-        [key: string]: { name: string; month: number; link: string; linkPt?: string }[];
-      } = {
-        2021: [
-          {
-            name: "january.png",
-            month: 1,
-            link: "https://online.pubhtml5.com/rzzqg/jggt/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/mrmn/",
-          },
-          {
-            name: "may.png",
-            month: 5,
-            link: "https://online.pubhtml5.com/rzzqg/pdtr/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/lrhz/",
-          },
-          {
-            name: "august.png",
-            month: 8,
-            link: "https://online.pubhtml5.com/rzzqg/swnv/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/xdfz/",
-          },
-          {
-            name: "november.png",
-            month: 11,
-            link: "https://online.pubhtml5.com/rzzqg/rfgg/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/kjkg/",
-          },
-        ],
-        2022: [
-          {
-            name: "february.png",
-            month: 2,
-            link: "https://online.pubhtml5.com/rzzqg/sytw/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/ooky/",
-          },
-          {
-            name: "may.png",
-            month: 5,
-            link: "https://online.pubhtml5.com/rzzqg/vpnh/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/ynqz/",
-          },
-          {
-            name: "august.png",
-            month: 8,
-            link: "https://online.pubhtml5.com/rzzqg/wpko/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/gwde/",
-          },
-          {
-            name: "november.png",
-            month: 11,
-            link: "https://online.pubhtml5.com/rzzqg/whql/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/aafy/",
-          },
-        ],
-        2023: [
-          {
-            name: "march.png",
-            month: 3,
-            link: "https://online.pubhtml5.com/rzzqg/lzir/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/khio/",
-          },
-          {
-            name: "june.png",
-            month: 6,
-            link: "https://online.pubhtml5.com/rzzqg/jjgo/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/yikm/",
-          },
-          {
-            name: "october.png",
-            month: 10,
-            link: "https://online.pubhtml5.com/rzzqg/mctf/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/lsxd/",
-          },
-          {
-            name: "december.png",
-            month: 12,
-            link: "https://online.pubhtml5.com/rzzqg/xzpj/",
-            linkPt: "https://online.pubhtml5.com/rzzqg/puhg/",
-          },
-        ],
-        2024: [
-          {
-            name: "march.png",
-            month: 3,
-            link: "https://online.pubhtml5.com/ffstg/javr/",
-            linkPt: "https://online.pubhtml5.com/ffstg/aqvm/",
-          },
-          {
-            name: "june.png",
-            month: 6,
-            link: "https://online.pubhtml5.com/qlvfj/teux/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/prrj/",
-          },
-          {
-            name: "september.png",
-            month: 9,
-            link: "https://online.pubhtml5.com/qlvfj/svrs/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/xaiw/",
-          },
-          {
-            name: "december.jpg",
-            month: 12,
-            link: "https://online.pubhtml5.com/qlvfj/gzzc/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/zffw/",
-          },
-        ],
-        2025: [
-          {
-            name: "march.jpg",
-            month: 3,
-            link: "https://online.pubhtml5.com/qlvfj/ccjc/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
-          },
-          {
-            name: "june.jpg",
-            month: 6,
-            link: "https://pubhtml5.com/ssrma/hdmv/",
-            linkPt: "https://pubhtml5.com/ssrma/sxzj/",
-          },
-          {
-            name: "september.jpg",
-            month: 9,
-            link: "https://pubhtml5.com/ofgde/vknm/",
-            linkPt: "https://pubhtml5.com/ofgde/lumw/",
-          },
-        ],
-      };
-
-      if (selectedYear === "Complete Archive") {
-        const allNewsletters: Newsletter[] = [];
-        Object.keys(newsletterData).forEach(year => {
-          newsletterData[year].forEach(newsletter => {
-            allNewsletters.push({
-              ...newsletter,
-              year: year,
-              fullPath: buildNewsletterImagePath(year, newsletter.name),
-              link: newsletter.link, // Usar o link específico de cada newsletter
-            });
-          });
-        });
-
-        // Ordenar por ano (mais recente primeiro) e depois por mês (mais recente primeiro)
-        return allNewsletters.sort((a, b) => {
-          if (a.year !== b.year) {
-            return parseInt(b.year!) - parseInt(a.year!);
-          }
-          return b.month - a.month;
-        });
-      } else {
-        return (newsletterData[selectedYear] || []).map(newsletter => ({
-          ...newsletter,
-          year: selectedYear,
-          fullPath: buildNewsletterImagePath(selectedYear, newsletter.name),
-          link: newsletter.link, // Usar o link específico de cada newsletter
-        }));
-      }
-    };
-    if (!isMobile) {
-      // Desktop: mostrar todas as newsletters organizadas por ano (mais recente → mais antiga)
-      const newsletterData: {
-        [key: string]: { name: string; month: number; link: string; linkPt?: string }[];
-      } = {
-        2025: [
-          {
-            name: "march.jpg",
-            month: 3,
-            link: "https://online.pubhtml5.com/qlvfj/ccjc/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/sjsg/",
-          },
-          {
-            name: "june.jpg",
-            month: 6,
-            link: "https://pubhtml5.com/ssrma/hdmv/",
-            linkPt: "https://pubhtml5.com/ssrma/sxzj/",
-          },
-          {
-            name: "september.jpg",
-            month: 9,
-            link: "https://pubhtml5.com/ofgde/vknm/",
-            linkPt: "https://pubhtml5.com/ofgde/lumw/",
-          },
-        ],
-        2024: [
-          {
-            name: "march.png",
-            month: 3,
-            link: "https://online.pubhtml5.com/ffstg/javr/",
-            linkPt: "https://online.pubhtml5.com/ffstg/aqvm/",
-          },
-          {
-            name: "june.png",
-            month: 6,
-            link: "https://online.pubhtml5.com/qlvfj/teux/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/prrj/",
-          },
-          {
-            name: "september.png",
-            month: 9,
-            link: "https://online.pubhtml5.com/qlvfj/svrs/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/xaiw/",
-          },
-          {
-            name: "december.jpg",
-            month: 12,
-            link: "https://online.pubhtml5.com/qlvfj/gzzc/",
-            linkPt: "https://online.pubhtml5.com/qlvfj/zffw/",
-          },
-        ],
-        2023: [
-          {
-            name: "march.png",
-            month: 3,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_03.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_03.pdf",
-          },
-          {
-            name: "june.png",
-            month: 6,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_06.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_06.pdf",
-          },
-          {
-            name: "october.png",
-            month: 10,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_10.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_10.pdf",
-          },
-          {
-            name: "december.png",
-            month: 12,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_23_12.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_23_12.pdf",
-          },
-        ],
-        2022: [
-          {
-            name: "february.png",
-            month: 2,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_02.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_02.pdf",
-          },
-          {
-            name: "may.png",
-            month: 5,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_05.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_05.pdf",
-          },
-          {
-            name: "august.png",
-            month: 8,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_08.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_08.pdf",
-          },
-          {
-            name: "november.png",
-            month: 11,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_22_11.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_22_11.pdf",
-          },
-        ],
-        2021: [
-          {
-            name: "january.png",
-            month: 1,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_01.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_01.pdf",
-          },
-          {
-            name: "may.png",
-            month: 5,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_05.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_05.pdf",
-          },
-          {
-            name: "august.png",
-            month: 8,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_08.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_08.pdf",
-          },
-          {
-            name: "november.png",
-            month: 11,
-            link: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_EN_21_11.pdf",
-            linkPt: "https://tlmoto.tecnico.ulisboa.pt/newsletter/news/NEWSLETTER_PT_21_11.pdf",
-          },
-        ],
-      };
-
-      const allNewsletters: Newsletter[] = [];
-      // Ordenar anos de mais recente para mais antigo (2025, 2024, 2023, 2022, 2021)
-      const sortedYears = Object.keys(newsletterData).sort((a, b) => parseInt(b) - parseInt(a));
-
-      sortedYears.forEach(year => {
-        // Dentro de cada ano, ordenar por mês (mais recente primeiro)
-        const yearNewsletters = newsletterData[year]
-          .sort((a, b) => b.month - a.month)
-          .map(newsletter => ({
-            ...newsletter,
-            year: year,
-            fullPath: buildNewsletterImagePath(year, newsletter.name),
-            link: newsletter.link,
-            linkPt: newsletter.linkPt,
-          }));
-        allNewsletters.push(...yearNewsletters);
-      });
-
-      return allNewsletters;
-    } else {
-      // Mobile: usar a função original por ano
-      return combineAllNewsletters();
-    }
-  }, [isMobile, selectedYear]);
-
-  // Carregar newsletters quando o ano muda (mobile) ou quando o isMobile muda
-  useEffect(() => {
-    const newsletters = getAllNewslettersForDisplay();
-    setNewsletters(newsletters);
-    setCurrentSlide(0);
-  }, [selectedYear, isMobile, language, getAllNewslettersForDisplay]);
-
-  // Navigation functions for mobile carousel only
-  const navigateSlide = useCallback(
-    (direction: "prev" | "next") => {
-      if (!isMobile || isTransitioning || newsletters.length === 0) return;
-
-      setIsTransitioning(true);
-
-      if (direction === "prev") {
-        setCurrentSlide(prev => (prev === 0 ? newsletters.length - 1 : prev - 1));
-      } else {
-        setCurrentSlide(prev => (prev === newsletters.length - 1 ? 0 : prev + 1));
-      }
-
-      setTimeout(() => setIsTransitioning(false), 500);
-    },
-    [isMobile, isTransitioning, newsletters.length]
-  );
-
-  const goToSlide = useCallback(
-    (index: number) => {
-      if (
-        !isMobile ||
-        isTransitioning ||
-        index === currentSlide ||
-        index < 0 ||
-        index >= newsletters.length
-      )
-        return;
-
-      setIsTransitioning(true);
-      setCurrentSlide(index);
-      setTimeout(() => setIsTransitioning(false), 500);
-    },
-    [isMobile, isTransitioning, currentSlide, newsletters.length]
-  );
-
-  // Reset slide when newsletters change
-  useEffect(() => {
-    setCurrentSlide(0);
-  }, [newsletters]);
-
-  // Keyboard navigation for mobile only
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (newsletters.length === 0) return;
-
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        navigateSlide("prev");
-      }
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        navigateSlide("next");
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isMobile, newsletters.length, navigateSlide]);
+  const closeModal = () => setModal({ ...modal, isOpen: false });
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[calc(var(--vh)*100)] text-white pt-0">
-      {/* Language Selector - Flags */}
-      <div className="absolute top-30 md:top-34 left-1/2 transform -translate-x-1/2 z-50 flex gap-3">
+    <div className="flex flex-col items-center min-h-screen text-white pt-0 pb-10">
+      
+      {/* Language Flags */}
+      <div className="absolute top-30 md:top-34 left-1/2 -translate-x-1/2 z-50 flex gap-3">
         <button
           onClick={() => setLanguage("pt")}
-          className={`transition-all duration-300 hover:scale-110 ${
-            language === "pt" ? "opacity-100 scale-110" : "opacity-70"
-          }`}
-          title="Português"
+          //logica de ring
+          className={`transition hover:scale-110 rounded-sm ${language === "pt" ? "opacity-100 scale-110 ring-2 ring-white" : "opacity-70"}`}
         >
-          <Image
-            src="/images/newsletter/flags/flagPortugal.png"
-            alt="Português"
-            width={50}
-            height={40}
-            className="rounded-sm shadow-lg"
-          />
+          <Image src="/images/newsletter/flags/flagPortugal.png" alt="PT" width={50} height={40} className="rounded-sm shadow-lg" />
         </button>
         <button
           onClick={() => setLanguage("en")}
-          className={`transition-all duration-300 hover:scale-110 ${
-            language === "en" ? "opacity-100 scale-110" : "opacity-70"
-          }`}
-          title="English"
+          //logica de ring
+          className={`transition hover:scale-110 rounded-sm ${language === "en" ? "opacity-100 scale-110 ring-2 ring-white" : "opacity-70"}`}
         >
-          <Image
-            src="/images/newsletter/flags/flagUK.png"
-            alt="English"
-            width={50}
-            height={40}
-            className="rounded-sm shadow-lg"
-          />
+          <Image src="/images/newsletter/flags/flagUK.png" alt="EN" width={50} height={40} className="rounded-sm shadow-lg" />
         </button>
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 w-screen h-screen bg-black/85 backdrop-blur-sm z-[1001] flex justify-center items-center p-5"
-          onClick={closeModal}
-          style={{ pointerEvents: "auto" }}
-        >
-          <div
-            className="relative bg-white rounded-3xl w-[85vw] h-[85vh] max-w-5xl max-h-[800px] flex flex-col p-8 shadow-[0_25px_50px_rgba(0,0,0,0.5)] mt-16 animate-modal-appear md:w-[90vw] md:h-[85vh] md:p-5 md:mt-20 sm:w-[95vw] sm:h-[80vh] sm:p-4 sm:mt-24"
+      {/* Modal Global */}
+      {modal.isOpen && (
+        <div className="fixed inset-0 bg-black/85 z-[1001] flex justify-center items-center p-5" onClick={closeModal}>
+          <div 
+            className="relative bg-white rounded-3xl w-full max-w-2xl h-auto max-h-[85vh] flex flex-col p-6 shadow-2xl mt-12 animate-modal-appear" 
             onClick={e => e.stopPropagation()}
           >
-            <button
-              className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white border-none rounded-full w-10 h-10 cursor-pointer flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 p-0 sm:w-9 sm:h-9"
-              onClick={closeModal}
-              aria-label={texts[language].closeModal}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-            <h3 className="text-3xl font-bold text-slate-700 mb-5 text-center md:text-2xl sm:text-xl">
-              {modalTitle}
-            </h3>
-            <div className="flex-1 flex justify-center items-center overflow-hidden rounded-xl">
-              <motion.img
-                src={modalImage}
-                alt={modalTitle}
-                className="max-w-full max-h-full object-contain rounded-xl"
-              />
+            <button onClick={closeModal} className="absolute top-4 right-4 bg-red-500 text-white rounded-full w-10 h-10 z-10 flex items-center justify-center hover:bg-red-600 transition">✕</button>
+            <h3 className="text-2xl font-bold text-slate-700 mb-4 text-center">{modal.title}</h3>
+            <div className="flex-1 overflow-hidden flex justify-center items-center">
+                <img src={modal.image} alt={modal.title} className="max-w-full max-h-[65vh] object-contain rounded-xl" />
             </div>
           </div>
         </div>
       )}
 
-      {/* Year Selection - Mobile */}
-      {isMobile && (
-        <div className="flex items-center justify-center gap-4 mt-30 px-4">
-          <button
-            onClick={() => navigateYear("prev")}
-            disabled={visibleYears.indexOf(selectedYear) === 0}
-            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-              visibleYears.indexOf(selectedYear) === 0
-                ? "border-gray-300 text-gray-300 cursor-not-allowed"
-                : "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="15,18 9,12 15,6"></polyline>
-            </svg>
-          </button>
+      {/* MOBILE VIEW */}
+      <div className="flex md:hidden items-center gap-4 mt-30 mb-4 px-4">
+        <button onClick={() => navigateYear("prev")} disabled={VISIBLE_YEARS.indexOf(selectedYear) === 0} className="p-2 border rounded-full disabled:opacity-30">←</button>
+        <div className="text-2xl font-bold">{selectedYear}</div>
+        <button onClick={() => navigateYear("next")} disabled={VISIBLE_YEARS.indexOf(selectedYear) === VISIBLE_YEARS.length - 1} className="p-2 border rounded-full disabled:opacity-30">→</button>
+      </div>
 
-          <div className="font-bold text-2xl text-white text-center">{selectedYear}</div>
-
-          <button
-            onClick={() => navigateYear("next")}
-            disabled={visibleYears.indexOf(selectedYear) === visibleYears.length - 1}
-            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-              visibleYears.indexOf(selectedYear) === visibleYears.length - 1
-                ? "border-gray-300 text-gray-300 cursor-not-allowed"
-                : "border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="9,18 15,12 9,6"></polyline>
-            </svg>
-          </button>
+      {/* DESKTOP VIEW */}
+      {displayedNewsletters.length > 0 && (
+        <div className="hidden md:flex w-full max-w-7xl mx-auto mt-48 mb-8 px-8 items-center justify-between gap-16">
+          <div className="flex-1 max-w-2xl">
+            <h1 className="text-3xl font-bold mb-8">{TEXTS[language].mainTitle}</h1>
+            {onSubscribeClick && <SubscribeBtn text={TEXTS[language].subscribeButton} onClick={onSubscribeClick} className="py-4 px-10 text-lg" />}
+          </div>
+          <div className="relative w-[350px] h-[490px] cursor-pointer hover:scale-105 transition hover:shadow-2xl" onClick={(e) => handleImageClick(displayedNewsletters[0], e)}>
+             <Image src={displayedNewsletters[0].fullPath} alt="Latest" fill priority className="object-contain " />
+          </div>
         </div>
       )}
 
-      {/* Featured Newsletter - Desktop Only */}
-      {!isMobile && newsletters.length > 0 && (
-        <div className="relative w-full max-w-7xl mx-auto mt-55 mb-16 px-8">
-          <div className="flex items-center justify-between gap-16">
-            {/* Left Content */}
-            <div className="flex-1 max-w-2xl">
-              <h1 className="text-3xl font-bold text-white mb-8 leading-tight">
-                {texts[language].mainTitle}
-              </h1>
+      <div className="hidden md:block w-full max-w-6xl mx-auto mb-12 border-t border-gray-600/50 pt-8 text-center">
+        <h3 className="text-2xl font-bold">{TEXTS[language].allNewsletters}</h3>
+      </div>
 
-              {onSubscribeClick && (
-                <button
-                  onClick={onSubscribeClick}
-                  className="group border-2 border-blue-500 text-blue-500 font-semibold py-4 px-10 rounded-lg text-lg tracking-wide transition-all duration-300 hover:bg-blue-500 hover:text-white hover:shadow-xl hover:scale-105"
-                  type="button"
-                >
-                  {texts[language].subscribeButton}
-                </button>
-              )}
+      <div className="hidden md:grid w-full max-w-7xl mx-auto grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 px-4 place-items-center">
+        {displayedNewsletters.map((newsletter, idx) => (
+          <div key={`${newsletter.year}-${newsletter.month}`} className="relative w-[280px] h-[392px] group cursor-pointer hover:scale-105 transition" onClick={(e) => handleImageClick(newsletter, e)}>
+            <Image src={newsletter.fullPath} alt={newsletter.name} fill className="object-contain " />
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col justify-center items-center rounded-xl p-4 text-center">
+               <span className="font-bold text-lg block mb-2">{TEXTS[language].clickToView}</span>
+               <span className="text-sm">{getMonthName(newsletter.month, language)} {newsletter.year}</span>
             </div>
+          </div>
+        ))}
+      </div>
 
-            {/* Right Newsletter */}
-            <div className="flex-shrink-0">
-              <div
-                className="relative w-[350px] h-[490px] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
-                onClick={e => handleImageClick(newsletters[0], e)}
-                title={`${texts[language].latestNewsletter} ${newsletters[0].year} - ${getMonthName(newsletters[0].month)} • ${texts[language].clickToView} • Duplo-click para abrir • Ctrl+Click para link direto`}
-              >
-                {/* Newsletter Image */}
-                <div className="relative w-full h-full overflow-hidden rounded-lg shadow-2xl bg-gray-100">
-                  <Image
-                    src={newsletters[0].fullPath!}
-                    alt={`${texts[language].latestNewsletter} ${newsletters[0].year} - ${getMonthName(newsletters[0].month)}`}
-                    fill
-                    className="object-contain transition-transform duration-300 group-hover:scale-110"
-                    onError={e => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = PLACEHOLDER_IMAGE;
-                    }}
-                  />
+      {onSubscribeClick && (
+        <div className="hidden md:flex justify-center mt-12">
+           <SubscribeBtn text={TEXTS[language].subscribeButton} onClick={onSubscribeClick} className="py-4 px-10 text-xl" />
+        </div>
+      )}
 
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-6">
-                    <h3 className="text-xl font-bold mb-2 text-center">
-                      {getMonthName(newsletters[0].month)} {newsletters[0].year}
-                    </h3>
-                    <div className="text-blue-300 underline cursor-pointer hover:text-blue-200">
-                      {texts[language].clickToView}
-                    </div>
+      {/* MOBILE CAROUSEL */}
+      <div className="block md:hidden w-full px-4 relative mt-4">
+        <div className="overflow-hidden rounded-lg h-[330px] relative">
+          <div className="flex transition-transform duration-500 ease-in-out h-full" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            {mobileNewsletters.map((newsletter, idx) => (
+               <div key={idx} className="flex-shrink-0 w-full flex justify-center items-center">
+                  <div className="relative w-[220px] h-[308px]" onClick={(e) => handleImageClick(newsletter, e)}>
+                    <Image src={newsletter.fullPath} alt="Cover" fill className="object-contain" />
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Divider Line */}
-      {!isMobile && newsletters.length > 0 && (
-        <div className="w-full max-w-6xl mx-auto mb-12">
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
-          <div className="text-center mt-8">
-            <h3 className="text-2xl font-bold text-white mb-2">{texts[language].allNewsletters}</h3>
-            <p className="text-gray-300">{texts[language].completeArchive}</p>
-          </div>
-        </div>
-      )}
-
-      {/* Newsletter Grid - Desktop */}
-      {!isMobile && (
-        <div className="relative w-full max-w-7xl mx-auto mt-8 px-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-12 place-items-center">
-            {newsletters.map((newsletter, index) => (
-              <div
-                key={index}
-                className="relative w-[280px] h-[392px] overflow-hidden rounded-xl shadow-xl group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-gray-100"
-                onClick={e => handleImageClick(newsletter, e)}
-                title={`${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)} • ${texts[language].clickToView} • Duplo-click para abrir • Ctrl+Click para link direto`}
-              >
-                <Image
-                  src={newsletter.fullPath!}
-                  alt={`${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`}
-                  fill
-                  className="object-contain transition-transform duration-300 group-hover:scale-110"
-                  onError={e => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = PLACEHOLDER_IMAGE;
-                  }}
-                />
-
-                {/* Overlay effect on hover */}
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-6">
-                  <h3 className="text-lg font-bold mb-2 text-center">
-                    {texts[language].newsletter} {newsletter.year}
-                  </h3>
-                  <p className="text-sm text-center mb-4">
-                    {getMonthName(newsletter.month)} {newsletter.year}
-                  </p>
-                  <div className="text-blue-300 underline cursor-pointer hover:text-blue-200 text-sm">
-                    {texts[language].clickToView}
-                  </div>
-                </div>
-              </div>
+               </div>
             ))}
           </div>
         </div>
-      )}
+        
+        {mobileNewsletters.length > 1 && (
+            <>
+                <button onClick={() => setCurrentSlide(p => p === 0 ? mobileNewsletters.length - 1 : p - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full">←</button>
+                <button onClick={() => setCurrentSlide(p => p === mobileNewsletters.length - 1 ? 0 : p + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full">→</button>
+            </>
+        )}
 
-      {/* Desktop Subscribe Button */}
-      {!isMobile && onSubscribeClick && (
-        <div className="flex justify-center mt-6.5 mb-8 px-4">
-          <button
-            className="bg-blue-800 hover:bg-blue-900 text-white text-xl py-4 px-10 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl font-medium tracking-wide hover:scale-105 transform hover:-translate-y-1"
-            onClick={onSubscribeClick}
-            type="button"
-          >
-            {texts[language].subscribeButton}
-          </button>
-        </div>
-      )}
-
-      {/* Newsletter Carousel - Mobile */}
-      {isMobile && (
-        <div className="relative w-full px-4 mt-0">
-          {/* Main Mobile Carousel Container */}
-          <div className="relative h-[330px] overflow-hidden rounded-lg">
-            {/* Mobile Carousel Track */}
-            <div
-              className="flex transition-transform duration-500 ease-in-out h-full"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {newsletters.map((newsletter, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full flex justify-center items-center px-4"
-                >
-                  <div
-                    className="relative w-[220px] h-[308px] overflow-hidden rounded-xl shadow-xl group cursor-pointer transition-all duration-300 hover:scale-105 bg-gray-100"
-                    onClick={e => handleImageClick(newsletter, e)}
-                    title={
-                      selectedYear === "Complete Archive"
-                        ? `${texts[language].tapToView} • Duplo-toque para abrir`
-                        : `${texts[language].tapToView} • Duplo-toque para abrir diretamente`
-                    }
-                  >
-                    <Image
-                      src={newsletter.fullPath!}
-                      alt={
-                        selectedYear === "Complete Archive"
-                          ? `${texts[language].newsletter} ${newsletter.year} - ${getMonthName(newsletter.month)}`
-                          : `${texts[language].newsletter} ${selectedYear}`
-                      }
-                      fill
-                      className="object-contain transition-transform duration-300 group-hover:scale-110"
-                      onError={e => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = PLACEHOLDER_IMAGE;
-                      }}
-                    />
-
-                    {/* Mobile Overlay effect */}
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white p-4">
-                      <h3 className="text-lg font-bold mb-2 text-center">
-                        {selectedYear === "Complete Archive"
-                          ? `${texts[language].newsletter} ${newsletter.year}`
-                          : `${texts[language].newsletter} ${selectedYear}`}
-                      </h3>
-                      <p className="text-sm text-center mb-3">
-                        {getMonthName(newsletter.month)}
-                        {selectedYear === "Complete Archive" && ` ${newsletter.year}`}
-                      </p>
-                      <div className="text-blue-300 underline cursor-pointer hover:text-blue-200 text-sm">
-                        {texts[language].tapToView}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {onSubscribeClick && (
+            <div className="flex justify-center mt-8">
+                <SubscribeBtn text={TEXTS[language].subscribeButton} onClick={onSubscribeClick} className="py-3 px-6 text-lg" />
             </div>
-          </div>
+        )}
+      </div>
 
-          {/* Mobile Navigation Arrows */}
-          <button
-            onClick={() => navigateSlide("prev")}
-            className="absolute left-2 top-2/5 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
-            aria-label="Previous Slide"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="15,18 9,12 15,6"></polyline>
-            </svg>
-          </button>
-
-          <button
-            onClick={() => navigateSlide("next")}
-            className="absolute right-2 top-2/5 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300 z-20 hover:scale-110"
-            aria-label="Next Slide"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="9,18 15,12 9,6"></polyline>
-            </svg>
-          </button>
-
-          {/* Mobile Pagination Dots */}
-          <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {newsletters.map((_, idx) => (
-              <button
-                key={idx}
-                className={`w-2 h-2 rounded-full transition-all duration-300 focus:outline-none ${
-                  idx === currentSlide ? "bg-white scale-125" : "bg-gray-400 hover:bg-gray-300"
-                }`}
-                onClick={() => goToSlide(idx)}
-                aria-label={`Slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Mobile Subscribe Button */}
-          {onSubscribeClick && (
-            <div className="flex justify-center mt-6">
-              <button
-                className="bg-blue-800 hover:bg-blue-900 text-white text-lg py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl font-medium tracking-wide hover:scale-105"
-                onClick={onSubscribeClick}
-                type="button"
-              >
-                {texts[language].subscribeButton}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
