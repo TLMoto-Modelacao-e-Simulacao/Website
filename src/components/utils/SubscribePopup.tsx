@@ -48,7 +48,7 @@ export default function SubscribePopupFixed({ isOpen, onClose }: SubscribePopupP
 
     try {
       const res = await fetch(
-        "https://script.google.com/macros/s/AKfycbxQD-hNhx8cgODBIvvnBHqhUuAAPM4G75kFgRUmiptxwTlg5tzCBG1umguPX0MOiqq_/exec",
+        "https://script.google.com/macros/s/AKfycbzEmHSkaNhCRa4h7QeecsiE2STR8n93lZou4a9-ofImpTRBM5Pl8efXUPv5MYad62ATdg/exec",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -136,7 +136,7 @@ export default function SubscribePopupFixed({ isOpen, onClose }: SubscribePopupP
           <input
             type="email"
             placeholder="Enter your email"
-            className="w-full p-3 border-2 border-gray-300 rounded-lg text-base mb-4 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg text-base mb-4 focus:outline-none focus:border-blue-500 transition-colors duration-200 text-gray-800 placeholder:text-gray-800"
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
