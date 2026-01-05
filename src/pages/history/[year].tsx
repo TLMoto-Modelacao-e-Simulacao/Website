@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { resolveInternalHref } from "../../utils/useInternalHref";
 import TiltedCard from "@/src/components/extras/TiltedCard";
 import { motion, AnimatePresence } from "framer-motion";
+import { pre } from "framer-motion/client";
 
 type TimelineEventWithImages = TimelineDataItem & { images: string[] };
 
@@ -57,9 +58,12 @@ export default function History({
 
     return years.length > 0 ? years.length - 1 : -1;
   }, [years, selectedYear]);
+  const twoYearsAgo = selectedIndex > 1 ? years[selectedIndex - 2] : undefined;
   const previousYear = selectedIndex > 0 ? years[selectedIndex - 1] : undefined;
   const nextYear =
     selectedIndex !== -1 && selectedIndex < years.length - 1 ? years[selectedIndex + 1] : undefined;
+  const twoYearsFuture =
+    selectedIndex !== -1 && selectedIndex < years.length - 2 ? years[selectedIndex + 2] : undefined;
 
   const timelineRef = useRef<HTMLDivElement | null>(null);
 
@@ -89,8 +93,66 @@ export default function History({
           <div className="absolute top-0 left-0 w-full h-[0.5vh] bg-sky-400 z-50" />
 
           {years.length > 0 && (
-            <div className="grid grid-cols-11 items-start w-full">
-              {/* Prev year (col 1) */}
+            <div className="grid grid-cols-17 items-start w-full">
+              {/* 2 years ago (col 1) */}
+              <div className="flex justify-center">
+                <motion.button
+                  className="flex flex-col items-center group cursor-pointer"
+                  onClick={() => navigateToYear(twoYearsAgo)}
+                >
+                  {twoYearsAgo ? (
+                    <>
+                      <div className="w-[0.5vh] h-[3vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <motion.div
+                        className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
+              group-hover:text-sky-400 group-hover:opacity-100 transition-all"
+                      >
+                        {twoYearsAgo}
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-[0.5vh] h-[3vh] opacity-0" />
+                      <span className="mt-2 text-xl font-bold opacity-0">-</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+
+              {/* Ticks col 2 */}
+              <div className="flex justify-center">
+                {twoYearsAgo ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[4vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Ticks col 3 */}
+              <div className="flex justify-center">
+                {twoYearsAgo ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Ticks col 4 */}
+              <div className="flex justify-center">
+                {twoYearsAgo ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[6vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Previous year (col 5) */}
               <div className="flex justify-center">
                 <motion.button
                   className="flex flex-col items-center group cursor-pointer"
@@ -98,7 +160,7 @@ export default function History({
                 >
                   {previousYear ? (
                     <>
-                      <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <div className="w-[0.5vh] h-[7vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
                       <motion.div
                         className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
               group-hover:text-sky-400 group-hover:opacity-100 transition-all"
@@ -108,112 +170,90 @@ export default function History({
                     </>
                   ) : (
                     <>
-                      <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
+                      <div className="w-[0.5vh] h-[7vh] opacity-0" />
                       <span className="mt-2 text-xl font-bold opacity-0">-</span>
                     </>
                   )}
                 </motion.button>
               </div>
 
-              {/* Ticks col 2 */}
+              {/* Ticks col 6 */}
               <div className="flex justify-center">
                 {previousYear ? (
                   <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                    <div className="w-[0.5vh] h-[8vh] bg-sky-500 opacity-50" />
                   </div>
                 ) : (
                   <div className="h-20" /> // placeholder
                 )}
-              </div>
-
-              {/* Ticks col 3 */}
-              <div className="flex justify-center">
-                {previousYear ? (
-                  <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                  </div>
-                ) : (
-                  <div className="h-20" />
-                )}
-              </div>
-
-              {/* Ticks col 4 */}
-              <div className="flex justify-center">
-                {previousYear ? (
-                  <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                  </div>
-                ) : (
-                  <div className="h-20" /> // placeholder
-                )}
-              </div>
-
-              {/* Ticks col 5 */}
-              <div className="flex justify-center">
-                {previousYear ? (
-                  <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                  </div>
-                ) : (
-                  <div className="h-20" /> // placeholder
-                )}
-              </div>
-
-              {/* Current year (col 6) */}
-              <div className="flex justify-center">
-                <motion.div className="flex flex-col items-center">
-                  <div className="w-[0.5vh] h-[10vh] bg-sky-400" />
-                  <motion.div className="mt-2 text-xl font-bold tracking-wide text-sky-400 scale-125">
-                    {selectedIndex !== -1 ? years[selectedIndex] : selectedYear}
-                  </motion.div>
-                </motion.div>
               </div>
 
               {/* Ticks col 7 */}
               <div className="flex justify-center">
-                {nextYear ? (
+                {previousYear ? (
                   <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                    <div className="w-[0.5vh] h-[9vh] bg-sky-500 opacity-50" />
                   </div>
                 ) : (
-                  <div className="h-20" />
+                  <div className="h-20" /> // placeholder
                 )}
               </div>
 
               {/* Ticks col 8 */}
               <div className="flex justify-center">
-                {nextYear ? (
+                {previousYear ? (
                   <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                    <div className="w-[0.5vh] h-[10vh] bg-sky-500 opacity-50" />
                   </div>
                 ) : (
-                  <div className="h-20" />
+                  <div className="h-20" /> // placeholder
                 )}
               </div>
 
-              {/* Ticks col 9 */}
+              {/* Current year (col 9) */}
               <div className="flex justify-center">
-                {nextYear ? (
-                  <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
-                  </div>
-                ) : (
-                  <div className="h-20" />
-                )}
+                <motion.div className="flex flex-col items-center">
+                  <div className="w-[0.5vh] h-[12vh] bg-sky-400" />
+                  <motion.div className="mt-2 text-2xl font-bold tracking-wide text-sky-400 scale-125">
+                    {selectedIndex !== -1 ? years[selectedIndex] : selectedYear}
+                  </motion.div>
+                </motion.div>
               </div>
 
               {/* Ticks col 10 */}
               <div className="flex justify-center">
                 {nextYear ? (
                   <div className="flex flex-col items-center gap-y-2">
-                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                    <div className="w-[0.5vh] h-[10vh] bg-sky-500 opacity-50" />
                   </div>
                 ) : (
                   <div className="h-20" />
                 )}
               </div>
 
-              {/* Next year (col 11) */}
+              {/* Ticks col 11 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[9vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" /> // placeholder
+                )}
+              </div>
+
+              {/* Ticks col 12 */}
+              <div className="flex justify-center">
+                {nextYear ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[8vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Next year (col 13) */}
               <div className="flex justify-center">
                 <motion.button
                   className="flex flex-col items-center group cursor-pointer"
@@ -221,7 +261,7 @@ export default function History({
                 >
                   {nextYear ? (
                     <>
-                      <div className="w-[0.5vh] h-[7.5vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <div className="w-[0.5vh] h-[7vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
                       <motion.div
                         className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
               group-hover:text-sky-400 group-hover:opacity-100 transition-all"
@@ -231,7 +271,65 @@ export default function History({
                     </>
                   ) : (
                     <>
-                      <div className="w-[0.5vh] h-[7.5vh] opacity-0" />
+                      <div className="w-[0.5vh] h-[7vh] opacity-0" />
+                      <span className="mt-2 text-xl font-bold opacity-0">-</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+
+              {/* Ticks col 14 */}
+              <div className="flex justify-center">
+                {twoYearsFuture ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[6vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 15 */}
+              <div className="flex justify-center">
+                {twoYearsFuture ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[5vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* Ticks col 16 */}
+              <div className="flex justify-center">
+                {twoYearsFuture ? (
+                  <div className="flex flex-col items-center gap-y-2">
+                    <div className="w-[0.5vh] h-[4vh] bg-sky-500 opacity-50" />
+                  </div>
+                ) : (
+                  <div className="h-20" />
+                )}
+              </div>
+
+              {/* 2 years future (col 17) */}
+              <div className="flex justify-center">
+                <motion.button
+                  className="flex flex-col items-center group cursor-pointer"
+                  onClick={() => navigateToYear(twoYearsFuture)}
+                >
+                  {twoYearsFuture ? (
+                    <>
+                      <div className="w-[0.5vh] h-[3vh] bg-sky-400 group-hover:bg-sky-400 transition-colors" />
+                      <motion.div
+                        className="mt-2 text-xl font-bold tracking-wide text-white opacity-60
+              group-hover:text-sky-400 group-hover:opacity-100 transition-all"
+                      >
+                        {twoYearsFuture}
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-[0.5vh] h-[3vh] opacity-0" />
                       <span className="mt-2 text-xl font-bold opacity-0">-</span>
                     </>
                   )}
