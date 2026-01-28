@@ -75,21 +75,6 @@ export default function MyStatsChart({
           >
             Stats
           </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("history")}
-            aria-pressed={activeTab === "history"}
-            className={`flex-1 text-center rounded-tr-2xl rounded-tl-none rounded-b-none px-3 py-2 text-sm md:text-lg font-semibold transition-colors duration-150 ease-in-out
-              ${
-                activeTab === "history"
-                  ? "bg-black/40 border-2 border-white/30"
-                  : "bg-transparent border border-white/10"
-              }
-            `}
-          >
-            History
-          </button>
         </div>
       </div>
 
