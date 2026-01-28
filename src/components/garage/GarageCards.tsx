@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { withBasePath } from "@/src/utils/basePath";
 
 export default function MyGarageCards() {
+  const sortedCards = [...cards].reverse();
+
   const DESKTOP_VISIBLE = 3;
   const GAP_PX = 16;
 
@@ -15,15 +17,15 @@ export default function MyGarageCards() {
   const [containerWidth, setContainerWidth] = useState(0);
 
   const desiredVisible = isMobile ? 1 : DESKTOP_VISIBLE;
-  const visibleCount = Math.min(desiredVisible, cards.length);
-  const maxIndex = Math.max(0, cards.length - visibleCount);
+  const visibleCount = Math.min(desiredVisible, sortedCards.length);
+  const maxIndex = Math.max(0, sortedCards.length - visibleCount);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Detecção de Mobile/Desktop
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const mq: MediaQueryList = window.matchMedia("(max-width: 639px)");
-
     const handler = (e: MediaQueryListEvent | MediaQueryList) => {
       setIsMobile((e as MediaQueryList).matches);
     };
@@ -32,25 +34,24 @@ export default function MyGarageCards() {
 
     if (typeof mq.addEventListener === "function") {
       mq.addEventListener("change", handler as EventListener);
-    } else if (typeof (mq as MediaQueryList).addListener === "function") {
+    } else {
       (mq as MediaQueryList).addListener(handler);
     }
 
     return () => {
       if (typeof mq.removeEventListener === "function") {
         mq.removeEventListener("change", handler as EventListener);
-      } else if (typeof (mq as MediaQueryList).removeListener === "function") {
+      } else {
         (mq as MediaQueryList).removeListener(handler);
       }
     };
   }, []);
 
+  // Medição da largura do contentor para cálculos de translação
   useEffect(() => {
     const measure = () => {
       if (containerRef.current) {
         setContainerWidth(containerRef.current.clientWidth);
-      } else {
-        setContainerWidth(0);
       }
     };
 
@@ -59,33 +60,32 @@ export default function MyGarageCards() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  // Ajusta o index caso o ecrã mude de tamanho
   useEffect(() => {
     setCurrentIndex(prev => Math.min(prev, maxIndex));
   }, [maxIndex]);
 
   const prevSlide = () => {
-    if (cards.length <= visibleCount) return;
+    if (sortedCards.length <= visibleCount) return;
     setCurrentIndex(prev => (prev === 0 ? maxIndex : prev - 1));
   };
 
   const nextSlide = () => {
-    if (cards.length <= visibleCount) return;
+    if (sortedCards.length <= visibleCount) return;
     setCurrentIndex(prev => (prev === maxIndex ? 0 : prev + 1));
   };
 
   const totalGaps = Math.max(0, visibleCount - 1) * GAP_PX;
-
   const itemWidthPx =
     containerWidth > 0 ? Math.floor((containerWidth - totalGaps) / visibleCount) : null;
-
   const translatePx = itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : 0;
-
   const stepPercent = 100 / visibleCount;
   const translatePercent = currentIndex * stepPercent;
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
-      <video autoPlay muted className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
+      {/* Background Video */}
+      <video autoPlay muted loop className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
         <source src={withBasePath("/videos/garage/garage_menu.mp4")} type="video/mp4" />
       </video>
 
@@ -96,14 +96,14 @@ export default function MyGarageCards() {
           aria-roledescription="carousel container"
         >
           <div
-            className={`flex gap-4 flex-row transition-transform duration-500 ease-in-out`}
+            className="flex gap-4 flex-row transition-transform duration-500 ease-in-out"
             style={
               itemWidthPx !== null
                 ? { transform: `translateX(-${translatePx}px)` }
                 : { transform: `translateX(-${translatePercent}%)` }
             }
           >
-            {cards.map((card, index) => (
+            {sortedCards.map((card, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 flex justify-center"
@@ -122,10 +122,11 @@ export default function MyGarageCards() {
                   className="w-full block perspective-[1000px] group focus:outline-none"
                 >
                   <div
-                    className={`relative w-[300px] h-[26rem] mx-auto rounded-lg shadow-lg [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] will-change-transform`}
+                    className="relative w-[300px] h-[26rem] mx-auto rounded-lg shadow-lg [transform-style:preserve-3d] transition-transform duration-700 ease-in-out group-hover:[transform:rotateY(180deg)] will-change-transform"
                     role="button"
                     aria-label={`${card.title} — ver detalhes`}
                   >
+                    {/* Frente do Card */}
                     <div className="absolute inset-0 rounded-lg overflow-hidden [backface-visibility:hidden] bg-gray-800">
                       <motion.img
                         src={card.imageSrc}
@@ -134,9 +135,10 @@ export default function MyGarageCards() {
                       />
                     </div>
 
+                    {/* Verso do Card */}
                     <div className="absolute inset-0 rounded-lg overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden] bg-gray-900 flex flex-col justify-center items-center p-6 text-center">
                       <h3 className="text-white text-xl font-bold mb-2">{card.title}</h3>
-                      <p className="text-sm text-gray-200 mt-">{card.description}</p>
+                      <p className="text-sm text-gray-200">{card.description}</p>
                       <span className="mt-auto text-sm text-blue-300 underline">Ver detalhes</span>
                     </div>
                   </div>
@@ -146,11 +148,12 @@ export default function MyGarageCards() {
           </div>
         </div>
 
+        {/* Botões de Navegação */}
         <button
           onClick={prevSlide}
           className="fixed left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition disabled:opacity-40"
           aria-label="Previous Slide"
-          disabled={cards.length <= visibleCount}
+          disabled={sortedCards.length <= visibleCount}
         >
           &#10094;
         </button>
@@ -158,7 +161,7 @@ export default function MyGarageCards() {
           onClick={nextSlide}
           className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition disabled:opacity-40"
           aria-label="Next Slide"
-          disabled={cards.length <= visibleCount}
+          disabled={sortedCards.length <= visibleCount}
         >
           &#10095;
         </button>

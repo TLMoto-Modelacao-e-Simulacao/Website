@@ -1,110 +1,139 @@
-import type { GetStaticPaths, GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { cards, backgrounds } from "src/components/textContent/GarageSectionTexts";
+import Link from "next/link";
+
+import { cards, backgroundData, themeColors } from "src/components/textContent/GarageSectionTexts";
 import MyStatsChart from "src/components/garage/GarageStatsChart";
-import { motion } from "framer-motion";
-import { withBasePath } from "@/src/utils/basePath";
+import { ArrowLeft } from "lucide-react";
 
-type Card = (typeof cards)[number];
+export default function GarageDetailPage() {
+  const router = useRouter();
+  const { id } = router.query;
 
-type GarageDetailPageProps = {
-  card: Card;
-};
-
-export default function GarageDetailPage({ card }: GarageDetailPageProps) {
-  const [showHistory] = useState(false);
-  const [bgIndex, setBgIndex] = useState(0);
+  const card = cards.find(card => card.id === id);
+  const [bgIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const motoBackgrounds = backgrounds[card.id as keyof typeof backgrounds] ?? [card.video];
+  if (!card) {
+    return (
+      <div className="h-screen w-screen bg-black flex items-center justify-center text-white">
+        Mota não encontrada
+      </div>
+    );
+  }
+
+  // Lógica de Background
+  const motoBackgrounds = backgroundData[card.id as keyof typeof backgroundData] ?? [card.video];
   const currentVideo = motoBackgrounds[bgIndex];
-
-  const motoImage = withBasePath(
-    `/images/garage/${card.id.replace("m", "").padStart(2, "0")}.webp`
-  );
-
-  const toggleBackground = () => {
-    if (motoBackgrounds.length > 1) {
-      setBgIndex(i => (i + 1) % motoBackgrounds.length);
-    }
-  };
+  const motoImage =
+    typeof id === "string" ? `/images/garage/${id.replace("m", "").padStart(2, "0")}.webp` : "";
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
-      {isMobile ? (
-        <motion.img
-          src={motoImage}
-          alt={`${card.title} background`}
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
-      ) : (
-        <video
-          key={`${card.id}-${bgIndex}`}
-          src={currentVideo}
-          className="absolute inset-0 min-w-full min-h-full object-cover object-[25%_100%] z-[0]"
-          autoPlay
-          muted
-          preload="auto"
-          aria-hidden="true"
-        />
-      )}
-
-      <div className="relative z-40 w-full h-full flex flex-col justify-center items-start box-border p-2 sm:p-4 md:p-6">
-        <div className="w-full mt-[40vh] sm:max-w-md md:max-w-lg lg:max-w-xl px-2 sm:px-4 md:px-0 ml-0 sm:ml-2 md:ml-4 lg:ml-8 xl:ml-12 transform lg:-translate-x-2 min-w-0 md:mt-[30vh]">
-          <MyStatsChart
-            stats={card.stats}
-            motoId={card.id}
-            showHistory={showHistory}
-            historyText={card.historyText}
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
+      {/* 1. BACKGROUND LAYER (Ocupa tudo e fica por baixo) */}
+      <div className="absolute inset-0 z-0">
+        {isMobile ? (
+          <img src={motoImage} alt={card.title} className="w-full h-full object-cover" />
+        ) : (
+          <video
+            key={currentVideo} // Força o reload quando o vídeo muda
+            src={currentVideo}
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
           />
+        )}
+        {/* Overlay escuro para garantir leitura do texto */}
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
+
+      <div className="relative z-10 w-full h-full flex flex-col justify-end items-start p-6 md:p-12 lg:p-20">
+        {/* botão voltar para trás */}
+        <div className="mb-40">
+          <Link
+            href="/garage"
+            className="hover:text-[#39a6ff] transition-colors inline-block"
+            aria-label="Voltar"
+          >
+            <ArrowLeft size={32} strokeWidth={3} />
+          </Link>
         </div>
 
-        {!isMobile && (
-          <button
-            onClick={toggleBackground}
-            aria-label="Toggle theme/background"
-            className="absolute top-20 right-8 sm:top-8 sm:right-8 md:top-12 md:right-12 xl:top-30 xl:right-20 z-50 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 bg-gray-800 text-white text-xs sm:text-sm shadow-md hover:bg-gray-700 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
-            Theme
-          </button>
-        )}
+        <div className="w-full max-w-2xl">
+          {/* barra de navegação entre motas */}
+          <nav className="mb-5 w-full">
+            <div className="flex overflow-x-auto no-scrollbar gap-12 items-end">
+              {cards.map(moto => {
+                const isActive = moto.id === id;
+                const motoColor = themeColors[moto.id as keyof typeof themeColors] || "255,255,255";
+
+                return (
+                  <Link
+                    key={moto.id}
+                    href={`/garage/${moto.id}`}
+                    className={`
+                      flex-shrink-0 transition-all duration-300 group
+                      ${isActive ? "scale-110" : "opacity-40 hover:opacity-100"}
+                    `}
+                  >
+                    <span
+                      className="text-lg md:text-2xl font-black italic uppercase tracking-tighter"
+                      style={{ color: isActive ? `rgb(${motoColor})` : "white" }}
+                    >
+                      {moto.title}
+                    </span>
+                    <div
+                      className={`h-1 mt-1 transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-1/2"}`}
+                      style={{ backgroundColor: `rgb(${motoColor})` }}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+
+          {/* stats */}
+          <div className="w-full transform transition-all duration-700 ease-out">
+            <MyStatsChart stats={card.stats} motoId={card.id} />
+          </div>
+        </div>
       </div>
+
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        /* Fade suave ao trocar de mota */
+        video,
+        img {
+          animation: fadeEnter 1s ease-in-out;
+        }
+        @keyframes fadeEnter {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: cards.map(card => ({ params: { id: card.id } })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<{ card: Card }> = async ({ params }) => {
-  const idParam = params?.id;
-  const id = Array.isArray(idParam) ? idParam[0] : idParam;
-
-  const card = id ? cards.find(cardItem => cardItem.id === id) : undefined;
-
-  if (!card) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      card,
-    },
-  };
-};
