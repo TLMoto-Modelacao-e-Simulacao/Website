@@ -2,11 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const TEAM_DIR = path.join(process.cwd(), 'public/images/team');
-const TEAM_DATA_DIR = path.join(process.cwd(), 'data/team');
+const TEAM_DATA_DIR = path.join(process.cwd(), 'src/components/textContent/team');
 
 function normalizeImageName(imageName) {
-  // Remove a extensão .webp ou .png
-  const baseName = imageName.replace(/\.(webp|png)$/i, '');
+  // Remove a extensão .webp, .png ou .jpg
+  const baseName = imageName.replace(/\.(webp|png|jpg|jpeg)$/i, '');
 
   // Remove números e hífens do início (ex: "1 - " ou "2 - ")
   const cleanName = baseName.replace(/^\d+\s*-\s*/, '');
@@ -34,47 +34,81 @@ function generateTeamDataForYear(year) {
     }
   }
 
+  // Define a ordem desejada dos departamentos
+  const departmentOrder = [
+    'BOARD',
+    '1-BOARD',
+    'AERODYNAMICS AND COOLING',
+    'DYNAMICS',
+    'ELECTRONICS',
+    'POWERTRAIN',
+    'STRUCTURES',
+    'SOFTWARE',
+    'HUMAN RESOURCES',
+    'MARKETING AND DESIGN',
+    'MANAGEMENT',
+    'SPONSORSHIP',
+    'LOGISTICS',
+  ];
+
   const categories = fs
     .readdirSync(yearPath)
     .filter(category => fs.statSync(path.join(yearPath, category)).isDirectory());
 
   const teamData = {};
 
-  categories.forEach(category => {
-    const categoryPath = path.join(yearPath, category);
+  // Função para normalizar nome da categoria para comparação
+  function normalizeCategoryName(category) {
+    return category.replace(/^\d+\s*-\s*/, '').toUpperCase();
+  }
 
-    // Busca apenas imagens que não sejam cartas (aceita .webp e .png)
-    const images = fs
-      .readdirSync(categoryPath)
-      .filter(file => /\.(webp|png)$/i.test(file) && !/_carta\.(webp|png)$/i.test(file))
-      .sort(); // Ordena alfabeticamente
-
-    teamData[category] = images.map(image => {
-      const baseName = image.replace(/\.(webp|png)$/i, '');
-      const memberName = normalizeImageName(image);
-      const imageExtension = image.split('.').pop();
-      const cardImage = baseName + '_carta.' + imageExtension;
-
-      // Procura dados existentes para preservar LinkedIn
-      let existingLinkedIn = '';
-      if (existingData[category]) {
-        const existingMember = existingData[category].find(
-          member => member.image === image || member.name === memberName
-        );
-        if (existingMember) {
-          existingLinkedIn = existingMember.linkedin || '';
-        }
-      }
-
-      return {
-        name: memberName,
-        image: image,
-        cardImage: cardImage,
-        linkedin: existingLinkedIn,
-      };
+  // Processa os departamentos na ordem especificada
+  departmentOrder.forEach(targetDept => {
+    const matchingCategory = categories.find(category => {
+      const normalized = normalizeCategoryName(category);
+      const targetNormalized = targetDept.replace(/^\d+\s*-\s*/, '');
+      return normalized === targetNormalized || category === targetDept;
     });
 
-    console.log(`✅ Categoria "${category}": ${images.length} membros encontrados`);
+    if (matchingCategory) {
+      const categoryPath = path.join(yearPath, matchingCategory);
+
+      // Busca apenas imagens que não sejam cartas (aceita .webp, .png e .jpg)
+      const images = fs
+        .readdirSync(categoryPath)
+        .filter(
+          file =>
+            /\.(webp|png|jpg|jpeg)$/i.test(file) && !/_carta\.(webp|png|jpg|jpeg)$/i.test(file)
+        )
+        .sort(); // Ordena alfabeticamente
+
+      teamData[matchingCategory] = images.map(image => {
+        const baseName = image.replace(/\.(webp|png|jpg|jpeg)$/i, '');
+        const memberName = normalizeImageName(image);
+        const imageExtension = image.split('.').pop();
+        const cardImage = baseName + '_carta.' + imageExtension;
+
+        // Procura dados existentes para preservar LinkedIn
+        let existingLinkedIn = '';
+        if (existingData[matchingCategory]) {
+          const existingMember = existingData[matchingCategory].find(
+            member => member.image === image || member.name === memberName
+          );
+          if (existingMember) {
+            existingLinkedIn = existingMember.linkedin || '';
+          }
+        }
+
+        return {
+          name: memberName,
+          image: image,
+          cardImage: cardImage,
+          linkedin: existingLinkedIn,
+        };
+      });
+
+      console.log(`✅ Categoria "${matchingCategory}": ${images.length} membros encontrados`);
+    }
   });
 
   // Salva os dados atualizados

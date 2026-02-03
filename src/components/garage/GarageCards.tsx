@@ -85,7 +85,7 @@ export default function MyGarageCards() {
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video */}
-      <video autoPlay muted loop className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
+      <video autoPlay muted className="fixed top-0 left-0 w-full h-full object-cover z-[-1]">
         <source src={withBasePath("/videos/garage/garage_menu.mp4")} type="video/mp4" />
       </video>
 

@@ -8,12 +8,7 @@ const TEAM_DATA_DIR = path.join(process.cwd(), "src/components/textContent/team"
 export function getAvailableYears() {
   return fs
     .readdirSync(TEAM_DIR, { encoding: "utf8" }) // Ensure UTF-8 encoding
-    .filter(
-      year =>
-        fs.statSync(path.join(TEAM_DIR, year)).isDirectory() &&
-        /^\d{4}$/.test(year) &&
-        year !== "2023"
-    )
+    .filter(year => fs.statSync(path.join(TEAM_DIR, year)).isDirectory() && /^\d{4}$/.test(year))
     .sort((a, b) => parseInt(b) - parseInt(a));
 }
 

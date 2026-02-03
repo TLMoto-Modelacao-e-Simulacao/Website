@@ -10,11 +10,15 @@ import MyDefaultPage from "../../components/DefaultPage";
 import { motion } from "framer-motion";
 import { resolveInternalHref } from "../../utils/useInternalHref";
 
+// --- DATA FETCHING ---
+
 export async function getStaticProps({ params }: { params: { year: string } }) {
   const { year } = params;
   const teamData = getTeamMembersWithLinkedIn(year);
+  // Get the actual list of years from your folder structure
+  const allYears = getAvailableYears();
 
-  return { props: { teamData, year } };
+  return { props: { teamData, year, allYears } };
 }
 
 export async function getStaticPaths() {
@@ -26,6 +30,8 @@ export async function getStaticPaths() {
 
   return { paths, fallback: false };
 }
+
+// --- TYPES ---
 
 interface TeamMember {
   name: string;
@@ -47,16 +53,22 @@ interface TeamData {
 interface TeamProps {
   teamData: TeamData;
   year: string;
+  allYears: string[]; // Added to props
 }
 
-export default function Team({ teamData, year }: TeamProps) {
+// --- COMPONENT ---
+
+export default function Team({ teamData, year, allYears }: TeamProps) {
   const router = useRouter();
   const [focusedImage, setFocusedImage] = useState<string | null>(null);
   const [focusedCardImage, setFocusedCardImage] = useState<string | null>(null);
   const [focusedMember, setFocusedMember] = useState<TeamMember | null>(null);
   const [mobilePopupOpen, setMobilePopupOpen] = useState(false);
 
-  const AVAILABLE_YEARS = [2022, 2024]; // Anos disponíveis (excluindo 2023)
+  // DYNAMIC LOGIC: Instead of hardcoding [2022, 2025], we use the props
+  // We sort them to ensure the order is 2022 -> 2024 -> 2025
+  const AVAILABLE_YEARS = allYears.map(y => parseInt(y, 10)).sort((a, b) => a - b);
+
   const currentYear = parseInt(year, 10);
   const currentIndex = AVAILABLE_YEARS.indexOf(currentYear);
 
@@ -80,9 +92,11 @@ export default function Team({ teamData, year }: TeamProps) {
     setFocusedCardImage(teamData.team);
     setMobilePopupOpen(true);
   }, [teamData]);
+
   return (
     <MyDefaultPage>
       <div className="relative min-h-screen pt-24">
+        {/* Navigation Header */}
         <div className="flex items-center justify-center py-8">
           <button
             onClick={() => handleYearChange("prev")}
@@ -108,6 +122,7 @@ export default function Team({ teamData, year }: TeamProps) {
           </button>
         </div>
 
+        {/* Content Area */}
         <div className="relative flex mt-8">
           <div className="w-full lg:max-w-[57.5%] px-4 sm:pl-8 md:pl-12 lg:pl-16">
             {teamData.data.length === 0 ? (
@@ -165,15 +180,17 @@ export default function Team({ teamData, year }: TeamProps) {
               ))
             )}
           </div>
+
+          {/* Desktop Preview Card */}
           {focusedCardImage && (
             <>
-              <div className="hidden lg:flex fixed left-[65%] bottom-[10%] flex-col items-center z-10">
+              <div className="hidden lg:flex fixed left-[70%] bottom-[10%] flex-col items-center z-10">
                 <motion.img
-                  style={{ height: "50vh", width: "35vh" }}
+                  style={{ height: "55vh", width: "40vh" }}
                   src={focusedCardImage}
                   alt="Focused Image"
                   loading="lazy"
-                  className="border-4 border-black h-[50vh] shadow-[0_0_30px_10px_rgba(6,90,123,1)]"
+                  className="border-4 border-black h-[55vh] shadow-[0_0_30px_10px_rgba(6,90,123,1)]"
                 />
                 <div className="mt-4 text-center h-12 flex items-center justify-center">
                   {focusedMember && focusedMember.linkedin ? (
@@ -188,6 +205,8 @@ export default function Team({ teamData, year }: TeamProps) {
                   ) : null}
                 </div>
               </div>
+
+              {/* Mobile Popup */}
               {mobilePopupOpen && focusedCardImage && (
                 <div className="lg:hidden fixed inset-0 backdrop-blur-lg bg-black/30 flex items-center justify-center z-50 p-4">
                   <div className="relative flex flex-col items-center">
