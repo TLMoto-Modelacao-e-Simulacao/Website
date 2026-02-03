@@ -50,7 +50,6 @@ export default function MyStatsChart({
         pt-8 px-4 md:px-5 pb-4
         rounded-2xl
         bg-black/80
-        border border-white/10
         shadow-xl
         text-white
         backdrop-blur-sm
@@ -66,11 +65,7 @@ export default function MyStatsChart({
             onClick={() => setActiveTab("stats")}
             aria-pressed={activeTab === "stats"}
             className={`flex-1 text-center rounded-tl-2xl rounded-tr-none rounded-b-none px-3 py-2 text-sm md:text-lg font-semibold transition-colors duration-150 ease-in-out
-              ${
-                activeTab === "stats"
-                  ? "bg-black/40 border-2 border-white/30"
-                  : "bg-transparent border border-white/10"
-              }
+              ${activeTab === "stats" ? "bg-black/40" : "bg-transparent border border-white/10"}
             `}
           >
             Stats

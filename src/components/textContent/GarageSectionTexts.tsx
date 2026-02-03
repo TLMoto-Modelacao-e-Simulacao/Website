@@ -80,8 +80,8 @@ const cardData = [
     detailsLink: "/garage/m04",
     video: "/videos/garage/details/desktop/marlboro/m04_marlboro.mp4",
     stats: [
-      { name: "Max Power", value: 57, max: 57, unit: "kW" },
-      { name: "Speed", value: 204, max: 204, unit: "km/h" },
+      { name: "Max Power", value: 57, max: 80, unit: "kW" },
+      { name: "Speed", value: 204, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
       { name: "Acceleration", value: 3.6, max: 3.6, unit: "s" },
       { name: "Torque", value: 120, max: 120, unit: "Nm" },
@@ -99,10 +99,11 @@ const cardData = [
     detailsLink: "/garage/m05",
     video: "/videos/garage/details/desktop/m05_default.mp4",
     stats: [
-      { name: "Power", value: 54, max: 80, unit: "hp" },
+      { name: "Max Power", value: 40.27, max: 80, unit: "kW" },
       { name: "Speed", value: 201, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
       { name: "Acceleration", value: 3.2, max: 3.2, unit: "s" },
+      { name: "Torque", value: 100, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM05e is the latest evolution in our electric motorcycle series, developed between 2022 and 2024. 
           Building on the successes of its predecessors, this model incorporates cutting-edge technology and design enhancements. 

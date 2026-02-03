@@ -18,7 +18,7 @@ interface MotorbikeData {
   };
 }
 
-const motorbikes: MotorbikeData[] = [
+const motorbikesData: MotorbikeData[] = [
   {
     id: 1,
     name: "TLM01i",
@@ -27,11 +27,7 @@ const motorbikes: MotorbikeData[] = [
     description:
       "Our first prototype, a combustion-powered racing motorcycle that marked the beginning of our journey in competitive motorsports.",
     image: "/images/garage/01.webp",
-    specs: {
-      power: "85 HP",
-      weight: "125 kg",
-      topSpeed: "180 km/h",
-    },
+    specs: { power: "39 HP", weight: "150 kg", topSpeed: "192 km/h" },
   },
   {
     id: 2,
@@ -41,11 +37,7 @@ const motorbikes: MotorbikeData[] = [
     description:
       "The transition to electric power. This prototype represents our commitment to sustainable racing technology and innovation.",
     image: "/images/garage/02.webp",
-    specs: {
-      power: "75 kW",
-      weight: "110 kg",
-      topSpeed: "165 km/h",
-    },
+    specs: { power: "39 kW", weight: "150 kg", topSpeed: "160 km/h" },
   },
   {
     id: 3,
@@ -55,13 +47,32 @@ const motorbikes: MotorbikeData[] = [
     description:
       "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
     image: "/images/garage/03.webp",
-    specs: {
-      power: "90 kW",
-      weight: "105 kg",
-      topSpeed: "185 km/h",
-    },
+    specs: { power: "36 kW", weight: "150 kg", topSpeed: "178 km/h" },
+  },
+  {
+    id: 4,
+    name: "TLM04e",
+    model: "Advanced Electric",
+    year: "2023",
+    description:
+      "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
+    image: "/images/garage/04.webp",
+    specs: { power: "57 kW", weight: "150 kg", topSpeed: "204 km/h" },
+  },
+  {
+    id: 5,
+    name: "TLM05e",
+    model: "Advanced Electric",
+    year: "2025",
+    description:
+      "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
+    image: "/images/garage/05.webp",
+    specs: { power: "40.27 kW", weight: "150 kg", topSpeed: "201 km/h" },
   },
 ];
+
+// --- CHANGE: Reverse the order here so it starts from 2025 ---
+const motorbikes = [...motorbikesData].reverse();
 
 export const MotorbikeCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -88,6 +99,7 @@ export const MotorbikeCarousel = () => {
           {motorbikes.map(motorbike => (
             <div key={motorbike.id} className="w-full flex-shrink-0">
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4 p-4 sm:p-6 lg:p-10 2xl:p-8">
+                {/* Image Section */}
                 <div className="relative w-full max-w-[240px] lg:max-w-[280px] mx-auto group">
                   <div className="relative w-[240px] h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden rounded-xl bg-transparent flex items-center justify-center">
                     <Image
@@ -100,23 +112,13 @@ export const MotorbikeCarousel = () => {
                       loading="lazy"
                       className="transition-transform duration-700 group-hover:scale-105 rounded-2xl"
                     />
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-transparent to-transparent pointer-events-none" />
                   </div>
-                  <div
-                    className="
-                      absolute 
-                      top-4 
-                      left-1/2 -translate-x-1/2
-                      sm:left-auto sm:-left-11
-                      md:text-3xl md:left-15 
-                      2xl:left-15 
-                      bg-[#39a6ff]/15 backdrop-blur-sm text-white text-background 
-                      px-4 py-2 rounded-full text-sm font-semibold
-                    "
-                  >
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-auto sm:-left-11 md:text-3xl md:left-15 2xl:left-15 bg-[#39a6ff]/15 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">
                     {motorbike.year}
                   </div>
                 </div>
+
+                {/* Content Section */}
                 <div className="flex flex-col justify-center items-center lg:items-start space-y-6 text-base md:text-lg lg:text-xl 2xl:text-lg text-center lg:text-left">
                   <div>
                     <h3 className="text-4xl lg:text-4xl 2xl:text-5xl font-bold text-[#39a6ff] mb-2">
@@ -129,6 +131,8 @@ export const MotorbikeCarousel = () => {
                       {motorbike.description}
                     </p>
                   </div>
+
+                  {/* Specs Grid */}
                   <div className="flex justify-center">
                     <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full md:w-auto 2xl:w-[30vw]">
                       {Object.entries(motorbike.specs).map(([label, value]) => (
@@ -136,7 +140,7 @@ export const MotorbikeCarousel = () => {
                           key={label}
                           className="bg-[#16263c]/70 backdrop-blur-sm rounded-lg p-2 sm:p-4 2xl:p-3 border border-[#39a6ff]/25 text-center"
                         >
-                          <div className="text-blue-300 text-xl sm:text-sm 2xl:text-xl font-medium">
+                          <div className="text-blue-300 text-xl sm:text-sm 2xl:text-xl font-medium uppercase">
                             {label}
                           </div>
                           <div className="text-lg sm:text-lg 2xl:text-xl font-bold text-white">
@@ -146,10 +150,11 @@ export const MotorbikeCarousel = () => {
                       ))}
                     </div>
                   </div>
+
                   <TransitionLink href="/garage">
                     <Button
                       variant="outline"
-                      className="w-fit border-[#39a6ff] bg-blue-1520 backdrop-blur-sm text-xl text-white hover:bg-[#39a6ff] hover:text-white transition-all duration-300 mt-5 2xl:text-lg cursor-pointer"
+                      className="w-fit border-[#39a6ff] bg-blue-1520 backdrop-blur-sm text-xl text-white hover:bg-[#39a6ff] hover:text-white transition-all duration-300 mt-5 cursor-pointer"
                     >
                       Learn More
                     </Button>
@@ -160,12 +165,12 @@ export const MotorbikeCarousel = () => {
           ))}
         </div>
 
-        {/* Nav buttons */}
+        {/* Navigation Buttons */}
         <Button
           variant="ghost"
           size="icon"
           onClick={prevSlide}
-          className="group absolute left-2 sm:left-4 2xl:left-2 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300"
+          className="group absolute left-2 sm:left-4 2xl:left-2 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
         >
           <ChevronLeft className="h-6 w-6 text-[#39a6ff] group-hover:text-white transition-colors duration-200" />
         </Button>
@@ -173,12 +178,13 @@ export const MotorbikeCarousel = () => {
           variant="ghost"
           size="icon"
           onClick={nextSlide}
-          className="group absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300"
+          className="group absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
         >
           <ChevronRight className="h-6 w-6 text-[#39a6ff] group-hover:text-white transition-colors duration-200" />
         </Button>
       </div>
 
+      {/* Pagination Dots */}
       <div className="flex justify-center space-x-3 mt-6">
         {motorbikes.map((_, index) => (
           <button
