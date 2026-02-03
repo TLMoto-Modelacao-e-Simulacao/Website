@@ -169,7 +169,7 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                           }}
                         />
                         <div className="mt-3 text-center">
-                          <p className="text-white text-sm sm:text-base font-medium mb-1 tracking-wide break-words">
+                          <p className="text-white text-sm sm:text-base font-bold mb-1 tracking-wide break-words">
                             {member.name}
                           </p>
                         </div>

@@ -2,296 +2,296 @@
   "1 - BOARD": [
     {
       "name": "Vasco Lopes",
-      "image": "1-vasco_lopes.jpg",
-      "cardImage": "1-vasco_lopes_carta.jpg",
+      "image": "1-vasco_lopes.webp",
+      "cardImage": "1-vasco_lopes_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Hugo Teixeira",
-      "image": "hugo_teixeira.jpg",
-      "cardImage": "hugo_teixeira_carta.jpg",
+      "image": "hugo_teixeira.webp",
+      "cardImage": "hugo_teixeira_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Miguel Goncalves",
-      "image": "miguel_goncalves.jpg",
-      "cardImage": "miguel_goncalves_carta.jpg",
+      "name": "Miguel Gonçalves",
+      "image": "miguel_goncalves.webp",
+      "cardImage": "miguel_goncalves_carta.webp",
       "linkedin": ""
     }
   ],
   "AERODYNAMICS AND COOLING": [
     {
-      "name": "Francisco Brazao",
-      "image": "1-francisco_brazao.jpg",
-      "cardImage": "1-francisco_brazao_carta.jpg",
+      "name": "Francisco Brazão",
+      "image": "1-francisco_brazao.webp",
+      "cardImage": "1-francisco_brazao_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Afonso Oliveira",
-      "image": "afonso_oliveira.jpg",
-      "cardImage": "afonso_oliveira_carta.jpg",
-      "linkedin": ""
-    },
-    {
-      "name": "Alexandre Pires",
-      "image": "alexandre_pires.jpg",
-      "cardImage": "alexandre_pires_carta.jpg",
-      "linkedin": ""
-    },
-    {
-      "name": "Antonio Rebelo",
-      "image": "antonio_rebelo.jpg",
-      "cardImage": "antonio_rebelo_carta.jpg",
+      "name": "António Rebelo",
+      "image": "2-antonio_rebelo.webp",
+      "cardImage": "2-antonio_rebelo_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Artur Cunha",
-      "image": "artur_cunha.jpg",
-      "cardImage": "artur_cunha_carta.jpg",
+      "image": "3-artur_cunha.webp",
+      "cardImage": "3-artur_cunha_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Eduardo Perdigão",
+      "image": "4-eduardo_perdigao.webp",
+      "cardImage": "4-eduardo_perdigao_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Afonso Oliveira",
+      "image": "afonso_oliveira.webp",
+      "cardImage": "afonso_oliveira_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Alexandre Pires",
+      "image": "alexandre_pires.webp",
+      "cardImage": "alexandre_pires_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Bernardo Silva",
-      "image": "bernardo_silva.jpg",
-      "cardImage": "bernardo_silva_carta.jpg",
+      "image": "bernardo_silva.webp",
+      "cardImage": "bernardo_silva_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Eduardo Perdigao",
-      "image": "eduardo_perdigao.jpg",
-      "cardImage": "eduardo_perdigao_carta.jpg",
-      "linkedin": ""
-    },
-    {
-      "name": "Mariana Patracolo",
-      "image": "mariana_patracolo.jpg",
-      "cardImage": "mariana_patracolo_carta.jpg",
+      "name": "Mariana Patracôlo",
+      "image": "mariana_patracolo.webp",
+      "cardImage": "mariana_patracolo_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Martim Carneiro",
-      "image": "martim_carneiro.jpg",
-      "cardImage": "martim_carneiro_carta.jpg",
+      "image": "martim_carneiro.webp",
+      "cardImage": "martim_carneiro_carta.webp",
       "linkedin": ""
     }
   ],
   "DYNAMICS": [
     {
-      "name": "Tiago Cilinio",
-      "image": "1-tiago_cilinio.jpg",
-      "cardImage": "1-tiago_cilinio_carta.jpg",
+      "name": "Tiago Cilínio",
+      "image": "1-tiago_cilinio.webp",
+      "cardImage": "1-tiago_cilinio_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Afonso Gaminha",
-      "image": "afonso_gaminha.jpg",
-      "cardImage": "afonso_gaminha_carta.jpg",
+      "image": "afonso_gaminha.webp",
+      "cardImage": "afonso_gaminha_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Carolina Dias",
-      "image": "carolina_dias.jpg",
-      "cardImage": "carolina_dias_carta.jpg",
+      "image": "carolina_dias.webp",
+      "cardImage": "carolina_dias_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Constanca Simoes",
-      "image": "constanca_simoes.jpg",
-      "cardImage": "constanca_simoes_carta.jpg",
+      "name": "Constança Simões",
+      "image": "constanca_simoes.webp",
+      "cardImage": "constanca_simoes_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Diogo Dias",
-      "image": "diogo_dias.jpg",
-      "cardImage": "diogo_dias_carta.jpg",
+      "image": "diogo_dias.webp",
+      "cardImage": "diogo_dias_carta.webp",
       "linkedin": ""
     }
   ],
   "ELECTRONICS": [
     {
       "name": "Rafael Santos",
-      "image": "1-rafael_santos.jpg",
-      "cardImage": "1-rafael_santos_carta.jpg",
+      "image": "1-rafael_santos.webp",
+      "cardImage": "1-rafael_santos_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Andre Santos",
-      "image": "andre_santos.jpg",
-      "cardImage": "andre_santos_carta.jpg",
+      "name": "André Santos",
+      "image": "andre_santos.webp",
+      "cardImage": "andre_santos_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Guilherme Dias",
-      "image": "guilherme_dias.jpg",
-      "cardImage": "guilherme_dias_carta.jpg",
+      "image": "guilherme_dias.webp",
+      "cardImage": "guilherme_dias_carta.webp",
       "linkedin": ""
     }
   ],
   "POWERTRAIN": [
     {
       "name": "Afonso Andrade",
-      "image": "afonso_andrade.jpg",
-      "cardImage": "afonso_andrade_carta.jpg",
+      "image": "afonso_andrade.webp",
+      "cardImage": "afonso_andrade_carta.webp",
       "linkedin": ""
     },
     {
       "name": "David Preto",
-      "image": "david_preto.jpg",
-      "cardImage": "david_preto_carta.jpg",
+      "image": "david_preto.webp",
+      "cardImage": "david_preto_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Ivo Fernandes",
-      "image": "ivo_fernandes.jpg",
-      "cardImage": "ivo_fernandes_carta.jpg",
+      "image": "ivo_fernandes.webp",
+      "cardImage": "ivo_fernandes_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Pedro Dinis",
-      "image": "pedro_dinis.jpg",
-      "cardImage": "pedro_dinis_carta.jpg",
+      "image": "pedro_dinis.webp",
+      "cardImage": "pedro_dinis_carta.webp",
       "linkedin": ""
     }
   ],
   "STRUCTURES": [
     {
       "name": "Pedro Neves",
-      "image": "1-pedro_neves.jpg",
-      "cardImage": "1-pedro_neves_carta.jpg",
+      "image": "1-pedro_neves.webp",
+      "cardImage": "1-pedro_neves_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Catarina Sá",
+      "image": "2-catarina_sa.webp",
+      "cardImage": "2-catarina_sa_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Afonso Monteiro",
-      "image": "afonso_monteiro.jpg",
-      "cardImage": "afonso_monteiro_carta.jpg",
+      "image": "afonso_monteiro.webp",
+      "cardImage": "afonso_monteiro_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Afonso Vieira",
-      "image": "afonso_vieira.jpg",
-      "cardImage": "afonso_vieira_carta.jpg",
+      "image": "afonso_vieira.webp",
+      "cardImage": "afonso_vieira_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Carlos Moco",
-      "image": "carlos_moco.jpg",
-      "cardImage": "carlos_moco_carta.jpg",
-      "linkedin": ""
-    },
-    {
-      "name": "Catarina Sa",
-      "image": "catarina_sa.jpg",
-      "cardImage": "catarina_sa_carta.jpg",
+      "name": "Carlos Moço",
+      "image": "carlos_moco.webp",
+      "cardImage": "carlos_moco_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Duarte Ferreira",
-      "image": "duarte_ferreira.jpg",
-      "cardImage": "duarte_ferreira_carta.jpg",
+      "image": "duarte_ferreira.webp",
+      "cardImage": "duarte_ferreira_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Francisco Abrantes",
-      "image": "francisco_abrantes.jpg",
-      "cardImage": "francisco_abrantes_carta.jpg",
+      "image": "francisco_abrantes.webp",
+      "cardImage": "francisco_abrantes_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Gustavo Curado",
-      "image": "gustavo_curado.jpg",
-      "cardImage": "gustavo_curado_carta.jpg",
+      "image": "gustavo_curado.webp",
+      "cardImage": "gustavo_curado_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Gustavo Guerreiro",
-      "image": "gustavo_guerreiro.jpg",
-      "cardImage": "gustavo_guerreiro_carta.jpg",
+      "image": "gustavo_guerreiro.webp",
+      "cardImage": "gustavo_guerreiro_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Luis Goncalves",
-      "image": "luis_goncalves.jpg",
-      "cardImage": "luis_goncalves_carta.jpg",
+      "name": "Luís Gonçalves",
+      "image": "luis_goncalves.webp",
+      "cardImage": "luis_goncalves_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Martim Silva",
-      "image": "martim_silva.jpg",
-      "cardImage": "martim_silva_carta.jpg",
+      "image": "martim_silva.webp",
+      "cardImage": "martim_silva_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Miguel Alegre",
-      "image": "miguel_alegre.jpg",
-      "cardImage": "miguel_alegre_carta.jpg",
+      "image": "miguel_alegre.webp",
+      "cardImage": "miguel_alegre_carta.webp",
       "linkedin": ""
     }
   ],
   "SOFTWARE": [
     {
       "name": "Francisco Abreu",
-      "image": "francisco_abreu.jpg",
-      "cardImage": "francisco_abreu_carta.jpg",
+      "image": "francisco_abreu.webp",
+      "cardImage": "francisco_abreu_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Jorge Santos",
-      "image": "jorge_santos.jpg",
-      "cardImage": "jorge_santos_carta.jpg",
+      "image": "jorge_santos.webp",
+      "cardImage": "jorge_santos_carta.webp",
       "linkedin": ""
     }
   ],
   "HUMAN RESOURCES": [
     {
-      "name": "Joao Silva",
-      "image": "joao_silva.jpg",
-      "cardImage": "joao_silva_carta.jpg",
+      "name": "João Silva",
+      "image": "joao_silva.webp",
+      "cardImage": "joao_silva_carta.webp",
       "linkedin": ""
     }
   ],
   "MARKETING AND DESIGN": [
     {
       "name": "Rita Pulido",
-      "image": "1-rita_pulido.jpg",
-      "cardImage": "1-rita_pulido_carta.jpg",
+      "image": "1-rita_pulido.webp",
+      "cardImage": "1-rita_pulido_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Joao Pinto",
-      "image": "joao_pinto.jpg",
-      "cardImage": "joao_pinto_carta.jpg",
+      "name": "João Pinto",
+      "image": "joao_pinto.webp",
+      "cardImage": "joao_pinto_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Joao Santos",
-      "image": "joao_santos.jpg",
-      "cardImage": "joao_santos_carta.jpg",
+      "name": "João Santos",
+      "image": "joao_santos.webp",
+      "cardImage": "joao_santos_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Marta Vaz",
-      "image": "marta_vaz.jpg",
-      "cardImage": "marta_vaz_carta.jpg",
+      "image": "marta_vaz.webp",
+      "cardImage": "marta_vaz_carta.webp",
       "linkedin": ""
     }
   ],
   "MANAGEMENT": [
     {
       "name": "Pedro Almeida",
-      "image": "1-pedro_almeida.jpg",
-      "cardImage": "1-pedro_almeida_carta.jpg",
+      "image": "1-pedro_almeida.webp",
+      "cardImage": "1-pedro_almeida_carta.webp",
       "linkedin": ""
     },
     {
       "name": "Margarida Monteiro",
-      "image": "margarida_monteiro.jpg",
-      "cardImage": "margarida_monteiro_carta.jpg",
+      "image": "margarida_monteiro.webp",
+      "cardImage": "margarida_monteiro_carta.webp",
       "linkedin": ""
     },
     {
-      "name": "Tomas Redondo",
-      "image": "tomas_redondo.jpg",
-      "cardImage": "tomas_redondo_carta.jpg",
+      "name": "Tomás Redondo",
+      "image": "tomas_redondo.webp",
+      "cardImage": "tomas_redondo_carta.webp",
       "linkedin": ""
     }
   ]
