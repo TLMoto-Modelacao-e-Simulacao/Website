@@ -60,9 +60,9 @@ const sectionStyle =
 
 const AboutSection: React.FC = () => {
   const stats = [
-    { icon: <Zap />, title: "Members", to: 70, suffix: "+", delay: 0 },
+    { icon: <Zap />, title: "Members", to: 53, suffix: "+", delay: 0 },
     { icon: <Target />, title: "Competitions", to: 10, suffix: "+", delay: 0.2 },
-    { icon: <Lightbulb />, title: "Prototypes", to: 4, suffix: "+", delay: 0.4 },
+    { icon: <Lightbulb />, title: "Prototypes", to: 5, suffix: "+", delay: 0.4 },
   ] as const;
 
   const backgroundRelative = "/images/home/team_background.webp";

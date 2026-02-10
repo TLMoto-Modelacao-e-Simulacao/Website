@@ -53,6 +53,7 @@
   }
 }
 
+html,
 body {
   background: var(--background);
   color: var(--foreground);
@@ -60,6 +61,7 @@ body {
   transition-property: opacity, background, transform, filter;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
+  overflow-x: hidden;
 }
 
 @theme inline {

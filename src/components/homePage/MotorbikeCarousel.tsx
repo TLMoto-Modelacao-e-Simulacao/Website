@@ -27,7 +27,7 @@ const motorbikesData: MotorbikeData[] = [
     description:
       "Our first prototype, a combustion-powered racing motorcycle that marked the beginning of our journey in competitive motorsports.",
     image: "/images/garage/01.webp",
-    specs: { power: "39 HP", weight: "150 kg", topSpeed: "192 km/h" },
+    specs: { power: "39 HP", weight: "100 kg", topSpeed: "192 km/h" },
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const motorbikesData: MotorbikeData[] = [
     description:
       "The transition to electric power. This prototype represents our commitment to sustainable racing technology and innovation.",
     image: "/images/garage/02.webp",
-    specs: { power: "39 kW", weight: "150 kg", topSpeed: "160 km/h" },
+    specs: { power: "39 kW", weight: "152 kg", topSpeed: "160 km/h" },
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ const motorbikesData: MotorbikeData[] = [
     model: "Advanced Electric",
     year: "2021",
     description:
-      "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
+      "Born in the midst of the pandemic, the TLM03e was a milestone of resilience and innovation, debuting the first carbon fairings made in-house by TLMoto.",
     image: "/images/garage/03.webp",
     specs: { power: "36 kW", weight: "150 kg", topSpeed: "178 km/h" },
   },
@@ -55,9 +55,9 @@ const motorbikesData: MotorbikeData[] = [
     model: "Advanced Electric",
     year: "2023",
     description:
-      "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
+      "The TLM04e marked a new era at TLMoto with the implementation of the first Battery Pack entirely developed by the team itself.",
     image: "/images/garage/04.webp",
-    specs: { power: "57 kW", weight: "150 kg", topSpeed: "204 km/h" },
+    specs: { power: "57 kW", weight: "160 kg", topSpeed: "204 km/h" },
   },
   {
     id: 5,
@@ -65,9 +65,9 @@ const motorbikesData: MotorbikeData[] = [
     model: "Advanced Electric",
     year: "2025",
     description:
-      "Our latest electric racing machine featuring cutting-edge technology and aerodynamic design for maximum performance.",
+      "The TLM05e is the team's latest prototype, introduced in 2025, securing a place in the global top 20 at MotoStudent 2025.",
     image: "/images/garage/05.webp",
-    specs: { power: "40.27 kW", weight: "150 kg", topSpeed: "201 km/h" },
+    specs: { power: "40 kW", weight: "150 kg", topSpeed: "201 km/h" },
   },
 ];
 
@@ -89,8 +89,40 @@ export const MotorbikeCarousel = () => {
     setCurrentIndex(index);
   };
 
+  // --- Swipe Logic ---
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null); // Reset touchEnd to avoid false positives
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   return (
-    <div className="relative w-[100%] xl:max-w-6xl 2xl:max-w-5xl mx-auto">
+    <div 
+      className="relative w-[100%] xl:max-w-6xl 2xl:max-w-5xl mx-auto"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#111827]/90 via-[#1e293b]/80 to-[#0a192f]/80 border border-[#39a6ff]/10">
         <div
           className="flex transition-transform duration-500 ease-electric"
@@ -138,13 +170,17 @@ export const MotorbikeCarousel = () => {
                       {Object.entries(motorbike.specs).map(([label, value]) => (
                         <div
                           key={label}
-                          className="bg-[#16263c]/70 backdrop-blur-sm rounded-lg p-2 sm:p-4 2xl:p-3 border border-[#39a6ff]/25 text-center"
+                          className="bg-[#16263c]/70 backdrop-blur-sm rounded-lg p-2 sm:p-4 2xl:p-3 border border-[#39a6ff]/25 text-center flex flex-col justify-between"
                         >
-                          <div className="text-blue-300 text-xl sm:text-sm 2xl:text-xl font-medium uppercase">
-                            {label}
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="text-blue-300 sm:text-sm lg:text-2xl font-medium uppercase">
+                              {label.replace(/([A-Z])/g, ' $1').trim()}
+                            </div>
                           </div>
-                          <div className="text-lg sm:text-lg 2xl:text-xl font-bold text-white">
-                            {value}
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="text-lg sm:text-lg 2xl:text-xl font-bold text-white">
+                              {value}
+                            </div>
                           </div>
                         </div>
                       ))}
