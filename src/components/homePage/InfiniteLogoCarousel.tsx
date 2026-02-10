@@ -31,7 +31,7 @@ const carouselTiers: CarouselTier[] = [
     borderColor: "border-diamond-tier",
     glowColor: "shadow-diamond",
     speed: "120s",
-    titleColor: "#8be9ff",
+    titleColor: "#43a5be",
     lighterBg: true,
   },
   {
@@ -40,7 +40,7 @@ const carouselTiers: CarouselTier[] = [
     borderColor: "border-gold-tier",
     glowColor: "shadow-gold",
     speed: "120s",
-    titleColor: "#FFD700",
+    titleColor: "#ffb13c",
     lighterBg: true,
   },
   {
@@ -49,7 +49,7 @@ const carouselTiers: CarouselTier[] = [
     borderColor: "border-silver-tier",
     glowColor: "shadow-silver",
     speed: "140s",
-    titleColor: "#C0C0C0",
+    titleColor: "#a3a3a3",
     lighterBg: true,
   },
   {
@@ -58,9 +58,27 @@ const carouselTiers: CarouselTier[] = [
     borderColor: "border-bronze-tier",
     glowColor: "shadow-bronze",
     speed: "160s",
-    titleColor: "#CD7F32",
+    titleColor: "#b87333",
     lighterBg: true,
   },
+  {
+    title: "Copper Partners",
+    logos: mapSponsors(sponsorInformation.copper),
+    borderColor: "border-copper-tier",
+    glowColor: "shadow-copper",
+    speed: "180s",
+    titleColor: "#8a1b1b",
+    lighterBg: true,
+  },
+  {
+    title : "Partners",
+    logos: mapSponsors(sponsorInformation.partners),
+    borderColor: "border-partner-tier",
+    glowColor: "shadow-partner",
+    speed: "200s",
+    titleColor: "#ffffff", // TODO - change to match sponsors 
+    lighterBg: true,
+  }
 ];
 
 interface LogoItemProps {

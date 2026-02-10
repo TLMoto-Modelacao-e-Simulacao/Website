@@ -8,7 +8,7 @@ export const aboutUsText = (
 export const animatedNumbers = [
   { label: "MEMBERS", value: 57 },
   { label: "COMPETITIONS", value: 8 },
-  { label: "PROTORYPES", value: 3 },
+  { label: "PROTORYPES", value: 5 },
 ];
 
 export const competitionText = (

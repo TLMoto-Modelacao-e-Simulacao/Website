@@ -5,19 +5,7 @@ import Image from "next/image";
 import { withBasePath } from "@/src/utils/basePath";
 
 const HeroSection = () => {
-  const [showVideo, setShowVideo] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.readyState === "complete") {
-        setShowVideo(true);
-      } else {
-        const onLoad = () => setShowVideo(true);
-        window.addEventListener("load", onLoad);
-        return () => window.removeEventListener("load", onLoad);
-      }
-    }
-  }, []);
 
   const scrollToNext = () => {
     const nextSection = document.getElementById("section2");
@@ -40,30 +28,16 @@ const HeroSection = () => {
       viewport={{ once: false, amount: 0.7 }}
       className="relative bg-black h-screen text-white flex flex-col justify-center items-center overflow-hidden"
     >
-      {showVideo ? (
-        <video
-          className="hidden xl:block absolute inset-0 w-full h-full object-cover filter z-0"
-          muted
-          autoPlay
-          playsInline
-          disablePictureInPicture
-          poster={posterSrc}
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      ) : (
-        <div className="hidden xl:block absolute inset-0 w-full h-full z-0">
-          <Image
-            src={posterRelative}
-            alt="TLMoto background"
-            fill
-            style={{ objectFit: "cover" }}
-            quality={70}
-            sizes="80vw"
-            className="filter"
-          />
-        </div>
-      )}
+      <video
+        className="hidden xl:block absolute inset-0 w-full h-full object-cover filter z-0"
+        muted
+        autoPlay
+        playsInline
+        disablePictureInPicture
+        poster={posterSrc}
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
       <div
         className="block xl:hidden absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center z-0"
         style={{ backgroundImage: `url('${posterSrc}')` }}

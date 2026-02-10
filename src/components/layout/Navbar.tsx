@@ -78,7 +78,7 @@ export default function MyNavbar() {
 
   return (
     <nav
-      className={`h-[14vh] left-0 top-0 z-1000 w-screen fixed text-[clamp(2vh,2vw,5vh)] 
+      className={`h-[14vh] left-0 top-0 z-1000 w-full fixed text-[clamp(2vh,2vw,5vh)] 
     transition-all ${isOpen ? "duration-0" : "duration-300"} 
     ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
       aria-label="Main Navigation"
@@ -133,8 +133,8 @@ export default function MyNavbar() {
             tabIndex={0}
           >
             <svg
-              width={80}
-              height={80}
+              width={48}
+              height={48}
               fill="none"
               stroke="#ffffff"
               strokeWidth={2}
@@ -149,14 +149,14 @@ export default function MyNavbar() {
             </svg>
           </button>
           {/* Center logo */}
-          <InternalNavigationLink path="/" className="h-full flex items-center" ariaLabel="Home">
+          <InternalNavigationLink path="/" className="h-full flex items-center max-[300px]:hidden" ariaLabel="Home">
             <Image
               src="/images/home/tlmoto_principal.webp"
               alt="Home Logo"
               width={130}
               height={70}
               priority
-              className="h-[70%] w-auto"
+              className="h-[50%] w-auto"
             />
           </InternalNavigationLink>
         </div>

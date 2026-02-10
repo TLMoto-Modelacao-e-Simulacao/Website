@@ -36,7 +36,7 @@ const CompetitionsSection = () => {
       type: "International",
       description:
         "An engineering competition where university teams develop electric motorcycles and compete in various challenges, including MS1 (project evaluation) and MS2 (prototype testing) phases.",
-      achievements: ["Debut in 2014", "Electric category focus", "Continuous participation"],
+      achievements: ["Best Portuguese Team", "20th Overall", "8th Best Design"],
       status: "Annual",
       icon: <Trophy className="w-6 h-6" />,
     },
@@ -46,7 +46,7 @@ const CompetitionsSection = () => {
       type: "National",
       description:
         "A professional racing competition that takes place in Portugal, where we test our prototypes against established racing teams.",
-      achievements: ["Professional level", "Real-world testing", "Performance validation"],
+      achievements: ["3rd Place 2020", "Real-world testing", "Performance validation"],
       status: "Seasonal",
       icon: <MapPin className="w-6 h-6" />,
     },
@@ -165,8 +165,8 @@ const CompetitionsSection = () => {
                     {competition.description}
                   </p>
 
-                  <div className="space-y-4 2xl:space-y-5">
-                    <h4 className="text-3xl sm:text-2xl 2xl:text-3xl font-semibold bg-gradient-to-r from-[#39a6ff] to-deepskyblue bg-clip-text text-transparent">
+                  <div className="space-y-4 2xl:space-y-5 text-left">
+                    <h4 className="text-2xl sm:text-2xl 2xl:text-3xl font-semibold text-[#39a6ff] sm:bg-gradient-to-r sm:from-[#39a6ff] sm:to-deepskyblue sm:bg-clip-text sm:text-transparent">
                       Key Achievements:
                     </h4>
                     <div className="flex flex-wrap gap-3 2xl:gap-4">
