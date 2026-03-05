@@ -390,5 +390,25 @@
       "cardImage": "francisco_simoes_carta.webp",
       "linkedin": ""
     }
+  ],
+  "SPONSORS": [
+    {
+      "name": "André Marques",
+      "image": "1-andre_marques.webp",
+      "cardImage": "1-andre_marques_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Afonso Silva",
+      "image": "afonso_silva.webp",
+      "cardImage": "afonso_silva_carta.webp",
+      "linkedin": ""
+    },
+    {
+      "name": "Leonor Tavares",
+      "image": "leonor_tavares.webp",
+      "cardImage": "leonor_tavares_carta.webp",
+      "linkedin": ""
+    }
   ]
 }

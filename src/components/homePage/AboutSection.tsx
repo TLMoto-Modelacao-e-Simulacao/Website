@@ -153,7 +153,7 @@ const AboutSection: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-xl md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold mb-2 sm:mb-3 lg:mb-2 text-[#39a6ff] uppercase tracking-[.20em]">
+                <h3 className="text-2xl sm:text-xl md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold mb-2 sm:mb-3 lg:mb-2 text-[#39a6ff] uppercase tracking-[.10em]">
                   {title}
                 </h3>
 

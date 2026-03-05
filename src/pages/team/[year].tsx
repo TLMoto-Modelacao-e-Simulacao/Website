@@ -95,26 +95,28 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
 
   return (
     <MyDefaultPage>
-      <div className="relative min-h-screen pt-24">
-        {/* Navigation Header */}
-        <div className="flex items-center justify-center py-8">
+      {/* pt-24 -> 10vh */}
+      <div className="relative min-h-screen pt-[10vh]">
+        {/* Navigation Header - py-8 -> 3.5vh */}
+        <div className="flex items-center justify-center py-[3.5vh] h-[27vh]">
           <button
             onClick={() => handleYearChange("prev")}
-            className={`px-4 py-2 text-white text-5xl font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg  sm:text-[9vw] md:text-[4vw] lg:text-[4vw] ${
               currentIndex <= 0 ? "invisible" : ""
             }`}
           >
             {"<"}
           </button>
 
-          <h1 className="mx-4 sm:mx-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider">
+          {/* Font sizes: 3xl-6xl translated to 2.5vw-5vw */}
+          <h1 className="mx-[2vw] text-[9vw] sm:text-[9vw] md:text-[4vw] lg:text-[4vw] font-bold uppercase tracking-wider ">
             <span className="text-white">Team </span>
             <span className="text-blue-500">{year}</span>
           </h1>
 
           <button
             onClick={() => handleYearChange("next")}
-            className={`px-4 py-2 text-white text-5xl font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg sm:text-[9vw] md:text-[4vw] lg:text-[4vw] ${
               currentIndex >= AVAILABLE_YEARS.length - 1 ? "invisible" : ""
             }`}
           >
@@ -122,44 +124,41 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
           </button>
         </div>
 
-        {/* Content Area */}
-        <div className="relative flex mt-8">
-          <div className="w-full lg:max-w-[57.5%] px-4 sm:pl-8 md:pl-12 lg:pl-16">
+        {/* Content Area - mt-8 -> 4vh */}
+        <div className="relative flex mt-[4vh]">
+          <div className="w-full lg:max-w-[57.5vw] px-[2vw] sm:pl-[4vw] md:pl-[6vw] lg:pl-[8vw]">
             {teamData.data.length === 0 ? (
-              <p className="text-white text-center">No data available for {year}</p>
+              <p className="text-white text-center text-[1.5vw]">No data available for {year}</p>
             ) : (
               teamData.data.map(({ name, members }) => (
-                <div key={name} className="mb-20">
-                  <div className="flex items-center justify-center md:justify-start pl-0 sm:pl-2 lg:pl-2 rounded-xl transition-all duration-300 -mt-12">
+                <div key={name} className="mb-[10vh]">
+                  {/* -mt-12 -> -5vh */}
+                  <div className="flex items-center justify-center md:justify-start pl-0 rounded-[1vw] transition-all duration-300 -mt-[5vh]">
                     <Image
                       src="/images/team/raio.webp"
                       alt="Team Icon"
                       width={40}
                       height={40}
-                      className="w-10 h-10 mr-4 object-contain"
+                      className="w-[6vw] h-[6vh] mr-[1vw] object-contain sm:w-[6vw] md:w-[3vw] lg:w-[3vw] sm:h-[6vh] md:h-[3vh] lg:h-[3vh]"
                     />
-                    <h2 className="text-white text-2xl font-bold uppercase tracking-[2.5px] mb-0">
+                    <h2 className="text-white text-[5vw] font-bold uppercase tracking-[0.2vw] mb-0 sm:text-[5vw] md:text-[2vw] lg:text-[2vw]">
                       {name}
                     </h2>
                   </div>
 
-                  <div className="flex flex-wrap gap-1 sm:gap-2 md:gap-3 lg:gap-4 mt-1 justify-center sm:justify-start">
+                  {/* gap-4 -> 1.5vw, mt-1 -> 0.5vh */}
+                  <div className="flex flex-wrap gap-[1.5vw] mt-[0.5vh] justify-center md:justify-start">
                     {members.map((member, index) => (
                       <div
                         key={`${member.image}-${index}`}
-                        className="text-center flex-shrink-0"
-                        style={{
-                          width: "clamp(80px, 12vw, 120px)",
-                        }}
+                        className="text-center flex-shrink-0 w-[25vw] sm:w-[20vw] md:w-[3vw] lg:w-[9vw]"
                       >
                         <motion.img
                           src={member.image}
                           alt={member.name}
-                          width={125}
-                          height={125}
                           loading="lazy"
-                          className={`cursor-pointer transition-all duration-300 rounded-2xl hover:scale-105 w-full aspect-square object-cover ${
-                            focusedImage === member.image ? "border-4 border-red-800" : ""
+                          className={`w-full cursor-pointer transition-all duration-300 rounded-[1.5vw] hover:scale-105  aspect-square object-cover ${
+                            focusedImage === member.image ? "border-[0.2vw] border-red-800" : ""
                           }`}
                           onClick={() => {
                             setFocusedImage(member.image);
@@ -168,8 +167,8 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                             setMobilePopupOpen(true);
                           }}
                         />
-                        <div className="mt-3 text-center">
-                          <p className="text-white text-sm sm:text-base font-bold mb-1 tracking-wide break-words">
+                        <div className="mt-[1vh] text-center">
+                          <p className="text-white text-[4vw] sm:text-[1.5vw] md:text-[1.5vw] lg:text-[1.5vw] font-bold mb-[0.5vh] tracking-wide break-words">
                             {member.name}
                           </p>
                         </div>
@@ -184,21 +183,21 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
           {/* Desktop Preview Card */}
           {focusedCardImage && (
             <>
-              <div className="hidden lg:flex fixed left-[70%] bottom-[10%] flex-col items-center z-10">
+              <div className="hidden lg:flex fixed left-[70vw] bottom-[10vh] flex-col items-center z-10">
                 <motion.img
                   style={{ height: "55vh", width: "40vh" }}
                   src={focusedCardImage}
                   alt="Focused Image"
                   loading="lazy"
-                  className="border-4 border-black h-[55vh] shadow-[0_0_30px_10px_rgba(6,90,123,1)]"
+                  className="border-[0.3vw] border-black h-[55vh] shadow-[0_0_2vw_0.5vw_rgba(6,90,123,1)]"
                 />
-                <div className="mt-4 text-center h-12 flex items-center justify-center">
+                <div className="mt-[2vh] text-center h-[6vh] flex items-center justify-center">
                   {focusedMember && focusedMember.linkedin ? (
                     <a
                       href={focusedMember.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block px-6 py-3 bg-[#0077b5] text-white font-semibold rounded-lg transition-all duration-300 hover:bg-[#005885] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[rgba(0,119,181,0.3)]"
+                      className="inline-block px-[2vw] py-[1.5vh] bg-[#0077b5] text-white text-[0.9vw] font-semibold rounded-[0.5vw] transition-all duration-300 hover:bg-[#005885] hover:-translate-y-[0.2vh] hover:shadow-lg"
                     >
                       LinkedIn
                     </a>
@@ -208,18 +207,18 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
 
               {/* Mobile Popup */}
               {mobilePopupOpen && focusedCardImage && (
-                <div className="lg:hidden fixed inset-0 backdrop-blur-lg bg-black/30 flex items-center justify-center z-50 p-4">
+                <div className="lg:hidden fixed inset-0 backdrop-blur-lg bg-black/30 flex items-center justify-center z-50 p-[4vw]">
                   <div className="relative flex flex-col items-center">
                     <motion.img
                       style={{ height: "80vh", width: "60vw" }}
                       src={focusedCardImage}
                       alt="Focused Image"
                       loading="lazy"
-                      className="w-full h-auto max-h-[80vh] max-w-[60vw] object-contain"
+                      className="w-[60vw] h-[80vh] object-contain"
                     />
 
                     <div
-                      className={`flex w-full mt-3 px-2 ${
+                      className={`flex w-full mt-[2vh] px-[2vw] ${
                         focusedMember ? "justify-between" : "justify-center"
                       }`}
                     >
@@ -229,7 +228,7 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                           setFocusedMember(null);
                           setMobilePopupOpen(false);
                         }}
-                        className="px-4 py-2 bg-gray-600 text-white font-medium text-sm rounded-lg transition-all duration-300 hover:bg-gray-500"
+                        className="px-[4vw] py-[1.5vh] bg-gray-600 text-white font-medium text-[3.5vw] rounded-[1.5vw] transition-all duration-300 hover:bg-gray-500"
                       >
                         Close
                       </button>
@@ -238,7 +237,7 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                           href={focusedMember.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 bg-[#0077b5] text-white font-medium text-sm rounded-lg transition-all duration-300 hover:bg-[#005885]"
+                          className="px-[4vw] py-[1.5vh] bg-[#0077b5] text-white font-medium text-[3.5vw] rounded-[1.5vw] transition-all duration-300 hover:bg-[#005885]"
                         >
                           LinkedIn
                         </a>

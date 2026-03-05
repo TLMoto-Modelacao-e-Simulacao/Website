@@ -21,7 +21,7 @@ export default function FAQ() {
             <span className="text-xl">{openIndex === index ? "-" : "+"}</span>
           </button>
           {openIndex === index && (
-            <p className="mt-2.5 text-base text-white/80 pl-2.5">{faq.answer}</p>
+            <p className="mt-2.5 text-base font-bold text-white/80 pl-2.5">{faq.answer}</p>
           )}
         </div>
       ))}

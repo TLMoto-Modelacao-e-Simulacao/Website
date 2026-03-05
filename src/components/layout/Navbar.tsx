@@ -149,14 +149,18 @@ export default function MyNavbar() {
             </svg>
           </button>
           {/* Center logo */}
-          <InternalNavigationLink path="/" className="h-full flex items-center max-[300px]:hidden" ariaLabel="Home">
+          <InternalNavigationLink
+            path="/"
+            className="h-full flex items-center max-[300px]:hidden"
+            ariaLabel="Home"
+          >
             <Image
               src="/images/home/tlmoto_principal.webp"
               alt="Home Logo"
               width={130}
-              height={70}
+              height={80}
               priority
-              className="h-[50%] w-auto"
+              className="h-[70%] w-auto"
             />
           </InternalNavigationLink>
         </div>
