@@ -49,6 +49,7 @@ function generateTeamDataForYear(year) {
     'MANAGEMENT',
     'SPONSORSHIP',
     'LOGISTICS',
+    'SPONSORS',
   ];
 
   const categories = fs

@@ -5,8 +5,6 @@ import Image from "next/image";
 import { withBasePath } from "@/src/utils/basePath";
 
 const HeroSection = () => {
-
-
   const scrollToNext = () => {
     const nextSection = document.getElementById("section2");
     if (nextSection) {

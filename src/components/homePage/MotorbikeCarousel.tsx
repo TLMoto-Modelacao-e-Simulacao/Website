@@ -117,7 +117,7 @@ export const MotorbikeCarousel = () => {
   };
 
   return (
-    <div 
+    <div
       className="relative w-[100%] xl:max-w-6xl 2xl:max-w-5xl mx-auto"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
@@ -174,7 +174,7 @@ export const MotorbikeCarousel = () => {
                         >
                           <div className="flex-1 flex items-center justify-center">
                             <div className="text-blue-300 sm:text-sm lg:text-2xl font-medium uppercase">
-                              {label.replace(/([A-Z])/g, ' $1').trim()}
+                              {label.replace(/([A-Z])/g, " $1").trim()}
                             </div>
                           </div>
                           <div className="flex-1 flex items-center justify-center">
@@ -206,7 +206,7 @@ export const MotorbikeCarousel = () => {
           variant="ghost"
           size="icon"
           onClick={prevSlide}
-          className="group absolute left-2 sm:left-4 2xl:left-2 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
+          className="group absolute left-2 sm:left-4 2xl:left-2 top-[40%] sm:top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
         >
           <ChevronLeft className="h-6 w-6 text-[#39a6ff] group-hover:text-white transition-colors duration-200" />
         </Button>
@@ -214,7 +214,7 @@ export const MotorbikeCarousel = () => {
           variant="ghost"
           size="icon"
           onClick={nextSlide}
-          className="group absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
+          className="group absolute right-2 sm:right-4 top-[40%] sm:top-1/2 -translate-y-1/2 bg-[#16263c]/80 backdrop-blur-sm border border-[#39a6ff]/25 hover:bg-[#39a6ff] hover:text-white transition-all duration-300 z-10"
         >
           <ChevronRight className="h-6 w-6 text-[#39a6ff] group-hover:text-white transition-colors duration-200" />
         </Button>

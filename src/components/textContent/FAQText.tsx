@@ -7,7 +7,7 @@ export const faqs = [
   {
     question: "How is the team organized?",
     answer:
-      "TLMoto is divided into technical departments: Aerodynamics & Cooling, Dynamics, Electronics, Powertrain and Structures; and non-technical departments: Human Resources, Marketing & Design and Management. ",
+      "TLMoto is divided into technical departments: Aerodynamics & Cooling, Vehicle Dynamics, Electronics, Powertrain, Structures and Software; and operational departments: Human Resources, Marketing & Design and Management. ",
   },
   {
     question: "Can I visit TLMoto's facilities?",
@@ -17,7 +17,7 @@ export const faqs = [
   {
     question: "How can I join the team?",
     answer:
-      "Once a year, we initiate a recruitment process, and you can apply during this period! If it’s not currently open, you can still send us a spontaneous application via email or social media.",
+      "Twice a year, we initiate a recruitment process, and you can apply during this period! If it’s not currently open, you can still send us a spontaneous application via email or social media.",
   },
   {
     question: "How long does the recruitment process last?",

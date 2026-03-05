@@ -40,13 +40,13 @@ export const PrototypesSection = () => {
     >
       <div className="absolute inset-0 bg-black/40 pointer-events-none z-0" />
 
-      <div className="lg:max-w-[65rem] max-w-[95rem] mx-auto px-4 sm:px-8 lg:px-12 2xl:px-6 relative z-10">
+      <div className="lg:max-w-[65rem] max-w-[95rem] sm:mx-auto px-4 sm:px-8 lg:px-12 2xl:px-6 relative z-10">
         <motion.div
           className="max-w-7xl mx-auto px-0 text-center space-y-4 lg:space-y-6 2xl:space-y-4"
           variants={containerVariants}
         >
           <motion.h2
-            className="text-6xl sm:text-7xl md:text-6xl lg:text-8xl xl:text-7xl 2xl:text-8xl text-[#39a6ff]"
+            className="text-5xl sm:text-7xl md:text-6xl lg:text-8xl xl:text-7xl 2xl:text-8xl text-[#39a6ff]"
             variants={itemVariants}
           >
             <span className="text-[#39a6ff] text-glow">PROTOTYPES</span>
@@ -60,7 +60,7 @@ export const PrototypesSection = () => {
             variants={itemVariants}
           >
             From our first combustion prototype to our latest electric racing machines, explore the
-            evolution of TLMoto`s engineering excellence.
+            evolution of TLMoto's engineering excellence.
           </motion.p>
         </motion.div>
         <MotorbikeCarousel />

@@ -71,14 +71,14 @@ const carouselTiers: CarouselTier[] = [
     lighterBg: true,
   },
   {
-    title : "Partners",
+    title: "Partners",
     logos: mapSponsors(sponsorInformation.partners),
     borderColor: "border-partner-tier",
     glowColor: "shadow-partner",
     speed: "200s",
-    titleColor: "#ffffff", // TODO - change to match sponsors 
+    titleColor: "#ffffff", // TODO - change to match sponsors
     lighterBg: true,
-  }
+  },
 ];
 
 interface LogoItemProps {

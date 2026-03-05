@@ -75,7 +75,7 @@ const CompetitionsSection = () => {
             "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 85%, #000 98%, #000 100%)",
         }}
       />
-      <div className="max-w-[95rem] mx-auto px-4 sm:px-8 lg:px-12 2xl:px-6">
+      <div className="max-w-[95rem]  px-4 sm:px-8 lg:px-12 2xl:px-6">
         <motion.div
           className="relative z-10 max-w-7xl mx-auto px-0 text-center space-y-4 lg:space-y-6 2xl:space-y-4"
           variants={containerVariants}
@@ -87,7 +87,7 @@ const CompetitionsSection = () => {
             className="text-5xl sm:text-7xl md:text-6xl lg:text-8xl xl:text-7xl 2xl:text-8xl text-[#39a6ff]"
             variants={itemVariants}
           >
-            <span className="hero-text">COMPETITIONS</span>
+            <span className="hero-text ">COMPETITIONS</span>
           </motion.h2>
           <motion.div
             className="w-18 h-1 bg-gradient-to-r from-electric to-electric-glow mx-auto -mb-2"
@@ -192,7 +192,7 @@ const CompetitionsSection = () => {
             ["2014", "First Competition"],
             ["5", "International Events"],
             ["2", "Major Champions"],
-            ["3", "Racing Prototypes"],
+            ["5", "Racing Prototypes"],
           ].map(([num, label], idx) => (
             <div
               key={idx}
