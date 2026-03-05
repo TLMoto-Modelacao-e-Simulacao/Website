@@ -60,7 +60,7 @@ export const PrototypesSection = () => {
             variants={itemVariants}
           >
             From our first combustion prototype to our latest electric racing machines, explore the
-            evolution of TLMoto's engineering excellence.
+            evolution of TLMoto´s engineering excellence.
           </motion.p>
         </motion.div>
         <MotorbikeCarousel />
