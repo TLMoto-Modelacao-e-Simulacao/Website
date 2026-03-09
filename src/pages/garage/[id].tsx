@@ -42,10 +42,17 @@ export default function GarageDetailPage({ card }: GarageDetailPageProps) {
     }
   };
 
+  // Lógica de Janela de 3 Botões (Ordem Decrescente)
+  const descendingCards = [...cards].sort((a, b) => b.id.localeCompare(a.id));
+  const currentIndex = descendingCards.findIndex(c => c.id === card.id);
+  // Garante que mostramos sempre 3 elementos sem rebentar os limites do array
+  const startIndex = Math.max(0, Math.min(currentIndex - 1, descendingCards.length - 3));
+  const visibleCards = descendingCards.slice(startIndex, startIndex + 3);
+
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black">
+    <div className="relative h-[100dvh] w-screen overflow-hidden bg-black">
       {/* 1. BACKGROUND LAYER */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <AnimatePresence mode="wait">
           {isMobile ? (
             <motion.img
@@ -55,7 +62,7 @@ export default function GarageDetailPage({ card }: GarageDetailPageProps) {
               exit={{ opacity: 0 }}
               src={motoImage}
               alt={card.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover pointer-events-none select-none"
             />
           ) : (
             <motion.video
@@ -63,66 +70,84 @@ export default function GarageDetailPage({ card }: GarageDetailPageProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               src={currentVideo}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover pointer-events-none"
               autoPlay
               muted
+              loop
               playsInline
               preload="auto"
             />
           )}
         </AnimatePresence>
-        <div className="absolute inset-0 bg-black/30 z-[1]" />
+        <div className="absolute inset-0 bg-black/30 z-[1] pointer-events-none" />
       </div>
 
       {/* 2. UI CONTENT LAYER */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-end items-start p-6 md:p-12 lg:p-20">
-        {/* Back Button */}
-        <div className="mb-20 md:mb-40">
-          <Link
-            href="/garage"
-            className="text-white hover:text-[#39a6ff] transition-colors inline-block"
-            aria-label="Voltar"
-          >
-            <ArrowLeft size={32} strokeWidth={3} />
-          </Link>
-        </div>
+      <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 pb-32 md:px-12 md:pb-10 lg:px-20 lg:pb-12">
+        {/* Contentor para alinhar Nav e Seta à esquerda, Chart em baixo */}
+        <div className="w-full max-w-4xl flex flex-col gap-8 md:gap-6">
+          {/* BLOCO DE NAVEGAÇÃO: SETA + BOTÕES DAS MOTAS */}
+          <div className="flex flex-row items-center w-full md:gap-8">
+            {/* Seta de Voltar (Oculta em mobile com "hidden", visível em desktop com "md:flex") */}
+            <Link
+              href="/garage"
+              className="hidden md:flex flex-shrink-0 text-white hover:text-[#39a6ff] transition-colors p-2 -ml-2 rounded-full hover:bg-white/10 z-10"
+              aria-label="Voltar à garagem"
+            >
+              <ArrowLeft size={32} strokeWidth={3} />
+            </Link>
 
-        <div className="w-full max-w-2xl">
-          {/* Bike Navigation Menu */}
-          <nav className="mb-8 w-full">
-            <div className="flex overflow-x-auto no-scrollbar gap-8 md:gap-12 items-end">
-              {cards.map(moto => {
-                const isActive = moto.id === card.id;
-                const motoColor = themeColors[moto.id as keyof typeof themeColors] || "255,255,255";
+            {/* Barra de Navegação das Motas */}
+            <nav className="flex-1 min-w-0 w-full">
+              {/* justify-center no mobile centra os números, md:justify-start alinha à esquerda no desktop */}
+              <div className="flex justify-center md:justify-start overflow-x-auto no-scrollbar gap-8 items-center pb-2 w-full">
+                {visibleCards.map(moto => {
+                  const isActive = moto.id === card.id;
 
-                return (
-                  <Link
-                    key={moto.id}
-                    href={`/garage/${moto.id}`}
-                    className={`flex-shrink-0 transition-all duration-300 group ${
-                      isActive ? "scale-110" : "opacity-40 hover:opacity-100"
-                    }`}
-                  >
-                    <span
-                      className="text-lg md:text-2xl font-black italic uppercase tracking-tighter"
-                      style={{ color: isActive ? `rgb(${motoColor})` : "white" }}
+                  // Proteção para o problema da mota 03
+                  const rawColor = themeColors[moto.id as keyof typeof themeColors];
+                  const fallbackColor =
+                    moto.id === "m03" || moto.id === "03" ? "255,0,0" : "255,255,255";
+                  const finalColorRaw = rawColor || fallbackColor;
+                  const safeCssColor = finalColorRaw.includes(",")
+                    ? `rgb(${finalColorRaw})`
+                    : finalColorRaw;
+
+                  return (
+                    <Link
+                      key={moto.id}
+                      href={`/garage/${moto.id}`}
+                      className={`
+                        flex-shrink-0 transition-all duration-300 group select-none relative
+                        ${isActive ? "scale-105 opacity-100" : "opacity-60 hover:opacity-100"}
+                      `}
                     >
-                      {moto.title}
-                    </span>
-                    <div
-                      className={`h-1 mt-1 transition-all duration-500 ${
-                        isActive ? "w-full" : "w-0 group-hover:w-1/2"
-                      }`}
-                      style={{ backgroundColor: `rgb(${motoColor})` }}
-                    />
-                  </Link>
-                );
-              })}
-            </div>
-          </nav>
+                      <span
+                        className="text-lg md:text-xl lg:text-2xl font-black italic uppercase tracking-tighter whitespace-nowrap block"
+                        style={{
+                          color: isActive ? safeCssColor : "#ffffff",
+                          WebkitTextStroke: "none",
+                          textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                        }}
+                      >
+                        {moto.title}
+                      </span>
+                      {/* Linha sublinhada animada */}
+                      <div
+                        className={`h-[3px] mt-1 transition-all duration-500 absolute bottom-[-6px] left-0 rounded-full ${
+                          isActive ? "w-full" : "w-0 group-hover:w-1/2"
+                        }`}
+                        style={{ backgroundColor: safeCssColor }}
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            </nav>
+          </div>
 
           {/* Stats Chart */}
-          <div className="w-full transform transition-all duration-700 ease-out">
+          <div className="w-full transform transition-all duration-700 ease-out origin-bottom-left max-h-[50vh] overflow-y-auto no-scrollbar">
             <MyStatsChart stats={card.stats} motoId={card.id} />
           </div>
         </div>
