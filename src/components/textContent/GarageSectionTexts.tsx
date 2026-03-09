@@ -13,10 +13,10 @@ const cardData = [
     video: "/videos/garage/details/desktop/m01.mp4",
     stats: [
       { name: "Max Power", value: 39, max: 80, unit: "cv" },
-      { name: "Speed", value: 192, max: 200, unit: "km/h" },
+      { name: "Speed", value: 192, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
-      { name: "Acceleration", value: 4, max: 4, unit: "s" },
-      { name: "Torque", value: 24, max: 40, unit: "Nm" },
+      { name: "Acceleration", value: 4, max: 10, unit: "s" },
+      { name: "Torque", value: 24, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM01i is a combustion motorcycle equipped with a 250cc, 4-stroke engine from Sherco. 
         Structurally, the bike features a twin spar frame made of trellised aluminum. In 2014, the motorcycle weighed
@@ -36,10 +36,10 @@ const cardData = [
     video: "/videos/garage/details/desktop/sun/m02_sun.mp4",
     stats: [
       { name: "Max Power", value: 39, max: 80, unit: "kW" },
-      { name: "Speed", value: 160, max: 200, unit: "km/h" },
+      { name: "Speed", value: 160, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
-      { name: "Acceleration", value: 5, max: 5, unit: "s" },
-      { name: "Torque", value: 60, max: 80, unit: "Nm" },
+      { name: "Acceleration", value: 5, max: 10, unit: "s" },
+      { name: "Torque", value: 60, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM02e, crafted between 2017-2018, marked a pioneering venture for the team. Born amidst the rise 
         of electric mobility in MotoStudent, this prototype showcased Portugal's entry into the electrifying arena. 
@@ -59,10 +59,10 @@ const cardData = [
     video: "/videos/garage/details/desktop/red/m03_red.mp4",
     stats: [
       { name: "Max Power", value: 36, max: 80, unit: "kW" },
-      { name: "Speed", value: 178, max: 200, unit: "km/h" },
+      { name: "Speed", value: 178, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
-      { name: "Acceleration", value: 4.2, max: 4.2, unit: "s" },
-      { name: "Torque", value: 90, max: 110, unit: "Nm" },
+      { name: "Acceleration", value: 4.2, max: 10, unit: "s" },
+      { name: "Torque", value: 90, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM03e, conceived between 2019 and 2021, represents the team's evolution in electric motorcycle 
         engineering. Competing in the 2021 MotoStudent edition, it showcased advancements in design and performance. 
@@ -83,7 +83,7 @@ const cardData = [
       { name: "Max Power", value: 57, max: 80, unit: "kW" },
       { name: "Speed", value: 204, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
-      { name: "Acceleration", value: 3.6, max: 3.6, unit: "s" },
+      { name: "Acceleration", value: 3.6, max: 10, unit: "s" },
       { name: "Torque", value: 120, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM04e, conceived between 2019 and 2021, represents the team's evolution in electric motorcycle 
@@ -99,10 +99,10 @@ const cardData = [
     detailsLink: "/garage/m05",
     video: "/videos/garage/details/desktop/m05_default.mp4",
     stats: [
-      { name: "Max Power", value: 40.27, max: 80, unit: "kW" },
+      { name: "Max Power", value: 54, max: 80, unit: "hp" },
       { name: "Speed", value: 201, max: 220, unit: "km/h" },
       { name: "Weight", value: 150, max: 250, unit: "kg" },
-      { name: "Acceleration", value: 3.2, max: 3.2, unit: "s" },
+      { name: "Acceleration", value: 3.2, max: 10, unit: "s" },
       { name: "Torque", value: 100, max: 120, unit: "Nm" },
     ],
     historyText: `The TLM05e is the latest evolution in our electric motorcycle series, developed between 2022 and 2024. 
