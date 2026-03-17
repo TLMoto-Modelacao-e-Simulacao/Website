@@ -9,6 +9,7 @@ interface Stat {
   unit: string;
 }
 
+
 interface MyStatsChartProps {
   stats: Stat[];
   motoId: string;
