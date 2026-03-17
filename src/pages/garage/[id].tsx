@@ -84,7 +84,6 @@ export default function GarageDetailPage({ card }: GarageDetailPageProps) {
 
       <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 pb-32 md:px-12 md:pb-10 lg:px-20 lg:pb-12">
         <div className="w-full max-w-4xl flex flex-col gap-8 md:gap-6">
-          
           <div className="flex flex-row items-center w-full md:gap-8 overflow-hidden">
             <Link
               href="/garage"
@@ -95,7 +94,7 @@ export default function GarageDetailPage({ card }: GarageDetailPageProps) {
             </Link>
 
             <nav className="flex-1 min-w-0 w-full pointer-events-auto">
-              <div 
+              <div
                 ref={navRef}
                 className="flex overflow-x-auto overflow-y-hidden no-scrollbar gap-8 items-center pb-2 w-full pr-8 md:pr-0 scroll-smooth"
               >

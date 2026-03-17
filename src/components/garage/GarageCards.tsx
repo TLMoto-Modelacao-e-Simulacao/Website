@@ -113,11 +113,15 @@ export default function MyGarageCards() {
 
   const totalGaps = Math.max(0, visibleCount - 1) * GAP_PX;
   const itemWidthPx =
-    containerWidth > 0 && !isMobile ? Math.floor((containerWidth - totalGaps) / visibleCount) : null;
-  
-  const translateStyle = isMobile 
+    containerWidth > 0 && !isMobile
+      ? Math.floor((containerWidth - totalGaps) / visibleCount)
+      : null;
+
+  const translateStyle = isMobile
     ? { transform: `translateX(calc(-${currentIndex * 100}% - ${currentIndex * GAP_PX}px))` }
-    : { transform: `translateX(-${itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : currentIndex * (100 / visibleCount)}px)` };
+    : {
+        transform: `translateX(-${itemWidthPx !== null ? currentIndex * (itemWidthPx + GAP_PX) : currentIndex * (100 / visibleCount)}px)`,
+      };
 
   return (
     <div className="relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden">
