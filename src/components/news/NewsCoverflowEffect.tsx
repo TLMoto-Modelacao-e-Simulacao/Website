@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect} from "react";
 import Image from "next/image";
 import { withBasePath } from "@/src/utils/basePath";
-
 
 // Helper para construir caminhos
 const buildPath = (year: string, name: string) =>
@@ -403,7 +402,7 @@ export default function MyNewsCoverflowEffect({
       </div>
 
       <div className="hidden md:grid w-full max-w-7xl mx-auto grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 px-4 place-items-center">
-        {displayedNewsletters.map((newsletter) => (
+        {displayedNewsletters.map(newsletter => (
           <div
             key={`${newsletter.year}-${newsletter.month}`}
             className="relative w-[280px] h-[392px] group cursor-pointer hover:scale-105 transition"

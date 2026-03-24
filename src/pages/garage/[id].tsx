@@ -1,5 +1,4 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
