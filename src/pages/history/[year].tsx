@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { resolveInternalHref } from "../../utils/useInternalHref";
 import TiltedCard from "@/src/components/extras/TiltedCard";
 import { motion, AnimatePresence } from "framer-motion";
-import { pre } from "framer-motion/client";
 
 type TimelineEventWithImages = TimelineDataItem & { images: string[] };
 

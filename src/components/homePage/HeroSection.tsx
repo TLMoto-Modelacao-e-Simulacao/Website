@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { withBasePath } from "@/src/utils/basePath";
 
 const HeroSection = () => {

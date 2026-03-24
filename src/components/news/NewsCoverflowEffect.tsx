@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { withBasePath } from "@/src/utils/basePath";
 
-const PLACEHOLDER_IMAGE = withBasePath("/images/newsletter/placeholder.jpg");
 
 // Helper para construir caminhos
 const buildPath = (year: string, name: string) =>
@@ -44,7 +43,8 @@ const NEWSLETTER_DATA: Record<string, NewsletterItem[]> = {
       month: 9,
       link: "https://pubhtml5.com/ofgde/vknm/",
       linkPt: "https://pubhtml5.com/ofgde/lumw/",
-    },{
+    },
+    {
       name: "december25.jpg",
       namePt: "dezembro25.jpg",
       month: 12,
@@ -244,9 +244,6 @@ export default function MyNewsCoverflowEffect({
   //estado do modal
   const [modal, setModal] = useState({ isOpen: false, image: "", title: "" });
 
-  //ref para o timer do duplo clique
-  const clickTimeout = useRef<NodeJS.Timeout | null>(null);
-
   //detetar língua do browser
   useEffect(() => {
     const userLang = navigator.language;
@@ -282,7 +279,7 @@ export default function MyNewsCoverflowEffect({
   }, [selectedYear, displayedNewsletters]);
 
   //logica de clique para link newsletter
-  const handleImageClick = (newsletter: Newsletter, event: React.MouseEvent) => {
+  const handleImageClick = (newsletter: Newsletter) => {
     window.open(newsletter.link, "_blank");
   };
 
@@ -344,7 +341,7 @@ export default function MyNewsCoverflowEffect({
             </button>
             <h3 className="text-2xl font-bold text-slate-700 mb-4 text-center">{modal.title}</h3>
             <div className="flex-1 overflow-hidden flex justify-center items-center">
-              <img
+              <Image
                 src={modal.image}
                 alt={modal.title}
                 className="max-w-full max-h-[65vh] object-contain rounded-xl"
@@ -388,7 +385,7 @@ export default function MyNewsCoverflowEffect({
           </div>
           <div
             className="relative w-[350px] h-[490px] cursor-pointer hover:scale-105 transition hover:shadow-2xl"
-            onClick={e => handleImageClick(displayedNewsletters[0], e)}
+            onClick={() => handleImageClick(displayedNewsletters[0])}
           >
             <Image
               src={displayedNewsletters[0].fullPath}
@@ -406,11 +403,11 @@ export default function MyNewsCoverflowEffect({
       </div>
 
       <div className="hidden md:grid w-full max-w-7xl mx-auto grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 px-4 place-items-center">
-        {displayedNewsletters.map((newsletter, idx) => (
+        {displayedNewsletters.map((newsletter) => (
           <div
             key={`${newsletter.year}-${newsletter.month}`}
             className="relative w-[280px] h-[392px] group cursor-pointer hover:scale-105 transition"
-            onClick={e => handleImageClick(newsletter, e)}
+            onClick={() => handleImageClick(newsletter)}
           >
             <Image
               src={newsletter.fullPath}
@@ -449,7 +446,7 @@ export default function MyNewsCoverflowEffect({
               <div key={idx} className="flex-shrink-0 w-full flex justify-center items-center">
                 <div
                   className="relative w-[220px] h-[308px]"
-                  onClick={e => handleImageClick(newsletter, e)}
+                  onClick={() => handleImageClick(newsletter)}
                 >
                   <Image src={newsletter.fullPath} alt="Cover" fill className="object-contain" />
                 </div>
