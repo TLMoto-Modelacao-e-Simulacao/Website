@@ -72,7 +72,7 @@ export const sponsorInformation = {
       link: "https://www.wavec.org/",
       logo: "/images/sponsors/bronze/wavec.webp",
     },
-    { name: "RMC", link: "https://www.rmc.com", logo: "/images/sponsors/bronze/rmc.webp" },
+    { name: "RMC", link: "https://www.rmc.com.pt", logo: "/images/sponsors/bronze/rmc.webp" },
     {
       name: "AGRacing",
       link: "https://agracing.pt/",
