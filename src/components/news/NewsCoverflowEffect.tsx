@@ -44,6 +44,12 @@ const NEWSLETTER_DATA: Record<string, NewsletterItem[]> = {
       month: 9,
       link: "https://pubhtml5.com/ofgde/vknm/",
       linkPt: "https://pubhtml5.com/ofgde/lumw/",
+    },{
+      name: "december25.jpg",
+      namePt: "dezembro25.jpg",
+      month: 12,
+      link: "https://pubhtml5.com/qlvfj/ptvf/",
+      linkPt: "https://pubhtml5.com/qlvfj/gzlv/",
     },
   ],
   "2024": [
@@ -76,7 +82,7 @@ const NEWSLETTER_DATA: Record<string, NewsletterItem[]> = {
       linkPt: "https://online.pubhtml5.com/qlvfj/zffw/",
     },
   ],
-  "2023": [
+  /*"2023": [
     {
       name: "march.png",
       namePt: "marco23.jpg",
@@ -165,7 +171,7 @@ const NEWSLETTER_DATA: Record<string, NewsletterItem[]> = {
       link: "https://online.pubhtml5.com/rzzqg/rfgg/",
       linkPt: "https://online.pubhtml5.com/rzzqg/kjkg/",
     },
-  ],
+  ],*/
 };
 
 const AVAILABLE_YEARS = ["Complete Archive", "2021", "2022", "2023", "2024", "2025"];

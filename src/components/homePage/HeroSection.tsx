@@ -27,7 +27,7 @@ const HeroSection = () => {
       className="relative bg-black h-screen text-white flex flex-col justify-center items-center overflow-hidden"
     >
       <video
-        className="hidden xl:block absolute inset-0 w-full h-full object-cover filter z-0"
+        className="hidden xl:block absolute inset-0 w-full h-full object-cover filter z-0 pointer-events-none"
         muted
         autoPlay
         playsInline
@@ -37,7 +37,7 @@ const HeroSection = () => {
         <source src={videoSrc} type="video/mp4" />
       </video>
       <div
-        className="block xl:hidden absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center z-0"
+        className="block xl:hidden absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center z-0 pointer-events-none"
         style={{ backgroundImage: `url('${posterSrc}')` }}
       />
       {/* Main content */}
