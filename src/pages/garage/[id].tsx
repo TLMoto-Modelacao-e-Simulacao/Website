@@ -18,7 +18,6 @@ type GarageDetailPageProps = {
 export default function GarageDetailPage({ card }: GarageDetailPageProps) {
   const [bgIndex, setBgIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const router = useRouter();
   const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
