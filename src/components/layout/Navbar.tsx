@@ -78,9 +78,7 @@ export default function MyNavbar() {
 
   return (
     <nav
-      className={`h-[14vh] left-0 top-0 z-1000 w-full fixed text-[clamp(2vh,2vw,5vh)] 
-    transition-all ${isOpen ? "duration-0" : "duration-300"} 
-    ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
+      className={`h-[14vh] left-0 top-0 z-1000 w-full fixed text-[clamp(2vh,2vw,5vh)] transition-all ${isOpen ? "duration-0" : "duration-300"} ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
       aria-label="Main Navigation"
     >
       <div className="hidden xl:flex w-[85%] h-[1vh] absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_right,transparent,_#97bddc,_#3293e0,_#97bddc,_transparent)]"></div>
@@ -118,9 +116,9 @@ export default function MyNavbar() {
       <div
         className={`fixed inset-0 z-30 transition-all transition-[backdrop-filter] duration-300 h-screen pointer-events-none ${
           isOpen
-            ? "opacity-100 backdrop-blur-sm bg-black/60 pointer-events-auto"
-            : "opacity-0 backdrop-blur-none"
-        }`}
+          ? "opacity-100 backdrop-blur-sm bg-black/60 pointer-events-auto"
+          : "opacity-0 backdrop-blur-none"
+          }`}
         aria-hidden={!isOpen}
         onClick={() => setIsOpen(false)}
       />
@@ -168,9 +166,9 @@ export default function MyNavbar() {
         <ul
           className={`absolute left-0 text-3xl right-0 top-full z-40 px-7 py-13 rounded-b-2xl flex flex-col list-none gap-10 transition-all duration-300 ${
             isOpen
-              ? "opacity-100 pointer-events-auto translate-y-0"
-              : "opacity-0 pointer-events-none -translate-y-3"
-          }`}
+            ? "opacity-100 pointer-events-auto translate-y-0"
+            : "opacity-0 pointer-events-none -translate-y-3"
+            }`}
           style={{ minHeight: "40vh" }}
           tabIndex={isOpen ? 0 : -1}
         >

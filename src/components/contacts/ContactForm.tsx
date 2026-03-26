@@ -7,6 +7,7 @@ interface FormData {
   mobile: string;
   message: string;
 }
+
 interface FormErrors {
   name?: string;
   email?: string;
@@ -89,8 +90,8 @@ export function ContactForm() {
   if (state.succeeded) {
     return (
       <div className="flex flex-col text-black h-full min-h-[400px] justify-center items-center text-center">
-        <p className="text-xl font-medium">Thank you for contacting us!</p>
-        <p className="text-sm text-gray-500 mt-2">We will be in touch shortly.</p>
+        <p className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] font-medium">Thank you for contacting us!</p>
+        <p className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] text-gray-500 mt-[1vh]">We will be in touch shortly.</p>
       </div>
     );
   }
@@ -98,10 +99,10 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleCustomSubmit}
-      className="flex flex-col text-black h-full min-h-[400px] justify-between"
+      className="flex flex-col text-black gap-[1.5vh]"
     >
       <div>
-        <label htmlFor="name" className="mt-3.3 max-md:mt-3 max-md:ml-[5%] max-md:text-sm block">
+        <label htmlFor="name" className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] block">
           Name
         </label>
         <input
@@ -110,15 +111,13 @@ export function ContactForm() {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`w-full p-2.5 mt-1 border rounded-md max-md:p-2 max-md:w-[90%] max-md:ml-[5%] text-black ${
-            errors.name ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`w-full p-[1vh] mt-[0.5vh] text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] border rounded-md ${errors.name ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.name && <p className="text-red-500 text-xs mt-1 max-md:ml-[5%]">{errors.name}</p>}
+        {errors.name && <p className="text-red-500 text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] mt-[0.5vh]">{errors.name}</p>}
 
-        <div className="flex gap-3 mt-3 max-md:flex-col max-md:w-[90%] max-md:ml-[5%]">
-          <div className="flex-1 max-md:mb-3">
-            <label htmlFor="email" className="max-md:text-sm block">
+        <div className="flex gap-[1.5vh] mt-[1.5vh] max-md:flex-col w-full">
+          <div className="flex-1">
+            <label htmlFor="email" className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] block">
               Email
             </label>
             <input
@@ -127,19 +126,17 @@ export function ContactForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full p-2.5 mt-1 border rounded-md max-md:p-2 text-black ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full p-[1vh] text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] mt-[0.5vh] border rounded-md ${errors.email ? "border-red-500" : "border-gray-300"}`}
             />
             {errors.email ? (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              <p className="text-red-500 text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] mt-[0.5vh]">{errors.email}</p>
             ) : (
               <ValidationError prefix="Email" field="email" errors={state.errors} />
             )}
           </div>
 
-          <div className="flex-1 max-md:mb-3">
-            <label htmlFor="mobile" className="max-md:text-sm block">
+          <div className="flex-1">
+            <label htmlFor="mobile" className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] block">
               Mobile
             </label>
             <input
@@ -148,15 +145,13 @@ export function ContactForm() {
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              className={`w-full p-2.5 mt-1 border rounded-md max-md:p-2 text-black ${
-                errors.mobile ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full p-[1vh] mt-[0.5vh] text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] border rounded-md ${errors.mobile ? "border-red-500" : "border-gray-300"}`}
             />
-            {errors.mobile && <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>}
+            {errors.mobile && <p className="text-red-500 text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] mt-[0.5vh]">{errors.mobile}</p>}
           </div>
         </div>
 
-        <label htmlFor="message" className="mt-3 max-md:text-sm max-md:ml-[5%] block">
+        <label htmlFor="message" className="text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] mt-[1.5vh] block">
           Message
         </label>
         <textarea
@@ -164,12 +159,10 @@ export function ContactForm() {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          className={`w-full p-2.5 mt-1 border max-md:ml-[5%] max-md:w-[90%] rounded-md h-28 max-md:p-2 max-md:h-32 text-black ${
-            errors.message ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`w-full p-[1vh] mt-[0.5vh] text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] border rounded-md h-[15vh] ${errors.message ? "border-red-500" : "border-gray-300"}`}
         />
         {errors.message ? (
-          <p className="text-red-500 text-xs mt-1 max-md:ml-[5%]">{errors.message}</p>
+          <p className="text-red-500 text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw]">{errors.message}</p>
         ) : (
           <ValidationError prefix="Message" field="message" errors={state.errors} />
         )}
@@ -178,7 +171,8 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={state.submitting}
-        className="mt-4 bg-[#39a6ff] max-md:w-[90%] max-md:ml-[5%] text-white py-2.5 rounded-md cursor-pointer hover:bg-[#39a6ff] transition-colors max-md:py-2 max-md:text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="mt-[1vh] bg-[#39a6ff] text-white py-[1vh] rounded-md cursor-pointer hover:bg-[#39a6ff] 
+                transition-colors text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Submit
       </button>
