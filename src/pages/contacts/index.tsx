@@ -21,7 +21,9 @@ export default function Contacts() {
           {/* Contact Info Column */}
           <div className="flex flex-col lg:w-[30vw] w-[90vw] gap-[1.5vh]">
             <div className="bg-[#39a6ff] text-white p-[1.5vh] rounded-lg lg:rounded-xl shadow-md text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw]">
-              <h3 className="mb-[1vh] underline text-[4.5vw] sm:text-[3vw] md:text-[2.5vw] lg:text-[2vw] 2xl:text-[1.5vw]">Contact Info</h3>
+              <h3 className="mb-[1vh] underline text-[4.5vw] sm:text-[3vw] md:text-[2.5vw] lg:text-[2vw] 2xl:text-[1.5vw]">
+                Contact Info
+              </h3>
               <p>
                 <strong>Pavilhão de Mecânica III</strong>
               </p>

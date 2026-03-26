@@ -30,7 +30,7 @@ const SOCIALS = [
     href: "https://www.tiktok.com/@tlmoto",
     Icon: IoLogoTiktok,
     label: "TikTok",
-    hover: "hover:text-purle-300",
+    hover: "hover:text-purple-400",
   },
   {
     href: "https://www.youtube.com/@tlmoto689",
@@ -50,7 +50,7 @@ export default function MyFooter() {
       <div className="flex flex-col justify-between items-center gap-[0.5vh] md:flex-row">
         {/* Texto da esquerda */}
         <div className="text-center md:text-left">
-          <p className="tracking-widest font-semibold uppercase text-[4vw] sm:text-[1.5vw] md:text-[1.7vw] lg:text-[1.5vw] xl:text-[1.2vw]">
+          <p className="tracking-widest font-semibold uppercase text-[5vw] sm:text-[3vw] md:text-[1.7vw] lg:text-[1.5vw]">
             RACING TOWARDS THE FUTURE
           </p>
         </div>

@@ -21,9 +21,7 @@ export default function FAQ() {
                              transition-colors ${openIndex === index ? "texclt-[#39a6ff]" : "text-white hover:text-[#39a6ff]"}`}
           >
             {faq.question}
-            <span className="text-[clamp(2vh,2vw,3vh)]">
-              {openIndex === index ? "-" : "+"}
-            </span>
+            <span className="text-[clamp(2vh,2vw,3vh)]">{openIndex === index ? "-" : "+"}</span>
           </button>
           {openIndex === index && (
             <p className="mt-[0.5vh] text-[3.7vw] sm:text-[2.5vw] md:text-[1.8vw] lg:text-[1.3vw] 2xl:text-[1vw] font-bold text-white/80 pl-[1vw]">

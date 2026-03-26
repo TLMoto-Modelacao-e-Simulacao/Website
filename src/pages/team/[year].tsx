@@ -110,8 +110,7 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
       document.body.classList.add("popup-open");
-    }
-    else {
+    } else {
       document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
       document.body.classList.remove("popup-open");
@@ -129,11 +128,12 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
       {/* pt-24 -> 10vh */}
       <div className="relative min-h-screen pt-[6vh] xl:pt-[10vh] mb-[3vh] lg:mb-0">
         {/* Navigation Header - py-8 -> 3.5vh */}
-        <div className="flex items-center justify-center py-[3.5vh] h-[27vh]">
+        <div className="flex items-center justify-center py-[3.5vh] h-[27vh] ">
           <button
             onClick={() => handleYearChange("prev")}
-            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg sm:text-[9vw] md:text-[6vw] lg:text-[4vw] ${currentIndex <= 0 ? "invisible" : ""
-              }`}
+            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg sm:text-[9vw] md:text-[6vw] lg:text-[4vw] ${
+              currentIndex <= 0 ? "invisible" : ""
+            }`}
           >
             {"<"}
           </button>
@@ -146,8 +146,9 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
 
           <button
             onClick={() => handleYearChange("next")}
-            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg sm:text-[9vw] md:text-[6vw] lg:text-[4vw] ${currentIndex >= AVAILABLE_YEARS.length - 1 ? "invisible" : ""
-              }`}
+            className={`px-[1vw] py-[1vh] text-white text-[9vw] font-semibold uppercase transition-all duration-300 hover:scale-105 hover:shadow-lg sm:text-[9vw] md:text-[6vw] lg:text-[4vw] ${
+              currentIndex >= AVAILABLE_YEARS.length - 1 ? "invisible" : ""
+            }`}
           >
             {">"}
           </button>
@@ -187,8 +188,9 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                           src={member.image}
                           alt={member.name}
                           loading="lazy"
-                          className={`w-full cursor-pointer transition-all duration-300 rounded-[1.5vw] hover:scale-105 aspect-square object-cover ${focusedImage === member.image ? "border-[0.2vw] border-red-800" : ""
-                            }`}
+                          className={`w-full cursor-pointer transition-all duration-300 rounded-[1.5vw] hover:scale-105 aspect-square object-cover ${
+                            focusedImage === member.image ? "border-[0.2vw] border-red-800" : ""
+                          }`}
                           onClick={() => {
                             setFocusedImage(member.image);
                             setFocusedCardImage(member.cardImage);
@@ -212,12 +214,12 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
           {/* Desktop Preview Card */}
           {focusedCardImage && (
             <>
-              <div className="hidden lg:flex fixed top-[30vh] right-[5vw] xl:right-[10vw] 2xl:right-[13vw] flex-col items-center z-10">
+              <div className="hidden lg:flex fixed top-[30vh] right-[5vw] lg:right-[10vw] flex-col items-center z-10">
                 <motion.img
                   src={focusedCardImage}
                   alt="Focused Image"
                   loading="lazy"
-                  className="border-[0.3vw] border-black w-[25vh] md:w-[30vh] xl:w-[40vh] h-auto object-contain shadow-[0_0_2vw_0.5vw_rgba(6,90,123,1)]"
+                  className="border-[0.3vw] border-black w-[25vh] md:w-[30vh] lg:w-[35vh] xl:w-[40vh] max-w-[35vw] object-contain shadow-[0_0_2vw_0.5vw_rgba(6,90,123,1)]"
                 />
                 <div className="mt-[2vh] text-center h-[6vh] flex items-center justify-center">
                   {focusedMember && focusedMember.linkedin ? (
@@ -241,12 +243,13 @@ export default function Team({ teamData, year, allYears }: TeamProps) {
                       src={focusedCardImage}
                       alt="Focused Image"
                       loading="lazy"
-                      className="w-[60vw] sm:w-[50vw] md:w-[45vw] h-auto max-h-[70vh] object-contain"
+                      className="h-[80vw] sm:h-[60vw] md:h-[50vw] max-h-[70vh] object-contain border-[0.3vw] border-black"
                     />
 
                     <div
-                      className={`flex w-full mt-[2vh] px-[2vw] ${focusedMember ? "justify-between" : "justify-center"
-                        }`}
+                      className={`flex w-full mt-[2vh] px-[2vw] ${
+                        focusedMember ? "justify-between" : "justify-center"
+                      }`}
                     >
                       <button
                         onClick={() => {

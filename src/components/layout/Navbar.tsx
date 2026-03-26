@@ -116,9 +116,9 @@ export default function MyNavbar() {
       <div
         className={`fixed inset-0 z-30 transition-all transition-[backdrop-filter] duration-300 h-screen pointer-events-none ${
           isOpen
-          ? "opacity-100 backdrop-blur-sm bg-black/60 pointer-events-auto"
-          : "opacity-0 backdrop-blur-none"
-          }`}
+            ? "opacity-100 backdrop-blur-sm bg-black/60 pointer-events-auto"
+            : "opacity-0 backdrop-blur-none"
+        }`}
         aria-hidden={!isOpen}
         onClick={() => setIsOpen(false)}
       />
@@ -166,9 +166,9 @@ export default function MyNavbar() {
         <ul
           className={`absolute left-0 text-3xl right-0 top-full z-40 px-7 py-13 rounded-b-2xl flex flex-col list-none gap-10 transition-all duration-300 ${
             isOpen
-            ? "opacity-100 pointer-events-auto translate-y-0"
-            : "opacity-0 pointer-events-none -translate-y-3"
-            }`}
+              ? "opacity-100 pointer-events-auto translate-y-0"
+              : "opacity-0 pointer-events-none -translate-y-3"
+          }`}
           style={{ minHeight: "40vh" }}
           tabIndex={isOpen ? 0 : -1}
         >
