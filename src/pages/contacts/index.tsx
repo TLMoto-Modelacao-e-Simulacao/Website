@@ -31,6 +31,7 @@ export default function Contacts() {
               <p>Lisboa, Portugal</p>
               <p className="break-all max-md:break-words">Email: info@tlmoto.tecnico.ulisboa.pt</p>
               <p>Phone: +351 218 419 556</p>
+              <p>Martim Carneiro, Team Leader : +351 934 112 711</p>
             </div>
 
             <iframe
