@@ -134,7 +134,7 @@ export default function MyGarageCards() {
         <source src={withBasePath("/videos/garage/garage_menu.mp4")} type="video/mp4" />
       </video>
 
-      <div className="relative w-full max-w-6xl p-6 flex flex-col justify-center h-full">
+      <div className="relative w-full max-w-6xl p-6 flex flex-col justify-center">
         <div
           ref={containerRef}
           className="overflow-hidden h-[50vh] md:h-[28rem] py-4"

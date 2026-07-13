@@ -1,10 +1,16 @@
+import { useState, useEffect } from "react";
 import SubscribePopup from "@/src/components/utils/SubscribePopup";
-import { useState } from "react";
-import MyNews from "@/src/components/news/NewsCoverflowEffect";
+import NewsCoverflowEffect from "@/src/components/news/NewsCoverflowEffect";
 import MyDefaultPage from "@/src/components/DefaultPage";
+import LanguageSelector from "@/src/components/news/LanguageSelector";
+import NewsletterViewer from "@/src/components/news/NewsletterViewer";
+import { WorkerNewsletter } from "@/src/components/utils/FetchNewsletters";
+import SeoHead from "@/src/components/layout/SeoHead";
 
 export default function News() {
+  const [language, setLanguage] = useState<"pt" | "en">("pt");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedNewsletter, setSelectedNewsletter] = useState<WorkerNewsletter | null>(null);
 
   const handleSubscribeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -12,19 +18,40 @@ export default function News() {
     setIsPopupOpen(true);
   };
 
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-  };
+  // detects the user's browser language and sets the default language accordingly
+  useEffect(() => {
+    if (navigator.language.startsWith("en")) setLanguage("en");
+  }, []);
 
   return (
-    <MyDefaultPage>
-      {/* Container with proper spacing for mobile and desktop */}
-      <div className="pt-[10vh] pb-[12vh] min-h-screen flex flex-col lg:pt-0 lg:pb-0">
-        <div className="flex-1 flex flex-col">
-          <MyNews onSubscribeClick={handleSubscribeClick} />
+    <>
+      <SeoHead
+        title={`News`}
+        description={`Discover the latest news and updates from TLMOTO, your favorite student motorsport team.`}
+      />
+      <MyDefaultPage>
+        {/* mantém informação da língua selecionada */}
+        <div className="flex flex-col mt-[14vh] xl:mt-[17vh] gap-[5vh]">
+          <div>
+            <LanguageSelector language={language} onChange={setLanguage} />
+          </div>
+          <div>
+            <NewsCoverflowEffect
+              language={language}
+              onSubscribeClick={handleSubscribeClick}
+              onNewsletterClick={setSelectedNewsletter}
+            />
+          </div>
         </div>
-      </div>
-      <SubscribePopup isOpen={isPopupOpen} onClose={handleClosePopup} />
-    </MyDefaultPage>
+        {selectedNewsletter && (
+          <NewsletterViewer
+            language={language}
+            newsletter={selectedNewsletter}
+            onClose={() => setSelectedNewsletter(null)}
+          />
+        )}
+        <SubscribePopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+      </MyDefaultPage>
+    </>
   );
 }

@@ -1,11 +1,15 @@
-import React from "react";
 import FAQ from "@/src/components/contacts/FAQ";
 import MyDefaultPage from "@/src/components/DefaultPage";
+import SeoHead from "@/src/components/layout/SeoHead";
 import { ContactForm } from "@/src/components/contacts/ContactForm";
 
 export default function Contacts() {
   return (
     <div className="relative min-h-screen overflow-y-auto z-10">
+      <SeoHead
+        title={`Contacts`}
+        description={`Get in touch with the TLMOTO team for partnerships, inquiries, or more information about our project, location, and activities.`}
+      />
       {/* Background */}
       <MyDefaultPage>
         {/* Main Content */}

@@ -51,4 +51,20 @@ export const timelineData: Record<string, TimelineDataItem[]> = {
       imageFolder: "/images/history/MS22/",
     },
   ],
+  "2024": [
+    {
+      title: "ACP INNOVATION AWARD",
+      description:
+        "In 2024, TLMoto took another remarkable step in its journey with the official presentation of the TLM04e, a prototype that reflected the team’s technical evolution and growing maturity. This year was also marked by external recognition of our work, with the awarding of the ACP Innovation Award, a distinction that highlighted the project’s technological approach and pioneering character. Between development, validation, and the public unveiling of the motorcycle, 2024 was a year of consolidation, affirmation, and reinforcement of our commitment to excellence in engineering and innovation.",
+      imageFolder: "/images/history/ACP24/",
+    },
+  ],
+  "2025": [
+    {
+      title: "MOTOSTUDENT 2025",
+      description:
+        "In 2025, TLMoto introduced the TLM05e, a prototype that consolidated the team’s technical and competitive evolution. In the same year, we participated in MotoStudent, where we achieved the best result ever by a Portuguese team in the electric category — an important milestone for the project. At the same time, we associated our prototype with the fight against breast cancer, reinforcing our commitment to combining engineering, social impact, and responsibility.",
+      imageFolder: "/images/history/MS25/",
+    },
+  ],
 };
