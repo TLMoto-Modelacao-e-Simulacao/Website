@@ -37,7 +37,7 @@ const CompetitionsSection = () => {
       description:
         "An engineering competition where university teams develop electric motorcycles and compete in various challenges, including MS1 (project evaluation) and MS2 (prototype testing) phases.",
       achievements: ["Best Portuguese Team", "20th Overall", "8th Best Design"],
-      status: "Annual",
+      //status: "Annual",
       icon: <Trophy className="w-6 h-6" />,
     },
     {
@@ -152,7 +152,9 @@ const CompetitionsSection = () => {
                             <span>{competition.location}</span>
                           </span>
                           <span className="flex items-center space-x-1 text-lg 2xl:text-lg">
-                            <Calendar className="w-4 h-4 text-deepskyblue" />
+                            {competition.name !== "MotoStudent" && (
+                              <Calendar className="w-4 h-4 text-deepskyblue" />
+                            )}
                             <span>{competition.status}</span>
                           </span>
                         </div>

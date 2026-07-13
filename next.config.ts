@@ -12,6 +12,18 @@ const nextConfig: NextConfig = {
   ...(normalizedAssetPrefix ? { assetPrefix: normalizedAssetPrefix } : {}),
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8787',
+        pathname: '/cover/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
   trailingSlash: true,
   eslint: {

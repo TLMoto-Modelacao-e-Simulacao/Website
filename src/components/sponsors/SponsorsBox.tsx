@@ -2,7 +2,7 @@ import { sponsorInformation } from "../textContent/SponsorsSectionTexts";
 import Image from "next/image";
 
 // Define the allowed sponsor types
-type SponsorType = "diamond" | "gold" | "silver" | "bronze" | "copper" | "partners";
+type SponsorType = "main" | "gold" | "silver" | "bronze" | "copper" | "partners";
 
 // Define the props interface
 interface MySponsorsBoxProps {
@@ -10,22 +10,23 @@ interface MySponsorsBoxProps {
 }
 // Map each sponsor type to Tailwind class strings
 const sponsorTypeStyles: Record<SponsorType, string> = {
-  diamond: "bg-[#43a5be]/70",
+  main: "bg-[#43a5be]/70",
   gold: "bg-[#ffb13c]/70",
   silver: "bg-[#a3a3a3]/70",
-  bronze: "bg-[#8a1b1b]/70",
-  copper: "bg-[#b87333]/70",
+  bronze: "bg-[#b87333]/70",
+  copper: "bg-[#8a1b1b]/70",
   partners: "bg-[#2150a0]/70",
 };
 
 export default function MySponsorsBox({ type }: MySponsorsBoxProps) {
   const sponsors = sponsorInformation[type] || [];
-  const sectionTitle = type.charAt(0).toUpperCase() + type.slice(1) + " Sponsors";
+  const sectionTitle =
+    type === "partners" ? "Partners" : type.charAt(0).toUpperCase() + type.slice(1) + " Sponsors";
 
   // Conditional class for sponsor cards
   const sponsorCardSize =
-    type === "diamond"
-      ? "w-[32vh] h-[14vh]" // bigger for diamond
+    type === "main"
+      ? "w-[32vh] h-[14vh]" // bigger for main
       : "w-[27vh] h-[12vh]";
 
   return (

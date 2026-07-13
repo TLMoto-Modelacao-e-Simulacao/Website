@@ -36,6 +36,28 @@ export default function SubscribePopupFixed({ isOpen, onClose }: SubscribePopupP
     };
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail("");
+      setStatus("");
+    }
+  }, [isOpen]);
+
+  // Prevent body scroll when popup is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.classList.add("popup-open");
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.classList.remove("popup-open");
+    };
+  }, [isOpen]);
+
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async () => {

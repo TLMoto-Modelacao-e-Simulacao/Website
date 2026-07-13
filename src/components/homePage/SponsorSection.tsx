@@ -27,7 +27,7 @@ const SponsorsCarousel: React.FC = () => {
             <span className="text-[#39a6ff] text-glow">SPONSORS</span>
           </h2>
           <div className="w-18 h-1 bg-gradient-to-r from-electric to-electric-glow mx-auto mt-3" />
-          <p className="text-blue-100/90 text-lg 2xl:text-4xl max-w-2xl mx-auto mt-4">
+          <p className="text-blue-100/90 text-xl sm:text-xl md:text-2xl lg:text-4xl xl:text-2xl 2xl:text-4xl mx-auto mt-4">
             Powering innovation and excellence in motorsport technology
           </p>
         </div>

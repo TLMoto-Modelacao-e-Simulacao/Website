@@ -55,11 +55,7 @@ export default function TiltedCard({
 
   containerWidth = "100%",
 
-  imageHeight = "300px",
-
-  imageWidth = "300px",
-
-  scaleOnHover = 1.1,
+  scaleOnHover = 1.3,
 
   rotateAmplitude = 14,
 
@@ -126,15 +122,16 @@ export default function TiltedCard({
   function handleMouseEnter() {
     if (ref.current) {
       ref.current.style.zIndex = "50"; // bring card to front
+      ref.current.style.transform = `scale(${scaleOnHover})`;
+      ref.current.style.transition = "transform 0.5s ease";
     }
-    scale.set(scaleOnHover);
-
     opacity.set(1);
   }
 
   function handleMouseLeave() {
     if (ref.current) {
       ref.current.style.zIndex = "0"; // reset when leaving
+      ref.current.style.transform = "scale(1)";
     }
     opacity.set(0);
 
@@ -154,6 +151,7 @@ export default function TiltedCard({
       style={{
         height: containerHeight,
         width: containerWidth,
+        overflow: "hidden",
       }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
@@ -168,9 +166,9 @@ export default function TiltedCard({
       <motion.div
         className="relative [transform-style:preserve-3d]"
         style={{
-          width: imageWidth,
+          width: "100%",
 
-          height: imageHeight,
+          height: "100%",
 
           rotateX,
 
@@ -182,11 +180,11 @@ export default function TiltedCard({
         <motion.img
           src={imageSrc}
           alt={altText}
-          className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
           style={{
-            width: imageWidth,
+            width: "100%",
 
-            height: imageHeight,
+            height: "100%",
           }}
         />
 
