@@ -231,6 +231,11 @@ export const sponsorInformation = {
       logo: "/images/sponsors/partners/jbc.webp",
     },
     {
+      name: "Rapid Harness",
+      link: "https://rapidharness.com/",
+      logo: "/images/sponsors/partners/rapidHarness.webp",
+    },
+    {
       name: "S4Metro",
       link: "https://solutions4metrology.com/",
       logo: "/images/sponsors/partners/s4metrology.webp",
