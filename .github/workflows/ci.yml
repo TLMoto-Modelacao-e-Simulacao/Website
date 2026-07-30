@@ -29,28 +29,5 @@ jobs:
       - name: Run lint
         run: npm run lint
 
-      - name: Debug Prettier
-        run: |
-          echo "Node version:"
-          node -v
-
-          echo "NPM version:"
-          npm -v
-
-          echo "Prettier version:"
-          npx prettier --version
-
-          echo "Installed Prettier packages:"
-          npm ls prettier prettier-plugin-css-order
-
-          echo "Checking file:"
-          npx prettier --check newsletter-worker/worker-configuration.d.ts
-
-          echo "Writing file:"
-          npx prettier --write newsletter-worker/worker-configuration.d.ts
-
-          echo "Git diff after write:"
-          git --no-pager diff -- newsletter-worker/worker-configuration.d.ts
-
       - name: Run format check
         run: npm run prettier:check

@@ -97,7 +97,7 @@ declare abstract class WorkerGlobalScope extends EventTarget<WorkerGlobalScopeEv
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console)
  */
 interface Console {
-	'assert'(condition?: boolean, ...data: any[]): void;
+	assert(condition?: boolean, ...data: any[]): void;
 	/**
 	 * The **`console.clear()`** static method clears the console if possible.
 	 *
@@ -1947,10 +1947,8 @@ interface RequestInit<Cf = CfProperties> {
 }
 type Service<
 	T extends
-		| (new (...args: any[]) => Rpc.WorkerEntrypointBranded)
-		| Rpc.WorkerEntrypointBranded
-		| ExportedHandler<any, any, any>
-		| undefined = undefined,
+		(new (...args: any[]) => Rpc.WorkerEntrypointBranded) | Rpc.WorkerEntrypointBranded | ExportedHandler<any, any, any> | undefined =
+		undefined,
 > = T extends new (...args: any[]) => Rpc.WorkerEntrypointBranded
 	? Fetcher<InstanceType<T>>
 	: T extends Rpc.WorkerEntrypointBranded
@@ -4724,10 +4722,7 @@ type ChatCompletionContentPartRefusal = {
 	refusal: string;
 };
 type ChatCompletionContentPart =
-	| ChatCompletionContentPartText
-	| ChatCompletionContentPartImage
-	| ChatCompletionContentPartInputAudio
-	| ChatCompletionContentPartFile;
+	ChatCompletionContentPartText | ChatCompletionContentPartImage | ChatCompletionContentPartInputAudio | ChatCompletionContentPartFile;
 type FunctionDefinition = {
 	name: string;
 	description?: string;
@@ -4796,12 +4791,7 @@ type ChatCompletionToolChoiceAllowedTools = {
 	};
 };
 type ChatCompletionToolChoiceOption =
-	| 'none'
-	| 'auto'
-	| 'required'
-	| ChatCompletionToolChoiceFunction
-	| ChatCompletionToolChoiceCustom
-	| ChatCompletionToolChoiceAllowedTools;
+	'none' | 'auto' | 'required' | ChatCompletionToolChoiceFunction | ChatCompletionToolChoiceCustom | ChatCompletionToolChoiceAllowedTools;
 type DeveloperMessage = {
 	role: 'developer';
 	content:
@@ -6016,8 +6006,7 @@ declare abstract class Base_Ai_Cf_Black_Forest_Labs_Flux_1_Schnell {
 	postProcessedOutputs: Ai_Cf_Black_Forest_Labs_Flux_1_Schnell_Output;
 }
 type Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Input =
-	| Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Prompt
-	| Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Messages;
+	Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Prompt | Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Messages;
 interface Ai_Cf_Meta_Llama_3_2_11B_Vision_Instruct_Prompt {
 	/**
 	 * The input text prompt for the model to generate a response.
@@ -6687,8 +6676,7 @@ declare abstract class Base_Ai_Cf_Baai_Bge_Reranker_Base {
 	postProcessedOutputs: Ai_Cf_Baai_Bge_Reranker_Base_Output;
 }
 type Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Input =
-	| Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Prompt
-	| Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Messages;
+	Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Prompt | Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Messages;
 interface Ai_Cf_Qwen_Qwen2_5_Coder_32B_Instruct_Prompt {
 	/**
 	 * The input text prompt for the model to generate a response.
@@ -7211,8 +7199,7 @@ declare abstract class Base_Ai_Cf_Qwen_Qwq_32B {
 	postProcessedOutputs: Ai_Cf_Qwen_Qwq_32B_Output;
 }
 type Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Input =
-	| Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Prompt
-	| Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Messages;
+	Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Prompt | Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Messages;
 interface Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Prompt {
 	/**
 	 * The input text prompt for the model to generate a response.
@@ -8270,9 +8257,7 @@ declare abstract class Base_Ai_Cf_Meta_Llama_4_Scout_17B_16E_Instruct {
 	postProcessedOutputs: Ai_Cf_Meta_Llama_4_Scout_17B_16E_Instruct_Output;
 }
 type Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Input =
-	| Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Prompt
-	| Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Messages
-	| Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Async_Batch;
+	Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Prompt | Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Messages | Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Async_Batch;
 interface Ai_Cf_Qwen_Qwen3_30B_A3B_Fp8_Prompt {
 	/**
 	 * The input text prompt for the model to generate a response.
@@ -12998,15 +12983,7 @@ declare namespace CloudflareWorkersModule {
 		): Promise<WorkflowStepEvent<T>>;
 	}
 	export type WorkflowInstanceStatus =
-		| 'queued'
-		| 'running'
-		| 'paused'
-		| 'errored'
-		| 'terminated'
-		| 'complete'
-		| 'waiting'
-		| 'waitingForPause'
-		| 'unknown';
+		'queued' | 'running' | 'paused' | 'errored' | 'terminated' | 'complete' | 'waiting' | 'waitingForPause' | 'unknown';
 	export abstract class WorkflowEntrypoint<Env = unknown, T extends Rpc.Serializable<T> | unknown = unknown>
 		implements Rpc.WorkflowEntrypointBranded
 	{
@@ -13999,16 +13976,7 @@ declare namespace TailStream {
 		readonly info: Attribute[];
 	}
 	type EventType =
-		| Onset
-		| Outcome
-		| SpanOpen
-		| SpanClose
-		| DiagnosticChannelEvent
-		| Exception
-		| Log
-		| StreamDiagnostic
-		| Return
-		| Attributes;
+		Onset | Outcome | SpanOpen | SpanClose | DiagnosticChannelEvent | Exception | Log | StreamDiagnostic | Return | Attributes;
 	// Context in which this trace event lives.
 	interface SpanContext {
 		// Single id for the entire top-level invocation
