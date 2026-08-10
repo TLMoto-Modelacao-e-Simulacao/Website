@@ -12,16 +12,17 @@ export async function insertNewsletter(
 		hover_title: string;
 		date: string;
 		fileKey: string;
+		slug: string;
 		num_pages: number;
 		lang: string;
 	},
 ) {
 	// hidden is set to 0 (visible) by default when inserting a new newsletter
 	return env.DB.prepare(
-		`INSERT OR REPLACE INTO newsletters (hover_title, date, file_key, num_pages, lang) 
-         VALUES (?, ?, ?, ?, ?)`,
+		`INSERT OR REPLACE INTO newsletters (hover_title, date, file_key, slug, num_pages, lang) 
+         VALUES (?, ?, ?, ?, ?, ?)`,
 	)
-		.bind(data.hover_title, data.date, data.fileKey, data.num_pages, data.lang)
+		.bind(data.hover_title, data.date, data.fileKey, data.slug, data.num_pages, data.lang)
 		.run();
 }
 

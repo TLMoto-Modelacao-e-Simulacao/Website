@@ -73,17 +73,16 @@ const SubscribeBtn = ({
 /* main component */
 export default function MyNewsCoverflowEffect({
   language,
+  workerNewsletters,
   onSubscribeClick,
   onNewsletterClick,
 }: {
   language: "pt" | "en";
+  workerNewsletters: WorkerNewsletter[];
   onSubscribeClick: (e: React.MouseEvent) => void;
   onNewsletterClick: (newsletter: WorkerNewsletter) => void;
 }) {
   const t = TEXTS[language];
-
-  // all newsletters from the worker - initially empty
-  const [workerNewsletters, setWorkerNewsletters] = useState<WorkerNewsletter[]>([]);
 
   const [selectedYearIndex, setSelectedYearIndex] = useState(0); // selected year index
   const [mobileIndex, setMobileIndex] = useState(0); // centered newsletter index
@@ -130,18 +129,6 @@ export default function MyNewsCoverflowEffect({
     }
     setMobileIndex(0);
   };
-
-  // newsletters fetch
-  useEffect(() => {
-    const controller = new AbortController();
-    getNewsletters(language, controller.signal)
-      .then(setWorkerNewsletters)
-      .catch(err => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-
-    return () => controller.abort();
-  }, [language]);
 
   return (
     <div className="flex flex-col items-center text-white md:mb-[10vh] md:gap-[6vh]">
@@ -199,6 +186,7 @@ export default function MyNewsCoverflowEffect({
             onClick={() => navigateYear("prev")}
             disabled={selectedYearIndex === availableYears.length - 1}
             ariaLabel="Previous year"
+            variant="default"
           />
           <div className="text-2xl font-bold min-w-[5rem] text-center">{selectedYear}</div>
           <NavigationButton
@@ -206,6 +194,7 @@ export default function MyNewsCoverflowEffect({
             onClick={() => navigateYear("next")}
             disabled={selectedYearIndex === 0}
             ariaLabel="Next year"
+            variant="default"
           />
         </div>
       )}

@@ -95,6 +95,7 @@ app.post('/upload-finish', async (c) => {
 		hover_title: `${getMonthName(month, lang)} ${year}`,
 		date: date.toISOString().split('T')[0],
 		fileKey: pdf_name,
+		slug: pdf_name.replace(/\.pdf$/i, ''),
 		num_pages,
 		lang,
 	});

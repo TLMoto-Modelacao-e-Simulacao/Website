@@ -5,6 +5,7 @@ export type WorkerNewsletter = {
   file_key: string;
   num_pages: number;
   lang: string;
+  slug: string;
   file_url: string;
   cover_url: string;
   pages_url: string;

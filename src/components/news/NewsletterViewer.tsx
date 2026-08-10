@@ -39,6 +39,8 @@ export default function NewsletterModal({
   newsletter: WorkerNewsletter | null;
   onClose: () => void;
 }) {
+  const isMobile = window.innerWidth < 768;
+
   const [pages, setPages] = useState<string[]>([]); // array of urls
   const [visiblePage, setVisiblePage] = useState(0); // index for the currently visible left page (0-based, even numbers only)
   const [realTotal, setRealTotal] = useState(0);
@@ -55,16 +57,29 @@ export default function NewsletterModal({
   const wheelLockRef = useRef(0);
 
   // label for page counter, shows current page and total pages
-  const pageLabel =
-    visiblePage === 0 || visiblePage === realTotal
-      ? `${Math.max(visiblePage, 1)} / ${realTotal}`
-      : `${visiblePage}-${visiblePage + 1} / ${realTotal}`;
+  const getPageLabel = () => {
+    if (visiblePage === 0) {
+      return `1 / ${realTotal}`;
+    }
+
+    if (visiblePage === realTotal - 1) {
+      return `${realTotal} / ${realTotal}`;
+    }
+
+    if (isMobile) {
+      return `${visiblePage + 1} / ${realTotal}`;
+    }
+
+    return `${visiblePage + 1}-${visiblePage + 2} / ${realTotal}`;
+  };
+
+  const pageLabel = getPageLabel();
 
   const [pageWidth, setPageWidth] = useState(250);
   const pageHeight = (pageWidth * 7) / 5;
 
   const canGoPrev = visiblePage > 0;
-  const canGoNext = visiblePage < pages.length - 2;
+  const canGoNext = isMobile ? visiblePage < pages.length - 1 : visiblePage < pages.length - 2;
 
   const goPrev = useCallback(() => {
     if (!canGoPrev) return;
@@ -127,10 +142,11 @@ export default function NewsletterModal({
     const update = () => {
       const ww = window.innerWidth;
 
-      if (ww < 1024) setPageWidth(ww * 0.4);
-      else if (ww < 1280) setPageWidth(ww * 0.3);
-      else if (ww < 1536) setPageWidth(ww * 0.25);
-      else setPageWidth(ww * 0.2);
+      if (ww < 768) setPageWidth(ww * 0.8);
+      else if (ww < 1024) setPageWidth(ww * 0.45);
+      else if (ww < 1280) setPageWidth(ww * 0.35);
+      else if (ww < 1536) setPageWidth(ww * 0.3);
+      else setPageWidth(ww * 0.25);
     };
 
     update();
@@ -149,14 +165,8 @@ export default function NewsletterModal({
     getNewsletterPages(newsletter.pages_url)
       .then(pages => {
         // add a blank page at the beginning to ensure the first page is displayed on the right side
-        const loadedPages = ["", ...pages];
-        setRealTotal(loadedPages.length - 1); // doesn't count the blank pages
-
-        // ensure even number of pages for correct display
-        if (loadedPages.length % 2 !== 0) {
-          loadedPages.push("");
-        }
-
+        const loadedPages = [...pages];
+        setRealTotal(loadedPages.length); // doesn't count the blank pages
         setPages(loadedPages);
       })
       .catch(console.error);
@@ -185,79 +195,96 @@ export default function NewsletterModal({
       onClick={onClose} /* clicking outside the modal closes it */
     >
       <div
-        className="relative bg-white rounded-3xl flex flex-col p-[2vw] lg:p-[1vw] shadow-2xl h-auto max-h-[95vh] w-[90vw] lg:w-[70vw] xl:w-[60vw] 2xl:w-[50vw]"
+        className="relative bg-zinc-700 rounded-xl shadow-2xl overflow-hidden flex flex-col w-auto max-w-[95vw] h-auto max-h-[95vh]"
         onClick={e => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 bg-red-500 text-white aspect-[1/1] w-10 lg:w-[4vw] xl:w-[3vw] 2xl:w-[2vw] rounded-full z-10 flex 
-                     items-center justify-center hover:bg-red-600 transition 2xl:text-[0.7vw]"
-        >
-          ✕
-        </button>
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
-        <div className="flex flex-col items-center justify-center mb-[2vh] ml-[7vw] mr-[7vw] text-center md:flex-row md:justify-between">
-          <h3 className="text-base md:text-xl 2xl:text-2xl font-bold text-slate-700 text-center">
-            {newsletter.hover_title}
-          </h3>
-          <div className="text-sm md:text-xl 2xl:text-2xl text-slate-500 ">
-            {pages.length > 0 && pageLabel}
+        {/* Header */}
+        <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center border-b border-zinc-900 bg-zinc-800 px-[2vw] py-[1vh]">
+          <div className="flex flex-col">
+            <h3 className="text-lg md:text-xl font-bold text-slate-300">
+              {newsletter.hover_title}
+            </h3>
+
+            <span className="mt-1 text-sm md:text-base text-slate-400">
+              {pages.length > 0 && pageLabel}
+            </span>
           </div>
-        </div>
 
-        <div className="items-center justify-center" onWheel={handleWheel}>
-          {pages.length === 0 ? (
-            <p className="text-slate-500 h-full w-full flex items-center justify-center">
-              {language === "pt" ? loadingText[0] : loadingText[1]}
-            </p>
-          ) : (
-            <HTMLFlipBook
-              key={`spread-${pageWidth}x${pageHeight}-${pages.length}`}
-              ref={bookRef}
-              startPage={visiblePage}
-              width={pageWidth}
-              height={pageHeight}
-              minWidth={pageWidth}
-              maxWidth={pageWidth}
-              minHeight={pageHeight}
-              maxHeight={pageHeight}
-              drawShadow
-              flippingTime={700}
-              usePortrait={false}
-              startZIndex={0}
-              autoSize={false}
-              maxShadowOpacity={0.35}
-              showCover={false}
-              mobileScrollSupport={false}
-              useMouseEvents
-              swipeDistance={20}
-              showPageCorners
-              disableFlipByClick={false}
-              onFlip={e => setVisiblePage(e.data)}
-            >
-              {pages.map((page, index) => (
-                <FlipPage key={`${page}-${index}`} src={page} index={index} />
-              ))}
-            </HTMLFlipBook>
-          )}
-        </div>
-
-        {pages.length > 0 && (
-          <div className="flex items-center justify-center gap-[5vw] md:gap-[3vw] mt-[2vh]">
+          {/* Navigation buttons */}
+          <div className="justify-self-center flex items-center gap-4">
             <NavigationButton
               direction="prev"
               onClick={goPrev}
               disabled={!canGoPrev}
               ariaLabel="Previous slide"
+              variant="modal"
             />
+
             <NavigationButton
               direction="next"
               onClick={goNext}
               disabled={!canGoNext}
               ariaLabel="Next slide"
+              variant="modal"
             />
           </div>
-        )}
+
+          <div className="justify-self-end">
+            <button
+              onClick={onClose}
+              className="flex items-center justify-center text-3xl text-slate-300 transition hover:text-slate-400"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        {/* Newsletter display */}
+        <div
+          className="relative z-10 flex-1 flex items-center justify-center px-[5vw] py-[2vh]"
+          onWheel={handleWheel}
+        >
+          {pages.length === 0 ? (
+            <p className="text-slate-500">{language === "pt" ? loadingText[0] : loadingText[1]}</p>
+          ) : (
+            <div className="flex items-center justify-center gap-6 w-full h-full">
+              <HTMLFlipBook
+                key={`spread-${pageWidth}x${pageHeight}-${pages.length}`}
+                ref={bookRef}
+                startPage={visiblePage}
+                width={pageWidth}
+                height={pageHeight}
+                minWidth={pageWidth}
+                maxWidth={pageWidth}
+                minHeight={pageHeight}
+                maxHeight={pageHeight}
+                drawShadow
+                flippingTime={700}
+                usePortrait={isMobile}
+                startZIndex={0}
+                autoSize={false}
+                maxShadowOpacity={0.35}
+                showCover={true}
+                mobileScrollSupport={false}
+                useMouseEvents
+                swipeDistance={20}
+                showPageCorners
+                disableFlipByClick={false}
+                onFlip={e => {
+                  console.log("Flip:", e.data);
+                  setVisiblePage(e.data);
+                }}
+              >
+                {pages.map((page, index) => (
+                  <FlipPage key={`${page}-${index}`} src={page} index={index} />
+                ))}
+              </HTMLFlipBook>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
