@@ -58,7 +58,7 @@ export default function News() {
   return (
     <>
       <SeoHead
-        title={`News`}
+        title="News"
         description={`Discover the latest news and updates from TLMOTO, your favorite student motorsport team.`}
       />
       <MyDefaultPage>

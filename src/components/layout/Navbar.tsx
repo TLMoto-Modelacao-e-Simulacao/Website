@@ -93,7 +93,7 @@ export default function MyNavbar() {
             <div className="aspect-[207/169] h-full">
               <Image
                 src="/images/home/home.webp"
-                alt="Home Logo"
+                alt="TLMoto"
                 width={207}
                 height={169}
                 priority
@@ -155,7 +155,7 @@ export default function MyNavbar() {
             <div className="relative h-[8vh] w-[13vh]">
               <Image
                 src="/images/home/tlmoto_principal.webp"
-                alt="Home Logo"
+                alt="TLMoto"
                 fill
                 priority
                 className="object-contain"

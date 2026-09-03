@@ -6,11 +6,15 @@ type SeoHeadProps = {
 };
 
 export default function SeoHead({ title, description }: SeoHeadProps) {
+     const fullTitle = `${title} | TLMOTO`
+
   return (
     <Head>
-      <title>{title} | TLMOTO</title>
+      <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
+      <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
     </Head>
   );

@@ -8,7 +8,7 @@ import SeoHead from "@/src/components/layout/SeoHead";
 export default function Home() {
   return (
     <>
-      <SeoHead title={`Homepage`} description={`Welcome to the TLMOTO homepage!`} />
+      <SeoHead title="Homepage" description={`Welcome to the TLMOTO homepage!`} />
       <div id="home-scroll-marker" />
       <div className="flex">
         <div className="w-full">

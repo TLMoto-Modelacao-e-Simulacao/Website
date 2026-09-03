@@ -7,7 +7,7 @@ export default function Contacts() {
   return (
     <div className="relative min-h-screen overflow-y-auto z-10">
       <SeoHead
-        title={`Contacts`}
+        title="Contacts"
         description={`Get in touch with the TLMOTO team for partnerships, inquiries, or more information about our project, location, and activities.`}
       />
       {/* Background */}

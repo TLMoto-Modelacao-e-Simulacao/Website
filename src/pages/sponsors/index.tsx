@@ -10,7 +10,7 @@ export default function Sponsors() {
   return (
     <>
       <SeoHead
-        title={`Sponsors`}
+        title="Sponsors"
         description={`Discover the sponsors that power TLMOTO's journey in student motorsport, from major sponsors to valued partners.`}
       />
       <MyDefaultPage>
