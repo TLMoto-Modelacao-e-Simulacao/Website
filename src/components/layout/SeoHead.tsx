@@ -6,7 +6,7 @@ type SeoHeadProps = {
 };
 
 export default function SeoHead({ title, description }: SeoHeadProps) {
-     const fullTitle = `${title} | TLMOTO`
+  const fullTitle = `${title} | TLMOTO`;
 
   return (
     <Head>

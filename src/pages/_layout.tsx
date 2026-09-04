@@ -13,7 +13,10 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="layout">
       <Head>
         {/* <title>TLMOTO</title> */}
-        <meta name="google-site-verification" content="_GaRhuYcM7ARiwLqtj4wkv5upO1o5PWdV7fakD1yBH8" />
+        <meta
+          name="google-site-verification"
+          content="_GaRhuYcM7ARiwLqtj4wkv5upO1o5PWdV7fakD1yBH8"
+        />
         <meta name="TLMoto Website" content="Created by Software Department" />
         <link rel="icon" href={faviconHref} />
       </Head>
