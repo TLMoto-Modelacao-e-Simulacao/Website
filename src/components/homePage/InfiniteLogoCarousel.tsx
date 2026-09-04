@@ -26,10 +26,10 @@ const mapSponsors = (items: SponsorSource[]): Logo[] =>
 
 const carouselTiers: CarouselTier[] = [
   {
-    title: "Diamond Partners",
-    logos: mapSponsors(sponsorInformation.diamond),
-    borderColor: "border-diamond-tier",
-    glowColor: "shadow-diamond",
+    title: "Main Partners",
+    logos: mapSponsors(sponsorInformation.main),
+    borderColor: "border-main-tier",
+    glowColor: "shadow-main",
     speed: "120s",
     titleColor: "#43a5be",
     lighterBg: true,
@@ -76,7 +76,7 @@ const carouselTiers: CarouselTier[] = [
     borderColor: "border-partner-tier",
     glowColor: "shadow-partner",
     speed: "200s",
-    titleColor: "#ffffff", // TODO - change to match sponsors
+    titleColor: "#2150a0",
     lighterBg: true,
   },
 ];
@@ -109,12 +109,12 @@ interface CarouselRowProps {
 }
 
 const CarouselRow: React.FC<CarouselRowProps> = ({ tier }) => {
-  const isStatic = tier.logos.length <= 6;
+  const isStatic = tier.logos.length <= 5;
   const duplicatedLogos = isStatic
     ? tier.logos
     : [...tier.logos, ...tier.logos, ...tier.logos, ...tier.logos];
 
-  const isDiamond = tier.title === "Diamond Partners";
+  const isMain = tier.title === "Main Partners";
 
   return (
     <div className="w-full py-6 relative">
@@ -138,7 +138,7 @@ const CarouselRow: React.FC<CarouselRowProps> = ({ tier }) => {
           {isStatic ? (
             <div className="flex justify-center items-center flex-wrap">
               {tier.logos.map((logo, index) => (
-                <LogoItem key={`${logo.name}-${index}`} logo={logo} large={isDiamond} />
+                <LogoItem key={`${logo.name}-${index}`} logo={logo} large={isMain} />
               ))}
             </div>
           ) : (
@@ -148,7 +148,7 @@ const CarouselRow: React.FC<CarouselRowProps> = ({ tier }) => {
               aria-hidden="true"
             >
               {duplicatedLogos.map((logo, index) => (
-                <LogoItem key={`${logo.name}-${index}`} logo={logo} large={isDiamond} />
+                <LogoItem key={`${logo.name}-${index}`} logo={logo} large={isMain} />
               ))}
             </div>
           )}
@@ -162,7 +162,7 @@ const CarouselRow: React.FC<CarouselRowProps> = ({ tier }) => {
 
 export const InfiniteLogoCarousel: React.FC = () => {
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-[2vh] lg:py-[1.5vh]  relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-white/4 via-white/9 to-white/4 backdrop-blur-[4px] pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">

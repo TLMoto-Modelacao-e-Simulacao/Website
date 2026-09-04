@@ -197,7 +197,8 @@ export function ContactForm() {
         type="submit"
         disabled={state.submitting}
         className="mt-[1vh] bg-[#39a6ff] text-white py-[1vh] rounded-md cursor-pointer hover:bg-[#39a6ff] 
-                transition-colors text-[4vw] sm:text-[2.7vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[1.2vw] disabled:bg-gray-400 disabled:cursor-not-allowed"
+                transition-colors text-[4vw] sm:text-[3vw] md:text-[2.5vw] lg:text-[1.7vw] 2xl:text-[1.2vw] 
+                disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Submit
       </button>

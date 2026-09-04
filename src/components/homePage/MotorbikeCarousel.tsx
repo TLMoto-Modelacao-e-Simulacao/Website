@@ -129,7 +129,10 @@ export const MotorbikeCarousel = () => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {motorbikes.map(motorbike => (
-            <div key={motorbike.id} className="w-full flex-shrink-0">
+            <div
+              key={motorbike.id}
+              className="w-full flex-shrink-0 flex items-center justify-center"
+            >
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4 p-4 sm:p-6 lg:p-10 2xl:p-8">
                 {/* Image Section */}
                 <div className="relative w-full max-w-[240px] lg:max-w-[280px] mx-auto group">
@@ -138,7 +141,7 @@ export const MotorbikeCarousel = () => {
                       src={motorbike.image}
                       alt={motorbike.name}
                       fill
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: "fill" }}
                       sizes="(max-width: 768px) 80vw, 240px"
                       quality={60}
                       loading="lazy"

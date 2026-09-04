@@ -12,6 +12,7 @@ const HeroSection = () => {
 
   const posterRelative = "/images/home/moto_blue_black_background.webp";
   const videoRelative = "/videos/intro_video_background.mp4";
+  const videoPoster = withBasePath("/images/home/homepagePoster.webp");
   const posterSrc = withBasePath(posterRelative);
   const videoSrc = withBasePath(videoRelative);
 
@@ -24,20 +25,23 @@ const HeroSection = () => {
       viewport={{ once: false, amount: 0.7 }}
       className="relative bg-black h-screen text-white flex flex-col justify-center items-center overflow-hidden"
     >
+      {/* Imagem fundo mobile */}
+      <picture className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <img src={posterSrc} alt="" className="w-full h-full object-cover" />
+      </picture>
+
+      {/* Vídeo (apenas desktop) */}
       <video
-        className="hidden xl:block absolute inset-0 w-full h-full object-cover filter z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none hidden xl:block"
         muted
         autoPlay
         playsInline
         disablePictureInPicture
-        poster={posterSrc}
+        poster={videoPoster}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
-      <div
-        className="block xl:hidden absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center z-0 pointer-events-none"
-        style={{ backgroundImage: `url('${posterSrc}')` }}
-      />
+
       {/* Main content */}
       <button
         onClick={scrollToNext}

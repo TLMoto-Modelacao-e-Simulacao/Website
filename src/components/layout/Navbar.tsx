@@ -78,7 +78,7 @@ export default function MyNavbar() {
 
   return (
     <nav
-      className={`h-[14vh] left-0 top-0 z-1000 w-full fixed text-[clamp(2vh,2vw,5vh)] transition-all ${isOpen ? "duration-0" : "duration-300"} ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
+      className={`[body.popup-open_&]:hidden h-[12vh] xl:h-[14vh] left-0 top-0 z-1000 w-full fixed text-[clamp(2vh,2vw,5vh)] transition-all ${isOpen ? "duration-0" : "duration-300"} ${scrolled && !isOpen ? "backdrop-blur-sm bg-black/60" : "bg-transparent backdrop-blur-none"}`}
       aria-label="Main Navigation"
     >
       <div className="hidden xl:flex w-[85%] h-[1vh] absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[linear-gradient(to_right,transparent,_#97bddc,_#3293e0,_#97bddc,_transparent)]"></div>
@@ -93,7 +93,7 @@ export default function MyNavbar() {
             <div className="aspect-[207/169] h-full">
               <Image
                 src="/images/home/home.webp"
-                alt="Home Logo"
+                alt="TLMoto"
                 width={207}
                 height={169}
                 priority
@@ -152,14 +152,15 @@ export default function MyNavbar() {
             className="h-full flex items-center max-[300px]:hidden"
             ariaLabel="Home"
           >
-            <Image
-              src="/images/home/tlmoto_principal.webp"
-              alt="Home Logo"
-              width={130}
-              height={80}
-              priority
-              className="h-[70%] w-auto"
-            />
+            <div className="relative h-[8vh] w-[13vh]">
+              <Image
+                src="/images/home/tlmoto_principal.webp"
+                alt="TLMoto"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
           </InternalNavigationLink>
         </div>
         {/* Slide-down Mobile Menu */}

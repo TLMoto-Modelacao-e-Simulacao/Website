@@ -137,12 +137,11 @@ body {
 }
 
 @layer base {
-  /*
-    Development Feature: To see every element's border and outline, uncomment the block below.
-    * {
-      @apply border-border outline-ring/50;
-    }
-  */
+  /* Development Feature: To see every element's border and outline, uncomment the block below. */
+  /* * {
+      @apply border-border outline outline-ring/50;
+    } */
+
   body {
     @apply bg-background text-foreground;
   }
